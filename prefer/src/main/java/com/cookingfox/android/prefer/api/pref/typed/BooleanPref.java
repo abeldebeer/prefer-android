@@ -3,7 +3,7 @@ package com.cookingfox.android.prefer.api.pref.typed;
 import com.cookingfox.android.prefer.api.pref.Pref;
 
 /**
- * Created by abeldebeer on 10/05/16.
+ * {@link Pref} implementation with a boolean value.
  */
 public interface BooleanPref<K extends Enum<K>> extends Pref<K, Boolean> {
 }

@@ -1,5 +1,7 @@
 package com.cookingfox.android.prefer.impl.pref;
 
+import com.cookingfox.android.prefer.api.exception.IncorrectPrefKeyClassException;
+import com.cookingfox.android.prefer.api.exception.PrefAlreadyAddedException;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
 
@@ -32,8 +34,16 @@ public class AndroidPrefGroup<K extends Enum<K>>
     //----------------------------------------------------------------------------------------------
 
     @Override
-    public PrefGroup<K> add(Pref<K, ?> pref) {
-        prefs.put(pref.getKey(), pref);
+    public PrefGroup<K> addPref(Pref<K, ?> pref) {
+        K prefKey = pref.getKey();
+
+        if (prefs.containsKey(prefKey)) {
+            throw new PrefAlreadyAddedException(pref);
+        } else if (!keyClass.isInstance(pref.getKey())) {
+            throw new IncorrectPrefKeyClassException(pref, this);
+        }
+
+        prefs.put(prefKey, pref);
 
         return this;
     }
