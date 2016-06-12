@@ -6,7 +6,7 @@ import com.cookingfox.android.prefer.api.prefer.Prefer;
  * Created by abeldebeer on 10/05/16.
  */
 public interface BooleanPrefer {
-    Boolean getBoolean(Enum key, Boolean defaultValue);
+    boolean getBoolean(Enum key, boolean defaultValue);
 
-    Prefer putBoolean(Enum key, Boolean value);
+    Prefer putBoolean(Enum key, boolean value);
 }

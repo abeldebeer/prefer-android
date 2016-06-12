@@ -3,6 +3,7 @@ package com.cookingfox.android.prefer.impl.prefer;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 
+import com.cookingfox.android.prefer.api.exception.PreferException;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefListener;
 import com.cookingfox.android.prefer.api.prefer.Prefer;
@@ -44,12 +45,12 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
     //----------------------------------------------------------------------------------------------
 
     @Override
-    public Boolean getBoolean(Enum key, Boolean defaultValue) {
+    public boolean getBoolean(Enum key, boolean defaultValue) {
         return Boolean.parseBoolean(getFromString(key, defaultValue));
     }
 
     @Override
-    public Prefer putBoolean(Enum key, Boolean value) {
+    public Prefer putBoolean(Enum key, boolean value) {
         return putFromString(key, value);
     }
 
@@ -58,12 +59,12 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
     //----------------------------------------------------------------------------------------------
 
     @Override
-    public Integer getInteger(Enum key, Integer defaultValue) {
+    public int getInteger(Enum key, int defaultValue) {
         return Integer.parseInt(getFromString(key, defaultValue));
     }
 
     @Override
-    public Prefer putInteger(Enum key, Integer value) {
+    public Prefer putInteger(Enum key, int value) {
         return putFromString(key, value);
     }
 
@@ -115,17 +116,20 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
             try {
                 key = PreferKeySerializer.deserializeKey(serializedKey);
             } catch (ClassNotFoundException e) {
-                // FIXME: 10/05/16 Handle class not found
-                e.printStackTrace();
+                // wrap the exception and print the stack trace
+                new PreferException("Could not deserialize enum: " + serializedKey, e)
+                        .printStackTrace();
                 return;
             }
 
             for (Map.Entry<Pref, Set<PrefListener>> entry : prefListeners.entrySet()) {
                 Pref pref = entry.getKey();
 
+                // match pref by key
                 if (pref.getKey().equals(key)) {
                     Object value = pref.getValue();
 
+                    // pass new value to listeners
                     for (PrefListener listener : entry.getValue()) {
                         listener.onValueChanged(value);
                     }

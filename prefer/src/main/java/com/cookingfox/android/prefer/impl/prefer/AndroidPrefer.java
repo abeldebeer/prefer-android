@@ -1,5 +1,6 @@
 package com.cookingfox.android.prefer.impl.prefer;
 
+import com.cookingfox.android.prefer.api.exception.GroupAlreadyAddedException;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer.api.pref.PrefListener;
@@ -60,12 +61,27 @@ public abstract class AndroidPrefer implements Prefer {
     }
 
     @Override
+    public <K extends Enum<K>> Prefer addGroup(PrefGroup<K> group) {
+        checkNotNull(group, "Group can not be null");
+
+        Class<K> keyClass = group.getKeyClass();
+
+        for (PrefGroup<? extends Enum> addedGroup : groups) {
+            if (addedGroup.getKeyClass().equals(keyClass)) {
+                throw new GroupAlreadyAddedException(group);
+            }
+        }
+
+        groups.add(group);
+
+        return this;
+    }
+
+    @Override
     public <K extends Enum<K>> PrefGroup<K> findGroup(Class<K> keyClass) {
         for (PrefGroup<? extends Enum> group : groups) {
-            Pref<? extends Enum, ?> firstPref = group.iterator().next();
-
-            if (firstPref != null && keyClass.equals(firstPref.getKey().getClass())) {
-                return (PrefGroup) group;
+            if (keyClass.equals(group.getKeyClass())) {
+                return (PrefGroup<K>) group;
             }
         }
 
@@ -105,10 +121,10 @@ public abstract class AndroidPrefer implements Prefer {
     // PUBLIC METHODS
     //----------------------------------------------------------------------------------------------
 
-    public <K extends Enum<K>> AndroidPrefGroup<K> newGroup(Class<K> keyClass) {
-        AndroidPrefGroup<K> group = new AndroidPrefGroup<>();
+    public <K extends Enum<K>> AndroidPrefGroup<K> addNewGroup(Class<K> keyClass) {
+        AndroidPrefGroup<K> group = new AndroidPrefGroup<>(keyClass);
 
-        groups.add(group);
+        addGroup(group);
 
         return group;
     }

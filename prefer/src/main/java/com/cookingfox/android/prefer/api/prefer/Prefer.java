@@ -18,6 +18,8 @@ public interface Prefer extends BooleanPrefer, IntegerPrefer, StringPrefer {
 
     void initializePrefer();
 
+    <K extends Enum<K>> Prefer addGroup(PrefGroup<K> group);
+
     <K extends Enum<K>> PrefGroup<K> findGroup(Class<K> keyClass);
 
     Set<PrefGroup<? extends Enum>> getGroups();

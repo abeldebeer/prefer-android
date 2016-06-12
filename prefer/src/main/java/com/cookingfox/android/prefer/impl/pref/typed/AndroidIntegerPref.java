@@ -12,7 +12,7 @@ public class AndroidIntegerPref<K extends Enum<K>>
         extends AbstractAndroidPref<K, Integer>
         implements IntegerPref<K> {
 
-    public AndroidIntegerPref(Prefer prefer, K key, Integer defaultValue) {
+    public AndroidIntegerPref(Prefer prefer, K key, int defaultValue) {
         super(prefer, key, defaultValue);
     }
 

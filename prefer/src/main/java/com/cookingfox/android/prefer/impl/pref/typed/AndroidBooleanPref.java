@@ -12,7 +12,7 @@ public class AndroidBooleanPref<K extends Enum<K>>
         extends AbstractAndroidPref<K, Boolean>
         implements BooleanPref<K> {
 
-    public AndroidBooleanPref(Prefer prefer, K key, Boolean defaultValue) {
+    public AndroidBooleanPref(Prefer prefer, K key, boolean defaultValue) {
         super(prefer, key, defaultValue);
     }
 

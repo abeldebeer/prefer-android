@@ -9,4 +9,6 @@ public interface PrefGroup<K extends Enum<K>> extends Iterable<Pref<K, ?>> {
     Pref<K, ?> find(K key);
 
     <V> Pref<K, V> find(K key, Class<V> valueClass);
+
+    Class<K> getKeyClass();
 }

@@ -6,7 +6,7 @@ import com.cookingfox.android.prefer.api.prefer.Prefer;
  * Created by abeldebeer on 10/05/16.
  */
 public interface IntegerPrefer {
-    Integer getInteger(Enum key, Integer defaultValue);
+    int getInteger(Enum key, int defaultValue);
 
-    Prefer putInteger(Enum key, Integer value);
+    Prefer putInteger(Enum key, int value);
 }

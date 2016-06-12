@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by abeldebeer on 10/05/16.
  */
@@ -14,7 +16,20 @@ public class AndroidPrefGroup<K extends Enum<K>>
         extends AbstractPrefMeta<AndroidPrefGroup<K>>
         implements PrefGroup<K> {
 
+    protected final Class<K> keyClass;
     protected final Map<K, Pref<K, ?>> prefs = new LinkedHashMap<>();
+
+    //----------------------------------------------------------------------------------------------
+    // CONSTRUCTOR
+    //----------------------------------------------------------------------------------------------
+
+    public AndroidPrefGroup(Class<K> keyClass) {
+        this.keyClass = checkNotNull(keyClass, "Group key class can not be null");
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // PUBLIC METHODS
+    //----------------------------------------------------------------------------------------------
 
     @Override
     public PrefGroup<K> add(Pref<K, ?> pref) {
@@ -37,6 +52,11 @@ public class AndroidPrefGroup<K extends Enum<K>>
         }
 
         return null;
+    }
+
+    @Override
+    public Class<K> getKeyClass() {
+        return keyClass;
     }
 
     @Override
