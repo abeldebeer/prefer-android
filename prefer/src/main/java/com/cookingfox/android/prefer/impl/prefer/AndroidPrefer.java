@@ -129,11 +129,11 @@ public abstract class AndroidPrefer implements Prefer {
         return group;
     }
 
-    public <K extends Enum<K>> AndroidBooleanPref<K> newBoolean(K key, Boolean defaultValue) {
+    public <K extends Enum<K>> AndroidBooleanPref<K> newBoolean(K key, boolean defaultValue) {
         return new AndroidBooleanPref<>(this, key, defaultValue);
     }
 
-    public <K extends Enum<K>> AndroidIntegerPref<K> newInteger(K key, Integer defaultValue) {
+    public <K extends Enum<K>> AndroidIntegerPref<K> newInteger(K key, int defaultValue) {
         return new AndroidIntegerPref<>(this, key, defaultValue);
     }
 

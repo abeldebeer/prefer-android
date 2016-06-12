@@ -19,7 +19,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Unit tests for {@link SharedPreferencesPrefer}.
+ * Unit tests for {@link SharedPreferencesPrefer} and {@link AndroidPrefer}.
  */
 public class SharedPreferencesPreferTest {
 
@@ -244,15 +244,6 @@ public class SharedPreferencesPreferTest {
     public void addNewGroup_should_throw_if_already_contains_key_class() throws Exception {
         prefer.addNewGroup(Key.class);
         prefer.addNewGroup(Key.class);
-    }
-
-    //----------------------------------------------------------------------------------------------
-    // TESTS: newBoolean
-    //----------------------------------------------------------------------------------------------
-
-    @Test
-    public void newBoolean_should_create_new_boolean_pref() throws Exception {
-//        prefer.newBoolean(null,null);
     }
 
     //----------------------------------------------------------------------------------------------

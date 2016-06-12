@@ -1,5 +1,6 @@
 package com.cookingfox.android.prefer.impl.pref.typed;
 
+import com.cookingfox.android.prefer.api.exception.InvalidPrefValueException;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.typed.IntegerPref;
 import com.cookingfox.android.prefer.api.prefer.Prefer;
@@ -22,9 +23,12 @@ public class AndroidIntegerPref<K extends Enum<K>>
     }
 
     @Override
-    public Pref<K, Integer> setValue(Integer value) throws Exception {
-        if (validate(value)) {
+    public Pref<K, Integer> setValue(Integer value) throws InvalidPrefValueException {
+        try {
+            validate(value);
             prefer.putInteger(key, value);
+        } catch (Exception e) {
+            throw new InvalidPrefValueException("Invalid integer value: " + value, e);
         }
 
         return this;

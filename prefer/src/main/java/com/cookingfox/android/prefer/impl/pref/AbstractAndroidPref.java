@@ -2,6 +2,7 @@ package com.cookingfox.android.prefer.impl.pref;
 
 import android.preference.Preference;
 
+import com.cookingfox.android.prefer.api.exception.InvalidPrefValueException;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefListener;
 import com.cookingfox.android.prefer.api.pref.PrefValidator;
@@ -22,7 +23,7 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
 
     protected final V defaultValue;
     protected final K key;
-    protected PreferenceModifier modifier;
+    protected PreferenceModifier preferenceModifier;
     protected final Prefer prefer;
     protected PrefValidator<V> validator;
 
@@ -31,9 +32,16 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
     //----------------------------------------------------------------------------------------------
 
     public AbstractAndroidPref(Prefer prefer, K key, V defaultValue) {
-        this.defaultValue = defaultValue;
-        this.key = key;
-        this.prefer = prefer;
+        this.key = checkNotNull(key, "Key can not be null");
+        this.prefer = checkNotNull(prefer, "Prefer can not be null");
+
+        try {
+            validate(defaultValue);
+
+            this.defaultValue = defaultValue;
+        } catch (Exception e) {
+            throw new InvalidPrefValueException("Invalid default value: " + defaultValue, e);
+        }
     }
 
     //----------------------------------------------------------------------------------------------
@@ -111,7 +119,7 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
 
     @Override
     public Preference modifyPreference(Preference generated) {
-        return modifier == null ? generated : modifier.modifyPreference(generated);
+        return preferenceModifier == null ? generated : preferenceModifier.modifyPreference(generated);
     }
 
     //----------------------------------------------------------------------------------------------
@@ -119,7 +127,7 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
     //----------------------------------------------------------------------------------------------
 
     public AbstractAndroidPref<K, V> setPreferenceModifier(PreferenceModifier modifier) {
-        this.modifier = modifier;
+        this.preferenceModifier = modifier;
         return this;
     }
 
