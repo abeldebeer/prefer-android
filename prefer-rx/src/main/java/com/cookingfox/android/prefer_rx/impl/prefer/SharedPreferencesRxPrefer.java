@@ -9,6 +9,7 @@ import com.cookingfox.android.prefer.impl.prefer.SharedPreferencesPrefer;
 import com.cookingfox.android.prefer_rx.api.prefer.RxPrefer;
 import com.cookingfox.android.prefer_rx.impl.pref.AndroidRxPrefGroup;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidBooleanRxPref;
+import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidFloatRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidIntegerRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidLongRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidStringRxPref;
@@ -104,6 +105,11 @@ public class SharedPreferencesRxPrefer extends SharedPreferencesPrefer implement
     @Override
     public <K extends Enum<K>> AndroidBooleanRxPref<K> newBoolean(K key, boolean defaultValue) {
         return new AndroidBooleanRxPref<>(this, key, defaultValue);
+    }
+
+    @Override
+    public <K extends Enum<K>> AndroidFloatRxPref<K> newFloat(K key, float defaultValue) {
+        return new AndroidFloatRxPref<>(this, key, defaultValue);
     }
 
     @Override

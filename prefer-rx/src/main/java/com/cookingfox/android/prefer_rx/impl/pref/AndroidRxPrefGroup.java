@@ -6,6 +6,7 @@ import com.cookingfox.android.prefer.impl.pref.AndroidPrefGroup;
 import com.cookingfox.android.prefer.impl.prefer.AndroidPrefer;
 import com.cookingfox.android.prefer_rx.api.prefer.RxPrefer;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidBooleanRxPref;
+import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidFloatRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidIntegerRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidLongRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidStringRxPref;
@@ -51,6 +52,17 @@ public class AndroidRxPrefGroup<K extends Enum<K>> extends AndroidPrefGroup<K> {
      */
     public AndroidBooleanRxPref<K> addNewBoolean(K key, boolean defaultValue) {
         return addNewPref(new AndroidBooleanRxPref<>(rxPrefer, key, defaultValue));
+    }
+
+    /**
+     * Creates a new Pref with the provided key and default value.
+     *
+     * @param key          The Pref's unique key.
+     * @param defaultValue The Pref's default value.
+     * @return The newly created Pref.
+     */
+    public AndroidFloatRxPref<K> addNewFloat(K key, float defaultValue) {
+        return addNewPref(new AndroidFloatRxPref<>(rxPrefer, key, defaultValue));
     }
 
     /**

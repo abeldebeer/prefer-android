@@ -63,6 +63,20 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
     }
 
     //----------------------------------------------------------------------------------------------
+    // FLOAT
+    //----------------------------------------------------------------------------------------------
+
+    @Override
+    public float getFloat(Enum key, float defaultValue) {
+        return Float.parseFloat(getFromString(key, defaultValue));
+    }
+
+    @Override
+    public void putFloat(Enum key, float value) {
+        putFromString(key, value);
+    }
+
+    //----------------------------------------------------------------------------------------------
     // INTEGER
     //----------------------------------------------------------------------------------------------
 

@@ -6,6 +6,7 @@ import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer.api.pref.PrefMeta;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidBooleanPref;
+import com.cookingfox.android.prefer.impl.pref.typed.AndroidFloatPref;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidIntegerPref;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidLongPref;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidStringPref;
@@ -118,6 +119,17 @@ public class AndroidPrefGroup<K extends Enum<K>>
      */
     public AndroidBooleanPref<K> addNewBoolean(K key, boolean defaultValue) {
         return addNewPref(new AndroidBooleanPref<>(prefer, key, defaultValue));
+    }
+
+    /**
+     * Creates and adds a new Pref with the provided key and default value.
+     *
+     * @param key          The Pref's unique key.
+     * @param defaultValue The Pref's default value.
+     * @return The newly created Pref.
+     */
+    public AndroidFloatPref<K> addNewFloat(K key, float defaultValue) {
+        return addNewPref(new AndroidFloatPref<>(prefer, key, defaultValue));
     }
 
     /**

@@ -8,6 +8,7 @@ import com.cookingfox.android.prefer.api.pref.PrefListener;
 import com.cookingfox.android.prefer.api.prefer.Prefer;
 import com.cookingfox.android.prefer.impl.pref.AndroidPrefGroup;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidBooleanPref;
+import com.cookingfox.android.prefer.impl.pref.typed.AndroidFloatPref;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidIntegerPref;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidLongPref;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidStringPref;
@@ -145,6 +146,18 @@ public abstract class AndroidPrefer implements Prefer {
      */
     public <K extends Enum<K>> AndroidBooleanPref<K> newBoolean(K key, boolean defaultValue) {
         return new AndroidBooleanPref<>(this, key, defaultValue);
+    }
+
+    /**
+     * Creates a new Pref with the provided key and default value.
+     *
+     * @param key          The Pref's unique key.
+     * @param defaultValue The Pref's default value.
+     * @param <K>          References the enum class for this Pref's key.
+     * @return The newly created Pref.
+     */
+    public <K extends Enum<K>> AndroidFloatPref<K> newFloat(K key, float defaultValue) {
+        return new AndroidFloatPref<>(this, key, defaultValue);
     }
 
     /**

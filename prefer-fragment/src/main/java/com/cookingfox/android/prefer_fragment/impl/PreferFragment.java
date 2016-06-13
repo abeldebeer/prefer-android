@@ -15,6 +15,7 @@ import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer.api.pref.PrefMeta;
 import com.cookingfox.android.prefer.api.pref.typed.BooleanPref;
+import com.cookingfox.android.prefer.api.pref.typed.FloatPref;
 import com.cookingfox.android.prefer.api.pref.typed.IntegerPref;
 import com.cookingfox.android.prefer.api.pref.typed.LongPref;
 import com.cookingfox.android.prefer.api.pref.typed.StringPref;
@@ -77,6 +78,7 @@ public class PreferFragment extends PreferenceFragment {
      *
      * @param message The default message to display when an input value is invalid.
      */
+    @SuppressWarnings("unused")
     public static void setDefaultMessageInvalidInputValue(String message) {
         checkNotNull(message, "Message can not be null");
 
@@ -191,8 +193,7 @@ public class PreferFragment extends PreferenceFragment {
             Preference input = createPrefInput(pref);
             populatePreferenceWithMeta(input, pref);
 
-            // TODO: 10/05/16 Add other numeric prefs
-            if (pref instanceof IntegerPref || pref instanceof LongPref) {
+            if (pref instanceof IntegerPref || pref instanceof LongPref || pref instanceof FloatPref) {
                 input.setDefaultValue(String.valueOf(pref.getDefaultValue()));
             } else {
                 input.setDefaultValue(pref.getDefaultValue());
@@ -298,9 +299,10 @@ public class PreferFragment extends PreferenceFragment {
     protected boolean validatePref(Pref pref, Object newValue) throws Exception {
         final String stringValue = String.valueOf(newValue);
 
-        // TODO: 11/05/16 Add other pref implementations
         if (pref instanceof BooleanPref) {
             return pref.validate(Boolean.parseBoolean(stringValue));
+        } else if (pref instanceof FloatPref) {
+            return pref.validate(Float.parseFloat(stringValue));
         } else if (pref instanceof IntegerPref) {
             return pref.validate(Integer.parseInt(stringValue));
         } else if (pref instanceof LongPref) {
