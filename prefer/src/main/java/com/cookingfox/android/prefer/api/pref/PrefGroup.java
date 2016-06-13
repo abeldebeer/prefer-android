@@ -14,12 +14,11 @@ public interface PrefGroup<K extends Enum<K>> extends Iterable<Pref<K, ?>> {
      * Add a Pref to this group.
      *
      * @param pref The Pref to add.
-     * @return The current instance, for method chaining.
      * @throws PrefAlreadyAddedException      when a Pref with this key was already added.
      * @throws IncorrectPrefKeyClassException when the Pref has a key of a different enum class than
      *                                        this group.
      */
-    PrefGroup<K> addPref(Pref<K, ?> pref);
+    void addPref(Pref<K, ?> pref);
 
     /**
      * Find a Pref by its unique key.

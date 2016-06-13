@@ -1,7 +1,5 @@
 package com.cookingfox.android.prefer.api.prefer.typed;
 
-import com.cookingfox.android.prefer.api.prefer.Prefer;
-
 /**
  * Prefer functionality for integer typed preferences.
  */
@@ -22,8 +20,7 @@ public interface IntegerPrefer {
      *
      * @param key   The unique preference enum key.
      * @param value The new value to set.
-     * @return The current instance, for method chaining.
      */
-    Prefer putInteger(Enum key, int value);
+    void putInteger(Enum key, int value);
 
 }

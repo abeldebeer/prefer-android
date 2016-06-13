@@ -238,7 +238,7 @@ public class AndroidPrefGroupTest {
     }
 
     @Test
-    public void summary_should_return_text() throws Exception {
+    public void setSummary_should_return_text() throws Exception {
         String summary = "My Summary";
         group.setSummary(summary);
 
@@ -257,7 +257,7 @@ public class AndroidPrefGroupTest {
     }
 
     @Test
-    public void title_should_return_text() throws Exception {
+    public void setTitle_should_set_title() throws Exception {
         String title = "My Title";
         group.setTitle(title);
 

@@ -3,8 +3,6 @@ package com.cookingfox.android.prefer.impl.pref.typed;
 import android.preference.Preference;
 
 import com.cookingfox.android.prefer.api.exception.InvalidPrefValueException;
-import com.cookingfox.android.prefer.api.pref.Pref;
-import com.cookingfox.android.prefer.api.pref.PrefListener;
 import com.cookingfox.android.prefer.api.pref.PrefValidator;
 import com.cookingfox.android.prefer.api.prefer.Prefer;
 import com.cookingfox.android.prefer.impl.pref.AbstractAndroidPref;
@@ -96,18 +94,6 @@ public class AndroidStringPrefTest {
         pref.addListener(null);
     }
 
-    @Test
-    public void addListener_should_return_pref() throws Exception {
-        Pref<Key, String> pref = this.pref.addListener(new PrefListener<String>() {
-            @Override
-            public void onValueChanged(String value) {
-                // ignore
-            }
-        });
-
-        assertSame(pref, this.pref);
-    }
-
     //----------------------------------------------------------------------------------------------
     // TESTS: removeListener
     //----------------------------------------------------------------------------------------------
@@ -115,18 +101,6 @@ public class AndroidStringPrefTest {
     @Test(expected = NullPointerException.class)
     public void removeListener_should_throw_if_listener_null() throws Exception {
         pref.removeListener(null);
-    }
-
-    @Test
-    public void removeListener_should_return_pref() throws Exception {
-        Pref<Key, String> pref = this.pref.removeListener(new PrefListener<String>() {
-            @Override
-            public void onValueChanged(String value) {
-                // ignore
-            }
-        });
-
-        assertSame(pref, this.pref);
     }
 
     //----------------------------------------------------------------------------------------------

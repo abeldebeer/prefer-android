@@ -25,15 +25,13 @@ public class AndroidBooleanPref<K extends Enum<K>>
     }
 
     @Override
-    public Pref<K, Boolean> setValue(Boolean value) throws InvalidPrefValueException {
+    public void setValue(Boolean value) throws InvalidPrefValueException {
         try {
             validate(value);
             prefer.putBoolean(key, value);
         } catch (Exception e) {
             throw new InvalidPrefValueException("Invalid boolean value: " + value, e);
         }
-
-        return this;
     }
 
 }

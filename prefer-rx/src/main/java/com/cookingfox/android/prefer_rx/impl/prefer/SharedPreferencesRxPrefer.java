@@ -7,6 +7,7 @@ import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefListener;
 import com.cookingfox.android.prefer.impl.prefer.SharedPreferencesPrefer;
 import com.cookingfox.android.prefer_rx.api.prefer.RxPrefer;
+import com.cookingfox.android.prefer_rx.impl.pref.AndroidRxPrefGroup;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidBooleanRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidIntegerRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidStringRxPref;
@@ -26,6 +27,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class SharedPreferencesRxPrefer extends SharedPreferencesPrefer implements RxPrefer {
 
+    /**
+     * Track observable subscribers, so they can be cleared on dispose.
+     */
     protected final Set<Subscriber> subscribers = new LinkedHashSet<>();
 
     //----------------------------------------------------------------------------------------------
@@ -39,16 +43,6 @@ public class SharedPreferencesRxPrefer extends SharedPreferencesPrefer implement
     //----------------------------------------------------------------------------------------------
     // IMPLEMENTATION: RxPrefer
     //----------------------------------------------------------------------------------------------
-
-    @Override
-    public void disposePrefer() {
-        // unsubscribe all
-        for (Subscriber subscriber : subscribers) {
-            subscriber.unsubscribe();
-        }
-
-        super.disposePrefer();
-    }
 
     @Override
     public <K extends Enum<K>, V> Observable<V> observePref(final Pref<K, V> pref) {
@@ -86,6 +80,25 @@ public class SharedPreferencesRxPrefer extends SharedPreferencesPrefer implement
     //----------------------------------------------------------------------------------------------
     // PUBLIC METHODS
     //----------------------------------------------------------------------------------------------
+
+    @Override
+    public void disposePrefer() {
+        // unsubscribe all
+        for (Subscriber subscriber : subscribers) {
+            subscriber.unsubscribe();
+        }
+
+        super.disposePrefer();
+    }
+
+    @Override
+    public <K extends Enum<K>> AndroidRxPrefGroup<K> addNewGroup(Class<K> keyClass) {
+        AndroidRxPrefGroup<K> group = new AndroidRxPrefGroup<>(this, keyClass);
+
+        addGroup(group);
+
+        return group;
+    }
 
     @Override
     public <K extends Enum<K>> AndroidBooleanRxPref<K> newBoolean(K key, boolean defaultValue) {

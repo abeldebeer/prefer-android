@@ -25,15 +25,13 @@ public class AndroidStringPref<K extends Enum<K>>
     }
 
     @Override
-    public Pref<K, String> setValue(String value) throws InvalidPrefValueException {
+    public void setValue(String value) throws InvalidPrefValueException {
         try {
             validate(value);
             prefer.putString(key, value);
         } catch (Exception e) {
             throw new InvalidPrefValueException("Invalid String value: " + value, e);
         }
-
-        return this;
     }
 
 }

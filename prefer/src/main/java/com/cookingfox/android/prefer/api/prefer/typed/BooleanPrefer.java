@@ -22,8 +22,7 @@ public interface BooleanPrefer {
      *
      * @param key   The unique preference enum key.
      * @param value The new value to set.
-     * @return The current instance, for method chaining.
      */
-    Prefer putBoolean(Enum key, boolean value);
+    void putBoolean(Enum key, boolean value);
 
 }

@@ -222,6 +222,7 @@ public class SharedPreferencesPreferTest {
     // TESTS: getBoolean & putBoolean
     //----------------------------------------------------------------------------------------------
 
+    @SuppressWarnings("all")
     @Test
     public void getBoolean_should_return_stored_value() throws Exception {
         boolean stored = false;
@@ -233,6 +234,7 @@ public class SharedPreferencesPreferTest {
         assertEquals(stored, result);
     }
 
+    @SuppressWarnings("all")
     @Test
     public void getBoolean_should_return_default_value_for_non_stored() throws Exception {
         boolean defaultValue = true;
@@ -296,6 +298,7 @@ public class SharedPreferencesPreferTest {
 
     @Test(expected = NullPointerException.class)
     public void addGroup_should_throw_if_group_null() throws Exception {
+        // noinspection unchecked
         prefer.addGroup(null);
     }
 
@@ -323,6 +326,7 @@ public class SharedPreferencesPreferTest {
 
     @Test(expected = NullPointerException.class)
     public void addNewGroup_should_throw_if_enum_class_null() throws Exception {
+        // noinspection unchecked
         prefer.addNewGroup(null);
     }
 
@@ -348,6 +352,7 @@ public class SharedPreferencesPreferTest {
 
     @Test(expected = NullPointerException.class)
     public void findGroup_should_throw_if_key_class_null() throws Exception {
+        // noinspection unchecked
         prefer.findGroup(null);
     }
 

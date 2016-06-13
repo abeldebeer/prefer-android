@@ -22,7 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @param <K> References the concrete enum key class.
  */
 public class AndroidPrefGroup<K extends Enum<K>>
-        extends AbstractPrefMeta<AndroidPrefGroup<K>>
+        extends AbstractPrefMeta
         implements PrefGroup<K> {
 
     protected final Class<K> keyClass;
@@ -49,7 +49,7 @@ public class AndroidPrefGroup<K extends Enum<K>>
     //----------------------------------------------------------------------------------------------
 
     @Override
-    public PrefGroup<K> addPref(Pref<K, ?> pref) {
+    public void addPref(Pref<K, ?> pref) {
         K prefKey = pref.getKey();
 
         if (prefs.containsKey(prefKey)) {
@@ -61,8 +61,6 @@ public class AndroidPrefGroup<K extends Enum<K>>
         }
 
         prefs.put(prefKey, pref);
-
-        return this;
     }
 
     @Override
@@ -99,7 +97,7 @@ public class AndroidPrefGroup<K extends Enum<K>>
     //----------------------------------------------------------------------------------------------
 
     /**
-     * Creates a new Pref with the provided key and default value.
+     * Creates and adds a new Pref with the provided key and default value.
      *
      * @param key          The Pref's unique key.
      * @param defaultValue The Pref's default value.
@@ -110,7 +108,7 @@ public class AndroidPrefGroup<K extends Enum<K>>
     }
 
     /**
-     * Creates a new Pref with the provided key and default value.
+     * Creates and adds a new Pref with the provided key and default value.
      *
      * @param key          The Pref's unique key.
      * @param defaultValue The Pref's default value.
@@ -121,7 +119,7 @@ public class AndroidPrefGroup<K extends Enum<K>>
     }
 
     /**
-     * Creates a new Pref with the provided key and default value.
+     * Creates and adds a new Pref with the provided key and default value.
      *
      * @param key          The Pref's unique key.
      * @param defaultValue The Pref's default value.
@@ -135,7 +133,14 @@ public class AndroidPrefGroup<K extends Enum<K>>
     // PROTECTED METHODS
     //----------------------------------------------------------------------------------------------
 
-    protected <T extends AbstractAndroidPref> T addNewPref(T pref) {
+    /**
+     * Add the pref to the group.
+     *
+     * @param pref The Pref to add.
+     * @param <T>  Indicates the concrete Pref type.
+     * @return The pref.
+     */
+    protected <T extends Pref> T addNewPref(T pref) {
         // noinspection unchecked
         addPref(pref);
 

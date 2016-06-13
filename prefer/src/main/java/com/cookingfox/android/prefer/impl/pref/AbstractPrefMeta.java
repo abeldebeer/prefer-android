@@ -6,10 +6,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Abstract implementation of {@link PrefMeta}.
- *
- * @param <T> Indicates the concrete type that extends this class.
  */
-public abstract class AbstractPrefMeta<T extends PrefMeta> implements PrefMeta {
+public abstract class AbstractPrefMeta implements PrefMeta {
 
     protected boolean enable = true;
     protected String summary = "";
@@ -48,44 +46,36 @@ public abstract class AbstractPrefMeta<T extends PrefMeta> implements PrefMeta {
      * Set whether this Pref is enabled.
      *
      * @param enable Whether this Pref is enabled.
-     * @return The current instance, for method chaining.
      */
-    public T setEnable(boolean enable) {
+    public void setEnable(boolean enable) {
         this.enable = enable;
-        return (T) this;
     }
 
     /**
      * Set whether this Pref should be visible.
      *
      * @param show Whether this Pref should be visible.
-     * @return The current instance, for method chaining.
      */
-    public T setShow(boolean show) {
+    public void setShow(boolean show) {
         this.show = show;
-        return (T) this;
     }
 
     /**
      * Set the Pref summary.
      *
      * @param summary The Pref summary.
-     * @return The current instance, for method chaining.
      */
-    public T setSummary(String summary) {
+    public void setSummary(String summary) {
         this.summary = checkNotNull(summary, "Summary can not be null");
-        return (T) this;
     }
 
     /**
      * Set the Pref title.
      *
      * @param title The Pref title.
-     * @return The current instance, for method chaining.
      */
-    public T setTitle(String title) {
+    public void setTitle(String title) {
         this.title = checkNotNull(title, "Title can not be null");
-        return (T) this;
     }
 
 }

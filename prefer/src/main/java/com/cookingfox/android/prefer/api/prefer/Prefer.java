@@ -29,9 +29,8 @@ public interface Prefer extends BooleanPrefer, IntegerPrefer, StringPrefer {
      *
      * @param group The group to manage.
      * @param <K>   References the enum class for the Pref's key.
-     * @return The current instance, for method chaining.
      */
-    <K extends Enum<K>> Prefer addGroup(PrefGroup<K> group);
+    <K extends Enum<K>> void addGroup(PrefGroup<K> group);
 
     /**
      * Find a Pref group by its enum key class.
@@ -56,10 +55,9 @@ public interface Prefer extends BooleanPrefer, IntegerPrefer, StringPrefer {
      * @param listener The listener to add.
      * @param <K>      References the enum class for the Pref's key.
      * @param <V>      Indicates the Pref's value type.
-     * @return The current instance, for method chaining.
      * @see Pref#addListener(PrefListener)
      */
-    <K extends Enum<K>, V> Prefer addListener(Pref<K, V> pref, PrefListener<V> listener);
+    <K extends Enum<K>, V> void addListener(Pref<K, V> pref, PrefListener<V> listener);
 
     /**
      * Removes a Pref listener.
@@ -68,9 +66,8 @@ public interface Prefer extends BooleanPrefer, IntegerPrefer, StringPrefer {
      * @param listener The listener to remove.
      * @param <K>      References the enum class for the Pref's key.
      * @param <V>      Indicates the Pref's value type.
-     * @return The current instance, for method chaining.
      * @see Pref#removeListener(PrefListener)
      */
-    <K extends Enum<K>, V> Prefer removeListener(Pref<K, V> pref, PrefListener<V> listener);
+    <K extends Enum<K>, V> void removeListener(Pref<K, V> pref, PrefListener<V> listener);
 
 }

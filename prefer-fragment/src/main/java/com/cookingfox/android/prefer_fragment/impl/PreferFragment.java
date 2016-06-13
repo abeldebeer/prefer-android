@@ -116,7 +116,7 @@ public class PreferFragment extends PreferenceFragment {
             final AndroidPrefGroup<? extends Enum> group = (AndroidPrefGroup<?>) g;
 
             // ignore group: should not be displayed on screen
-            if (group.show()) {
+            if (!group.show()) {
                 continue;
             }
 
@@ -149,7 +149,7 @@ public class PreferFragment extends PreferenceFragment {
     protected int addPreferences(PreferenceScreen groupScreen, PrefGroup<?> group) {
         int numGenerated = 0;
 
-        for (Pref<?, ?> p : group) {
+        for (Pref p : group) {
             // validate pref
             if (!(p instanceof AbstractAndroidPref)) {
                 new PreferException(String.format("Can not generate Preference for '%s' - " +

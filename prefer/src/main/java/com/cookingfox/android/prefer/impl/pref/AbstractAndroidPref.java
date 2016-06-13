@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @param <V> Indicates this Pref's value type.
  */
 public abstract class AbstractAndroidPref<K extends Enum<K>, V>
-        extends AbstractPrefMeta<AbstractAndroidPref<K, V>>
+        extends AbstractPrefMeta
         implements Pref<K, V>, PreferenceModifier {
 
     //----------------------------------------------------------------------------------------------
@@ -61,10 +61,8 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
     //----------------------------------------------------------------------------------------------
 
     @Override
-    public Pref<K, V> addListener(PrefListener<V> listener) {
+    public void addListener(PrefListener<V> listener) {
         prefer.addListener(this, checkNotNull(listener, "Listener can not be null"));
-
-        return this;
     }
 
     @Override
@@ -78,16 +76,13 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
     }
 
     @Override
-    public Pref<K, V> removeListener(PrefListener<V> listener) {
+    public void removeListener(PrefListener<V> listener) {
         prefer.removeListener(this, listener);
-
-        return this;
     }
 
     @Override
-    public Pref<K, V> setValidator(PrefValidator<V> validator) {
+    public void setValidator(PrefValidator<V> validator) {
         this.validator = checkNotNull(validator);
-        return this;
     }
 
     @Override
@@ -120,11 +115,9 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
      * Set the preference modifier.
      *
      * @param modifier The preference modifier to use.
-     * @return The current instance, for method chaining.
      */
-    public AbstractAndroidPref<K, V> setPreferenceModifier(PreferenceModifier modifier) {
+    public void setPreferenceModifier(PreferenceModifier modifier) {
         this.preferenceModifier = checkNotNull(modifier, "Modifier cannot be null");
-        return this;
     }
 
 }

@@ -56,7 +56,7 @@ public abstract class AndroidPrefer implements Prefer {
     }
 
     @Override
-    public <K extends Enum<K>, V> Prefer addListener(Pref<K, V> pref, PrefListener<V> listener) {
+    public <K extends Enum<K>, V> void addListener(Pref<K, V> pref, PrefListener<V> listener) {
         checkNotNull(pref, "Pref can not be null");
         checkNotNull(listener, "Listener can not be null");
 
@@ -72,12 +72,10 @@ public abstract class AndroidPrefer implements Prefer {
         }
 
         listeners.add(listener);
-
-        return this;
     }
 
     @Override
-    public <K extends Enum<K>, V> Prefer removeListener(Pref<K, V> pref, PrefListener<V> listener) {
+    public <K extends Enum<K>, V> void removeListener(Pref<K, V> pref, PrefListener<V> listener) {
         checkNotNull(pref, "Pref can not be null");
         checkNotNull(listener, "Listener can not be null");
 
@@ -90,12 +88,10 @@ public abstract class AndroidPrefer implements Prefer {
         if (listeners != null) {
             listeners.remove(listener);
         }
-
-        return this;
     }
 
     @Override
-    public <K extends Enum<K>> Prefer addGroup(PrefGroup<K> group) {
+    public <K extends Enum<K>> void addGroup(PrefGroup<K> group) {
         checkNotNull(group, "Group can not be null");
 
         Class<K> keyClass = group.getKeyClass();
@@ -105,8 +101,6 @@ public abstract class AndroidPrefer implements Prefer {
         }
 
         groups.put(keyClass, group);
-
-        return this;
     }
 
     @Override

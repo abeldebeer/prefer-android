@@ -25,15 +25,13 @@ public class AndroidIntegerPref<K extends Enum<K>>
     }
 
     @Override
-    public Pref<K, Integer> setValue(Integer value) throws InvalidPrefValueException {
+    public void setValue(Integer value) throws InvalidPrefValueException {
         try {
             validate(value);
             prefer.putInteger(key, value);
         } catch (Exception e) {
             throw new InvalidPrefValueException("Invalid integer value: " + value, e);
         }
-
-        return this;
     }
 
 }

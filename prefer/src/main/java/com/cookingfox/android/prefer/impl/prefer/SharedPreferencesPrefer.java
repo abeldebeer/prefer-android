@@ -6,7 +6,6 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import com.cookingfox.android.prefer.api.exception.PreferException;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefListener;
-import com.cookingfox.android.prefer.api.prefer.Prefer;
 
 import java.util.Map;
 import java.util.Set;
@@ -59,8 +58,8 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
     }
 
     @Override
-    public Prefer putBoolean(Enum key, boolean value) {
-        return putFromString(key, value);
+    public void putBoolean(Enum key, boolean value) {
+        putFromString(key, value);
     }
 
     //----------------------------------------------------------------------------------------------
@@ -73,8 +72,8 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
     }
 
     @Override
-    public Prefer putInteger(Enum key, int value) {
-        return putFromString(key, value);
+    public void putInteger(Enum key, int value) {
+        putFromString(key, value);
     }
 
     //----------------------------------------------------------------------------------------------
@@ -87,8 +86,8 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
     }
 
     @Override
-    public Prefer putString(Enum key, String value) {
-        return putFromString(key, value);
+    public void putString(Enum key, String value) {
+        putFromString(key, value);
     }
 
     //----------------------------------------------------------------------------------------------
@@ -122,9 +121,8 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
      * @param key   The unique key for this preference.
      * @param value The value to store for this preference.
      * @param <T>   Indicates the concrete value type, e.g. `Boolean`.
-     * @return The current instance, for method chaining.
      */
-    protected <T> Prefer putFromString(Enum key, T value) {
+    protected <T> void putFromString(Enum key, T value) {
         checkNotNull(key, "Preference key can not be null");
 
         final String stringKey = PreferKeySerializer.serializeKey(key);
@@ -133,8 +131,6 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
         preferences.edit()
                 .putString(stringKey, stringValue)
                 .apply();
-
-        return this;
     }
 
     //----------------------------------------------------------------------------------------------
