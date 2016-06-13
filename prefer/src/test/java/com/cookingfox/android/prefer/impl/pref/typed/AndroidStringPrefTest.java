@@ -3,6 +3,9 @@ package com.cookingfox.android.prefer.impl.pref.typed;
 import android.preference.Preference;
 
 import com.cookingfox.android.prefer.api.exception.InvalidPrefValueException;
+import com.cookingfox.android.prefer.api.pref.Pref;
+import com.cookingfox.android.prefer.api.pref.PrefListener;
+import com.cookingfox.android.prefer.api.pref.PrefValidator;
 import com.cookingfox.android.prefer.api.prefer.Prefer;
 import com.cookingfox.android.prefer.impl.pref.AbstractAndroidPref;
 import com.cookingfox.android.prefer.impl.pref.PreferenceModifier;
@@ -17,7 +20,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import fixtures.FixtureSharedPreferences;
 import fixtures.example.Key;
 
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Unit tests for {@link AndroidStringPref} and {@link AbstractAndroidPref}.
@@ -91,6 +96,39 @@ public class AndroidStringPrefTest {
         pref.addListener(null);
     }
 
+    @Test
+    public void addListener_should_return_pref() throws Exception {
+        Pref<Key, String> pref = this.pref.addListener(new PrefListener<String>() {
+            @Override
+            public void onValueChanged(String value) {
+                // ignore
+            }
+        });
+
+        assertSame(pref, this.pref);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: removeListener
+    //----------------------------------------------------------------------------------------------
+
+    @Test(expected = NullPointerException.class)
+    public void removeListener_should_throw_if_listener_null() throws Exception {
+        pref.removeListener(null);
+    }
+
+    @Test
+    public void removeListener_should_return_pref() throws Exception {
+        Pref<Key, String> pref = this.pref.removeListener(new PrefListener<String>() {
+            @Override
+            public void onValueChanged(String value) {
+                // ignore
+            }
+        });
+
+        assertSame(pref, this.pref);
+    }
+
     //----------------------------------------------------------------------------------------------
     // TESTS: setPreferenceModifier
     //----------------------------------------------------------------------------------------------
@@ -115,6 +153,61 @@ public class AndroidStringPrefTest {
         pref.modifyPreference(null);
 
         assertTrue(called.get());
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: setValidator
+    //----------------------------------------------------------------------------------------------
+
+    @Test(expected = NullPointerException.class)
+    public void setValidator_should_throw_if_validator_null() throws Exception {
+        pref.setValidator(null);
+    }
+
+    @Test
+    public void setValidator_should_set_validator() throws Exception {
+        final AtomicBoolean called = new AtomicBoolean(false);
+
+        pref.setValidator(new PrefValidator<String>() {
+            @Override
+            public boolean validate(String value) throws Exception {
+                called.set(true);
+                return true;
+            }
+        });
+
+        pref.setValue("bar");
+
+        assertTrue(called.get());
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: setValue
+    //----------------------------------------------------------------------------------------------
+
+    @Test
+    public void setValue_should_call_validator_and_throw_expected_exception() throws Exception {
+        final String exampleInvalidString = "hello";
+        final Exception expectedException = new Exception("No hello! Please!");
+
+        pref.setValidator(new PrefValidator<String>() {
+            @Override
+            public boolean validate(String value) throws Exception {
+                if (value.contains(exampleInvalidString)) {
+                    throw expectedException;
+                }
+
+                return true;
+            }
+        });
+
+        try {
+            pref.setValue(exampleInvalidString);
+
+            fail("Expected exception");
+        } catch (InvalidPrefValueException e) {
+            assertSame(expectedException, e.getCause());
+        }
     }
 
 }

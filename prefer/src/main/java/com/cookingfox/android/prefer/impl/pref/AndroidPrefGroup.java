@@ -106,11 +106,7 @@ public class AndroidPrefGroup<K extends Enum<K>>
      * @return The newly created Pref.
      */
     public AndroidBooleanPref<K> addNewBoolean(K key, boolean defaultValue) {
-        AndroidBooleanPref<K> pref = new AndroidBooleanPref<>(prefer, key, defaultValue);
-
-        addPref(pref);
-
-        return pref;
+        return addNewPref(new AndroidBooleanPref<>(prefer, key, defaultValue));
     }
 
     /**
@@ -121,11 +117,7 @@ public class AndroidPrefGroup<K extends Enum<K>>
      * @return The newly created Pref.
      */
     public AndroidIntegerPref<K> addNewInteger(K key, int defaultValue) {
-        AndroidIntegerPref<K> pref = new AndroidIntegerPref<>(prefer, key, defaultValue);
-
-        addPref(pref);
-
-        return pref;
+        return addNewPref(new AndroidIntegerPref<>(prefer, key, defaultValue));
     }
 
     /**
@@ -136,8 +128,15 @@ public class AndroidPrefGroup<K extends Enum<K>>
      * @return The new ly created Pref.
      */
     public AndroidStringPref<K> addNewString(K key, String defaultValue) {
-        AndroidStringPref<K> pref = new AndroidStringPref<>(prefer, key, defaultValue);
+        return addNewPref(new AndroidStringPref<>(prefer, key, defaultValue));
+    }
 
+    //----------------------------------------------------------------------------------------------
+    // PROTECTED METHODS
+    //----------------------------------------------------------------------------------------------
+
+    protected <T extends AbstractAndroidPref> T addNewPref(T pref) {
+        // noinspection unchecked
         addPref(pref);
 
         return pref;

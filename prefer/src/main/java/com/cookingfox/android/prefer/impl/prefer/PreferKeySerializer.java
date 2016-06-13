@@ -11,6 +11,12 @@ public class PreferKeySerializer {
     protected static final String ENUM_KEY_SEPARATOR = "-";
 
     /**
+     * Not supposed to be instantiated.
+     */
+    private PreferKeySerializer() {
+    }
+
+    /**
      * De-serializes a string into its original enum value.
      *
      * @param serialized The serialized enum key.

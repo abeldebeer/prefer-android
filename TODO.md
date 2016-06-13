@@ -1,0 +1,2 @@
+- TODO: create separate module for Rx integration.
+- TODO: create separate module for `PreferenceFragment` ability.

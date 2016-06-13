@@ -110,7 +110,7 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
 
     @Override
     public Pref<K, V> setValidator(PrefValidator<V> validator) {
-        this.validator = validator;
+        this.validator = checkNotNull(validator);
         return this;
     }
 

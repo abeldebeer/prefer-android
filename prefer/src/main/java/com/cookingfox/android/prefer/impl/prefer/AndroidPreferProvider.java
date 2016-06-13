@@ -20,7 +20,7 @@ public class AndroidPreferProvider {
     protected static AndroidPrefer defaultInstance;
 
     /**
-     * Not supposed to be initialized.
+     * Not supposed to be instantiated.
      */
     private AndroidPreferProvider() {
     }

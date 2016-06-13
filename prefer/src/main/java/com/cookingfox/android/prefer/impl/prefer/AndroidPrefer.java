@@ -22,7 +22,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public abstract class AndroidPrefer implements Prefer {
 
-    protected final Set<PrefGroup<? extends Enum>> groups = new LinkedHashSet<>();
+    /**
+     * Pref groups by key class.
+     */
+    protected final Map<Class<? extends Enum>, PrefGroup<? extends Enum>> groups = new LinkedHashMap<>();
+
+    /**
+     * Pref listeners per pref.
+     */
     protected final Map<Pref, Set<PrefListener>> prefListeners = new LinkedHashMap<>();
 
     //----------------------------------------------------------------------------------------------
@@ -66,33 +73,27 @@ public abstract class AndroidPrefer implements Prefer {
 
         Class<K> keyClass = group.getKeyClass();
 
-        for (PrefGroup<? extends Enum> addedGroup : groups) {
-            if (addedGroup.getKeyClass().equals(keyClass)) {
-                throw new GroupAlreadyAddedException(group);
-            }
+        if (groups.containsKey(keyClass)) {
+            throw new GroupAlreadyAddedException(group);
         }
 
-        groups.add(group);
+        groups.put(keyClass, group);
 
         return this;
     }
 
     @Override
     public <K extends Enum<K>> PrefGroup<K> findGroup(Class<K> keyClass) {
-        for (PrefGroup<? extends Enum> group : groups) {
-            if (keyClass.equals(group.getKeyClass())) {
-                return (PrefGroup<K>) group;
-            }
-        }
-
-        return null;
+        // noinspection unchecked
+        return (PrefGroup<K>) groups.get(checkNotNull(keyClass, "Key class can not be null"));
     }
 
     @Override
     public Set<PrefGroup<? extends Enum>> getGroups() {
-        return groups;
+        return new LinkedHashSet<>(groups.values());
     }
 
+    // TODO: provide Prefer Rx integration
 //    @Override
 //    public <K extends Enum<K>, V> Observable<V> observePrefValueChanges(final Pref<K, V> pref) {
 //        return Observable.create(new Observable.OnSubscribe<V>() {

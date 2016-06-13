@@ -1,14 +1,19 @@
 package com.cookingfox.android.prefer.impl.prefer;
 
 import com.cookingfox.android.prefer.api.exception.GroupAlreadyAddedException;
+import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer.api.pref.PrefListener;
 import com.cookingfox.android.prefer.api.pref.typed.BooleanPref;
 import com.cookingfox.android.prefer.impl.pref.AndroidPrefGroup;
+import com.cookingfox.android.prefer.impl.pref.typed.AndroidBooleanPref;
+import com.cookingfox.android.prefer.impl.pref.typed.AndroidIntegerPref;
+import com.cookingfox.android.prefer.impl.pref.typed.AndroidStringPref;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import fixtures.FixtureSharedPreferences;
@@ -16,6 +21,8 @@ import fixtures.example.Key;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -211,7 +218,7 @@ public class SharedPreferencesPreferTest {
         prefer.addGroup(group);
 
         assertTrue(prefer.groups.size() == 1);
-        assertTrue(prefer.groups.contains(group));
+        assertTrue(prefer.groups.containsValue(group));
     }
 
     @Test(expected = GroupAlreadyAddedException.class)
@@ -237,13 +244,93 @@ public class SharedPreferencesPreferTest {
         AndroidPrefGroup<Key> group = prefer.addNewGroup(Key.class);
 
         assertTrue(prefer.groups.size() == 1);
-        assertTrue(prefer.groups.contains(group));
+        assertTrue(prefer.groups.containsValue(group));
     }
 
     @Test(expected = GroupAlreadyAddedException.class)
     public void addNewGroup_should_throw_if_already_contains_key_class() throws Exception {
         prefer.addNewGroup(Key.class);
         prefer.addNewGroup(Key.class);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: findGroup
+    //----------------------------------------------------------------------------------------------
+
+    @Test(expected = NullPointerException.class)
+    public void findGroup_should_throw_if_key_class_null() throws Exception {
+        prefer.findGroup(null);
+    }
+
+    @Test
+    public void findGroup_should_not_throw_if_not_found() throws Exception {
+        prefer.findGroup(Key.class);
+    }
+
+    @Test
+    public void findGroup_should_return_group() throws Exception {
+        AndroidPrefGroup<Key> group = prefer.addNewGroup(Key.class);
+
+        PrefGroup<Key> result = prefer.findGroup(Key.class);
+
+        assertSame(group, result);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: getGroups
+    //----------------------------------------------------------------------------------------------
+
+    @Test
+    public void getGroups_should_return_empty_set_if_no_groups_added() throws Exception {
+        Set<PrefGroup<? extends Enum>> groups = prefer.getGroups();
+
+        assertNotNull(groups);
+        assertTrue(groups.isEmpty());
+    }
+
+    @Test
+    public void getGroups_should_return_groups() throws Exception {
+        AndroidPrefGroup<Key> first = prefer.addNewGroup(Key.class);
+        AndroidPrefGroup<Thread.State> second = prefer.addNewGroup(Thread.State.class);
+
+        Set<PrefGroup<? extends Enum>> groups = prefer.getGroups();
+
+        assertNotNull(groups);
+        assertTrue(groups.contains(first));
+        assertTrue(groups.contains(second));
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: newBoolean
+    //----------------------------------------------------------------------------------------------
+
+    @Test
+    public void newBoolean_should_create_and_add_boolean_pref() throws Exception {
+        AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
+
+        assertNotNull(pref);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: newInteger
+    //----------------------------------------------------------------------------------------------
+
+    @Test
+    public void newInteger_should_create_and_add_integer_pref() throws Exception {
+        AndroidIntegerPref<Key> pref = prefer.newInteger(Key.IntervalMs, 123);
+
+        assertNotNull(pref);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: newString
+    //----------------------------------------------------------------------------------------------
+
+    @Test
+    public void newString_should_create_and_add_string_pref() throws Exception {
+        AndroidStringPref<Key> pref = prefer.newString(Key.Username, "foo");
+
+        assertNotNull(pref);
     }
 
     //----------------------------------------------------------------------------------------------
