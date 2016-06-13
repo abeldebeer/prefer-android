@@ -1,6 +1,7 @@
 package com.cookingfox.android.prefer.impl.prefer;
 
 import com.cookingfox.android.prefer.api.exception.GroupAlreadyAddedException;
+import com.cookingfox.android.prefer.api.exception.PreferNotInitializedException;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer.api.pref.PrefListener;
@@ -28,6 +29,11 @@ public abstract class AndroidPrefer implements Prefer {
     protected final Map<Class<? extends Enum>, PrefGroup<? extends Enum>> groups = new LinkedHashMap<>();
 
     /**
+     * Whether this Prefer is initialized: call {@link #initializePrefer()} first.
+     */
+    protected boolean initialized = false;
+
+    /**
      * Pref listeners per pref.
      */
     protected final Map<Pref, Set<PrefListener>> prefListeners = new LinkedHashMap<>();
@@ -37,9 +43,23 @@ public abstract class AndroidPrefer implements Prefer {
     //----------------------------------------------------------------------------------------------
 
     @Override
+    public void initializePrefer() {
+        initialized = true;
+    }
+
+    @Override
+    public void disposePrefer() {
+        initialized = false;
+    }
+
+    @Override
     public <K extends Enum<K>, V> Prefer addListener(Pref<K, V> pref, PrefListener<V> listener) {
         checkNotNull(pref, "Pref can not be null");
         checkNotNull(listener, "Listener can not be null");
+
+        if (!initialized) {
+            throw new PreferNotInitializedException("Can not add listener");
+        }
 
         Set<PrefListener> listeners = this.prefListeners.get(pref);
 
@@ -57,6 +77,10 @@ public abstract class AndroidPrefer implements Prefer {
     public <K extends Enum<K>, V> Prefer removeListener(Pref<K, V> pref, PrefListener<V> listener) {
         checkNotNull(pref, "Pref can not be null");
         checkNotNull(listener, "Listener can not be null");
+
+        if (!initialized) {
+            throw new PreferNotInitializedException("Can not add listener");
+        }
 
         final Set<PrefListener> listeners = this.prefListeners.get(pref);
 

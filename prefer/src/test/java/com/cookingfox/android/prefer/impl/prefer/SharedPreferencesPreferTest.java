@@ -1,6 +1,7 @@
 package com.cookingfox.android.prefer.impl.prefer;
 
 import com.cookingfox.android.prefer.api.exception.GroupAlreadyAddedException;
+import com.cookingfox.android.prefer.api.exception.PreferNotInitializedException;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer.api.pref.PrefListener;
 import com.cookingfox.android.prefer.api.pref.typed.BooleanPref;
@@ -51,6 +52,15 @@ public class SharedPreferencesPreferTest {
     }
 
     //----------------------------------------------------------------------------------------------
+    // TESTS: constructor
+    //----------------------------------------------------------------------------------------------
+
+    @Test(expected = NullPointerException.class)
+    public void constructor_should_throw_if_preferences_null() throws Exception {
+        new SharedPreferencesPrefer(null);
+    }
+
+    //----------------------------------------------------------------------------------------------
     // TESTS: addListener
     //----------------------------------------------------------------------------------------------
 
@@ -86,6 +96,19 @@ public class SharedPreferencesPreferTest {
 
         assertTrue(called.get());
         assertTrue(booleanPref.getValue());
+    }
+
+    @Test(expected = PreferNotInitializedException.class)
+    public void addListener_should_throw_if_not_initialized() throws Exception {
+        SharedPreferencesPrefer prefer = new SharedPreferencesPrefer(new FixtureSharedPreferences());
+        AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
+
+        prefer.addListener(pref, new PrefListener<Boolean>() {
+            @Override
+            public void onValueChanged(Boolean value) {
+                // ignore
+            }
+        });
     }
 
     //----------------------------------------------------------------------------------------------
@@ -127,6 +150,37 @@ public class SharedPreferencesPreferTest {
 
         assertFalse(called.get());
         assertTrue(booleanPref.getValue());
+    }
+
+    @Test(expected = PreferNotInitializedException.class)
+    public void removeListener_should_throw_if_not_initialized() throws Exception {
+        SharedPreferencesPrefer prefer = new SharedPreferencesPrefer(new FixtureSharedPreferences());
+        AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
+
+        prefer.removeListener(pref, new PrefListener<Boolean>() {
+            @Override
+            public void onValueChanged(Boolean value) {
+                // ignore
+            }
+        });
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: getFromString
+    //----------------------------------------------------------------------------------------------
+
+    @Test(expected = NullPointerException.class)
+    public void getFromString_should_throw_if_key_null() throws Exception {
+        prefer.getFromString(null, null);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: putFromString
+    //----------------------------------------------------------------------------------------------
+
+    @Test(expected = NullPointerException.class)
+    public void putFromString_should_throw_if_key_null() throws Exception {
+        prefer.putFromString(null, null);
     }
 
     //----------------------------------------------------------------------------------------------
@@ -299,6 +353,16 @@ public class SharedPreferencesPreferTest {
         assertTrue(groups.contains(first));
         assertTrue(groups.contains(second));
     }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: onChangeListener
+    //----------------------------------------------------------------------------------------------
+
+//    // NOTE: this test is for checking the error print only
+//    @Test
+//    public void onChangeListener_should_throw_if_key_cannot_be_deserialized() throws Exception {
+//        prefer.onChangeListener.onSharedPreferenceChanged(null, "foo");
+//    }
 
     //----------------------------------------------------------------------------------------------
     // TESTS: newBoolean
