@@ -1,1 +1,1 @@
-include ':prefer', ':prefer-rx', ':prefer-fragment'
+include ':prefer', ':prefer-rx', ':prefer-fragment', ':sample'
