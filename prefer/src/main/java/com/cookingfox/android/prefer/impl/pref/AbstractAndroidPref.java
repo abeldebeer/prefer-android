@@ -5,13 +5,17 @@ import android.preference.Preference;
 import com.cookingfox.android.prefer.api.exception.InvalidPrefValueException;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefListener;
+import com.cookingfox.android.prefer.api.pref.PrefMeta;
 import com.cookingfox.android.prefer.api.pref.PrefValidator;
 import com.cookingfox.android.prefer.api.prefer.Prefer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by abeldebeer on 10/05/16.
+ * Abstract implementation of {@link Pref}, with {@link PrefMeta}.
+ *
+ * @param <K> References the enum class for this Pref's key.
+ * @param <V> Indicates this Pref's value type.
  */
 public abstract class AbstractAndroidPref<K extends Enum<K>, V>
         extends AbstractPrefMeta<AbstractAndroidPref<K, V>>
@@ -31,6 +35,14 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
     // CONSTRUCTOR
     //----------------------------------------------------------------------------------------------
 
+    /**
+     * Create a new Prefer.
+     *
+     * @param prefer       Reference to Prefer, so the current value can be retrieved and updated.
+     * @param key          The enum key for this Pref.
+     * @param defaultValue The default value for this Pref.
+     * @throws InvalidPrefValueException when the default value is invalid.
+     */
     public AbstractAndroidPref(Prefer prefer, K key, V defaultValue) {
         this.key = checkNotNull(key, "Key can not be null");
         this.prefer = checkNotNull(prefer, "Prefer can not be null");
@@ -126,8 +138,14 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
     // SETTERS
     //----------------------------------------------------------------------------------------------
 
+    /**
+     * Set the preference modifier.
+     *
+     * @param modifier The preference modifier to use.
+     * @return The current instance, for method chaining.
+     */
     public AbstractAndroidPref<K, V> setPreferenceModifier(PreferenceModifier modifier) {
-        this.preferenceModifier = modifier;
+        this.preferenceModifier = checkNotNull(modifier, "Modifier cannot be null");
         return this;
     }
 

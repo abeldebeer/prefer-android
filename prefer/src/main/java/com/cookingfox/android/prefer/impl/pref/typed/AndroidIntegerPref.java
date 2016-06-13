@@ -7,7 +7,9 @@ import com.cookingfox.android.prefer.api.prefer.Prefer;
 import com.cookingfox.android.prefer.impl.pref.AbstractAndroidPref;
 
 /**
- * Created by abeldebeer on 10/05/16.
+ * {@link Pref} implementation with an integer value.
+ *
+ * @param <K> References the enum class for this Pref's key.
  */
 public class AndroidIntegerPref<K extends Enum<K>>
         extends AbstractAndroidPref<K, Integer>

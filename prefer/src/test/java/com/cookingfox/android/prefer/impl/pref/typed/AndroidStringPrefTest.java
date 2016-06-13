@@ -1,8 +1,11 @@
 package com.cookingfox.android.prefer.impl.pref.typed;
 
+import android.preference.Preference;
+
 import com.cookingfox.android.prefer.api.exception.InvalidPrefValueException;
 import com.cookingfox.android.prefer.api.prefer.Prefer;
 import com.cookingfox.android.prefer.impl.pref.AbstractAndroidPref;
+import com.cookingfox.android.prefer.impl.pref.PreferenceModifier;
 import com.cookingfox.android.prefer.impl.prefer.SharedPreferencesPrefer;
 
 import org.junit.After;
@@ -26,6 +29,7 @@ public class AndroidStringPrefTest {
     //----------------------------------------------------------------------------------------------
 
     private Prefer prefer;
+    private AndroidStringPref<Key> pref;
 
     @Before
     public void setUp() throws Exception {
@@ -33,6 +37,8 @@ public class AndroidStringPrefTest {
 
         // add `OnSharedPreferenceChangeListener`
         prefer.initializePrefer();
+
+        pref = new AndroidStringPref<>(prefer, Key.Username, "");
     }
 
     @After
@@ -72,6 +78,41 @@ public class AndroidStringPrefTest {
                 return super.validate(value);
             }
         };
+
+        assertTrue(called.get());
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: addListener
+    //----------------------------------------------------------------------------------------------
+
+    @Test(expected = NullPointerException.class)
+    public void addListener_should_throw_if_listener_null() throws Exception {
+        pref.addListener(null);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: setPreferenceModifier
+    //----------------------------------------------------------------------------------------------
+
+    @Test(expected = NullPointerException.class)
+    public void setPreferenceModifier_should_throw_if_modifier_null() throws Exception {
+        pref.setPreferenceModifier(null);
+    }
+
+    @Test
+    public void setPreferenceModifier_should_set_the_modifier() throws Exception {
+        final AtomicBoolean called = new AtomicBoolean(false);
+
+        pref.setPreferenceModifier(new PreferenceModifier() {
+            @Override
+            public Preference modifyPreference(Preference generated) {
+                called.set(true);
+                return generated;
+            }
+        });
+
+        pref.modifyPreference(null);
 
         assertTrue(called.get());
     }

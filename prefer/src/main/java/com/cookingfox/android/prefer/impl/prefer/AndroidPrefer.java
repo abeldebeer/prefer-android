@@ -18,7 +18,7 @@ import java.util.Set;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by abeldebeer on 11/05/16.
+ * Base implementation of {@link Prefer}.
  */
 public abstract class AndroidPrefer implements Prefer {
 
@@ -121,6 +121,14 @@ public abstract class AndroidPrefer implements Prefer {
     // PUBLIC METHODS
     //----------------------------------------------------------------------------------------------
 
+    /**
+     * Creates and adds a new Pref group for this key class.
+     *
+     * @param keyClass The enum key class for which to create a Pref group.
+     * @param <K>      References the concrete enum key class.
+     * @return The newly created group.
+     * @see #addGroup(PrefGroup)
+     */
     public <K extends Enum<K>> AndroidPrefGroup<K> addNewGroup(Class<K> keyClass) {
         AndroidPrefGroup<K> group = new AndroidPrefGroup<>(keyClass);
 
@@ -129,14 +137,38 @@ public abstract class AndroidPrefer implements Prefer {
         return group;
     }
 
+    /**
+     * Creates a new Pref with the provided key and default value.
+     *
+     * @param key          The Pref's unique key.
+     * @param defaultValue The Pref's default value.
+     * @param <K>          References the enum class for this Pref's key.
+     * @return The newly created Pref.
+     */
     public <K extends Enum<K>> AndroidBooleanPref<K> newBoolean(K key, boolean defaultValue) {
         return new AndroidBooleanPref<>(this, key, defaultValue);
     }
 
+    /**
+     * Creates a new Pref with the provided key and default value.
+     *
+     * @param key          The Pref's unique key.
+     * @param defaultValue The Pref's default value.
+     * @param <K>          References the enum class for this Pref's key.
+     * @return The newly created Pref.
+     */
     public <K extends Enum<K>> AndroidIntegerPref<K> newInteger(K key, int defaultValue) {
         return new AndroidIntegerPref<>(this, key, defaultValue);
     }
 
+    /**
+     * Creates a new Pref with the provided key and default value.
+     *
+     * @param key          The Pref's unique key.
+     * @param defaultValue The Pref's default value.
+     * @param <K>          References the enum class for this Pref's key.
+     * @return The new ly created Pref.
+     */
     public <K extends Enum<K>> AndroidStringPref<K> newString(K key, String defaultValue) {
         return new AndroidStringPref<>(this, key, defaultValue);
     }

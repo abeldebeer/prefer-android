@@ -7,7 +7,9 @@ import com.cookingfox.android.prefer.api.prefer.Prefer;
 import com.cookingfox.android.prefer.impl.pref.AbstractAndroidPref;
 
 /**
- * Created by abeldebeer on 10/05/16.
+ * {@link Pref} implementation with a boolean value.
+ *
+ * @param <K> References the enum class for this Pref's key.
  */
 public class AndroidBooleanPref<K extends Enum<K>>
         extends AbstractAndroidPref<K, Boolean>

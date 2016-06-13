@@ -4,6 +4,7 @@ import com.cookingfox.android.prefer.api.exception.IncorrectPrefKeyClassExceptio
 import com.cookingfox.android.prefer.api.exception.PrefAlreadyAddedException;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
+import com.cookingfox.android.prefer.api.pref.PrefMeta;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -12,7 +13,9 @@ import java.util.Map;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by abeldebeer on 10/05/16.
+ * Implementation of {@link PrefGroup} with {@link PrefMeta}.
+ *
+ * @param <K> References the concrete enum key class.
  */
 public class AndroidPrefGroup<K extends Enum<K>>
         extends AbstractPrefMeta<AndroidPrefGroup<K>>
@@ -38,8 +41,10 @@ public class AndroidPrefGroup<K extends Enum<K>>
         K prefKey = pref.getKey();
 
         if (prefs.containsKey(prefKey)) {
+            // pref already added
             throw new PrefAlreadyAddedException(pref);
         } else if (!keyClass.isInstance(pref.getKey())) {
+            // pref key is not an instance of this group's key class
             throw new IncorrectPrefKeyClassException(pref, this);
         }
 
@@ -57,6 +62,7 @@ public class AndroidPrefGroup<K extends Enum<K>>
     public <V> Pref<K, V> find(K key, Class<V> valueClass) {
         Pref found = find(key);
 
+        // match found pref value class
         if (found != null && valueClass.isInstance(found.getDefaultValue())) {
             return found;
         }

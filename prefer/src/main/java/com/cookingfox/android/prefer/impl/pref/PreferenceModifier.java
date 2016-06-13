@@ -3,8 +3,16 @@ package com.cookingfox.android.prefer.impl.pref;
 import android.preference.Preference;
 
 /**
- * Created by abeldebeer on 10/05/16.
+ * Allows a Pref to modify its generated {@link Preference}.
  */
 public interface PreferenceModifier {
+
+    /**
+     * Modify the generated preference.
+     *
+     * @param generated The generated preference.
+     * @return The modified preference.
+     */
     Preference modifyPreference(Preference generated);
+
 }
