@@ -36,7 +36,7 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
     //----------------------------------------------------------------------------------------------
 
     /**
-     * Create a new Prefer.
+     * Create a new Pref.
      *
      * @param prefer       Reference to Prefer, so the current value can be retrieved and updated.
      * @param key          The enum key for this Pref.
@@ -76,30 +76,6 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
     public K getKey() {
         return key;
     }
-
-//    @Override
-//    public Observable<V> observeValueChanges() {
-//        return Observable.create(new Observable.OnSubscribe<V>() {
-//            @Override
-//            public void call(final Subscriber<? super V> subscriber) {
-//                final PrefListener<V> listener = new PrefListener<V>() {
-//                    @Override
-//                    public void onValueChanged(V value) {
-//                        subscriber.onNext(value);
-//                    }
-//                };
-//
-//                addListener(listener);
-//
-//                Subscriptions.create(new Action0() {
-//                    @Override
-//                    public void call() {
-//                        removeListener(listener);
-//                    }
-//                });
-//            }
-//        });
-//    }
 
     @Override
     public Pref<K, V> removeListener(PrefListener<V> listener) {

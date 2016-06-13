@@ -117,31 +117,6 @@ public abstract class AndroidPrefer implements Prefer {
         return new LinkedHashSet<>(groups.values());
     }
 
-    // TODO: provide Prefer Rx integration
-//    @Override
-//    public <K extends Enum<K>, V> Observable<V> observePrefValueChanges(final Pref<K, V> pref) {
-//        return Observable.create(new Observable.OnSubscribe<V>() {
-//            @Override
-//            public void call(final Subscriber<? super V> subscriber) {
-//                final PrefListener<V> listener = new PrefListener<V>() {
-//                    @Override
-//                    public void onValueChanged(V value) {
-//                        subscriber.onNext(value);
-//                    }
-//                };
-//
-//                addListener(pref, listener);
-//
-//                Subscriptions.create(new Action0() {
-//                    @Override
-//                    public void call() {
-//                        removeListener(pref, listener);
-//                    }
-//                });
-//            }
-//        });
-//    }
-
     //----------------------------------------------------------------------------------------------
     // PUBLIC METHODS
     //----------------------------------------------------------------------------------------------

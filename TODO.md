@@ -1,2 +1,2 @@
-- TODO: create separate module for Rx integration.
 - TODO: create separate module for `PreferenceFragment` ability.
+- TODO: move shared test classes (fixtures) into cross-module re-usable module / "test-jar".

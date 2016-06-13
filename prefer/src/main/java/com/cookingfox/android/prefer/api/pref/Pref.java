@@ -40,9 +40,6 @@ public interface Pref<K extends Enum<K>, V> extends PrefValidator<V> {
      */
     V getValue();
 
-    // TODO: provide Pref Rx integration
-//    Observable<V> observeValueChanges();
-
     /**
      * Removes the Pref listener.
      *

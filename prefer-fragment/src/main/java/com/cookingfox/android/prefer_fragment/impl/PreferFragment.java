@@ -1,4 +1,4 @@
-package com.cookingfox.android.prefer.impl.fragment;
+package com.cookingfox.android.prefer_fragment.impl;
 
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;

@@ -73,7 +73,4 @@ public interface Prefer extends BooleanPrefer, IntegerPrefer, StringPrefer {
      */
     <K extends Enum<K>, V> Prefer removeListener(Pref<K, V> pref, PrefListener<V> listener);
 
-    // TODO: provide Prefer Rx integration
-//    <K extends Enum<K>, V> Observable<V> observePrefValueChanges(Pref<K, V> pref);
-
 }
