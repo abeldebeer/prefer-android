@@ -31,8 +31,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class PreferFragment extends PreferenceFragment {
 
-    // TODO: 11/05/16 Should be possible to change
-    protected static final String STRING_INVALID_INPUT_VALUE = "Invalid input value";
+    //----------------------------------------------------------------------------------------------
+    // STATIC PROPERTIES
+    //----------------------------------------------------------------------------------------------
+
+    /**
+     * The default message to display when an input value is invalid.
+     */
+    protected static String defaultMessageInvalidInputValue = "Invalid input value";
+
+    //----------------------------------------------------------------------------------------------
+    // INSTANCE PROPERTIES
+    //----------------------------------------------------------------------------------------------
 
     protected Prefer prefer;
 
@@ -47,7 +57,7 @@ public class PreferFragment extends PreferenceFragment {
     }
 
     //----------------------------------------------------------------------------------------------
-    // STATIC FACTORY METHOD
+    // STATIC METHODS
     //----------------------------------------------------------------------------------------------
 
     /**
@@ -59,6 +69,17 @@ public class PreferFragment extends PreferenceFragment {
      */
     public static PreferFragment create(Prefer prefer) {
         return new PreferFragment().setPrefer(prefer);
+    }
+
+    /**
+     * Set the default message that is displayed when an input value is invalid.
+     *
+     * @param message The default message to display when an input value is invalid.
+     */
+    public static void setDefaultMessageInvalidInputValue(String message) {
+        checkNotNull(message, "Message can not be null");
+
+        PreferFragment.defaultMessageInvalidInputValue = message;
     }
 
     //----------------------------------------------------------------------------------------------
@@ -253,10 +274,10 @@ public class PreferFragment extends PreferenceFragment {
     protected void showInvalidDialog(Exception error) {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         dialogBuilder.setPositiveButton(android.R.string.ok, null);
-        dialogBuilder.setTitle(STRING_INVALID_INPUT_VALUE);
+        dialogBuilder.setTitle(defaultMessageInvalidInputValue);
 
         if (error == null) {
-            dialogBuilder.setMessage(STRING_INVALID_INPUT_VALUE);
+            dialogBuilder.setMessage(defaultMessageInvalidInputValue);
         } else {
             dialogBuilder.setMessage(error.getMessage());
         }
@@ -272,6 +293,7 @@ public class PreferFragment extends PreferenceFragment {
      * @return Whether the user input is valid.
      * @throws Exception when the {@link Pref#validate(Object)} method throws.
      */
+    @SuppressWarnings("unchecked")
     protected boolean validatePref(Pref pref, Object newValue) throws Exception {
         final String stringValue = String.valueOf(newValue);
 

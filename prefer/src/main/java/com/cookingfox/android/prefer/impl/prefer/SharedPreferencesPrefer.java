@@ -160,6 +160,7 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
 
                     // pass new value to listeners
                     for (PrefListener listener : entry.getValue()) {
+                        // noinspection unchecked
                         listener.onValueChanged(value);
                     }
 

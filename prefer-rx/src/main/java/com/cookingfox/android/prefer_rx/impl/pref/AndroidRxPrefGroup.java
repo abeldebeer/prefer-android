@@ -16,6 +16,9 @@ import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidStringRxPref;
  */
 public class AndroidRxPrefGroup<K extends Enum<K>> extends AndroidPrefGroup<K> {
 
+    /**
+     * Reference to Prefer, so the current value can be retrieved and updated.
+     */
     protected final RxPrefer rxPrefer;
 
     //----------------------------------------------------------------------------------------------

@@ -36,7 +36,7 @@ public class AndroidPreferProvider {
 
     /**
      * Returns the default Prefer instance. If it has not been set using
-     * {@link #setDefault(AndroidPrefer)}, a default will instance is created using
+     * {@link #setDefault(AndroidPrefer)}, a default instance is created using
      * {@link PreferenceManager#getDefaultSharedPreferences(Context)}.
      *
      * @param context The context from which to get the default shared preferences.

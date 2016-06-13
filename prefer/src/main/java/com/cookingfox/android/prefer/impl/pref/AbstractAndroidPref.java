@@ -25,10 +25,29 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
     // PROPERTIES
     //----------------------------------------------------------------------------------------------
 
+    /**
+     * Default Pref value.
+     */
     protected final V defaultValue;
+
+    /**
+     * Unique Pref key.
+     */
     protected final K key;
-    protected PreferenceModifier preferenceModifier;
+
+    /**
+     * Reference to Prefer.
+     */
     protected final Prefer prefer;
+
+    /**
+     * Android Preference component modifier.
+     */
+    protected PreferenceModifier preferenceModifier;
+
+    /**
+     * Pref value validator.
+     */
     protected PrefValidator<V> validator;
 
     //----------------------------------------------------------------------------------------------

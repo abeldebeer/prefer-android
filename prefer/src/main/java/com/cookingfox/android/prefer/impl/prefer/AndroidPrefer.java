@@ -26,7 +26,7 @@ public abstract class AndroidPrefer implements Prefer {
     /**
      * Pref groups by key class.
      */
-    protected final Map<Class<? extends Enum>, PrefGroup<? extends Enum>> groups = new LinkedHashMap<>();
+    protected final Map<Class, PrefGroup<? extends Enum>> groups = new LinkedHashMap<>();
 
     /**
      * Whether this Prefer is initialized: call {@link #initializePrefer()} first.

@@ -25,8 +25,19 @@ public class AndroidPrefGroup<K extends Enum<K>>
         extends AbstractPrefMeta
         implements PrefGroup<K> {
 
+    /**
+     * The enum key class for the Prefs in this group.
+     */
     protected final Class<K> keyClass;
+
+    /**
+     * Reference to Prefer, so the current value can be retrieved and updated.
+     */
     protected final AndroidPrefer prefer;
+
+    /**
+     * A map of prefs by their unique key.
+     */
     protected final Map<K, Pref<K, ?>> prefs = new LinkedHashMap<>();
 
     //----------------------------------------------------------------------------------------------
@@ -76,6 +87,7 @@ public class AndroidPrefGroup<K extends Enum<K>>
 
         // match found pref value class
         if (found != null && valueClass.isInstance(found.getDefaultValue())) {
+            // noinspection unchecked
             return found;
         }
 
