@@ -77,6 +77,20 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
     }
 
     //----------------------------------------------------------------------------------------------
+    // LONG
+    //----------------------------------------------------------------------------------------------
+
+    @Override
+    public long getLong(Enum key, long defaultValue) {
+        return Long.parseLong(getFromString(key, defaultValue));
+    }
+
+    @Override
+    public void putLong(Enum key, long value) {
+        putFromString(key, value);
+    }
+
+    //----------------------------------------------------------------------------------------------
     // STRING
     //----------------------------------------------------------------------------------------------
 

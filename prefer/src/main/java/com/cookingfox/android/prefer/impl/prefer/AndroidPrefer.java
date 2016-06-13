@@ -9,6 +9,7 @@ import com.cookingfox.android.prefer.api.prefer.Prefer;
 import com.cookingfox.android.prefer.impl.pref.AndroidPrefGroup;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidBooleanPref;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidIntegerPref;
+import com.cookingfox.android.prefer.impl.pref.typed.AndroidLongPref;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidStringPref;
 
 import java.util.LinkedHashMap;
@@ -156,6 +157,18 @@ public abstract class AndroidPrefer implements Prefer {
      */
     public <K extends Enum<K>> AndroidIntegerPref<K> newInteger(K key, int defaultValue) {
         return new AndroidIntegerPref<>(this, key, defaultValue);
+    }
+
+    /**
+     * Creates a new Pref with the provided key and default value.
+     *
+     * @param key          The Pref's unique key.
+     * @param defaultValue The Pref's default value.
+     * @param <K>          References the enum class for this Pref's key.
+     * @return The newly created Pref.
+     */
+    public <K extends Enum<K>> AndroidLongPref<K> newLong(K key, long defaultValue) {
+        return new AndroidLongPref<>(this, key, defaultValue);
     }
 
     /**

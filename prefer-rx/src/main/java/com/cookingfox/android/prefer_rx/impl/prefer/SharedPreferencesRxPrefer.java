@@ -10,6 +10,7 @@ import com.cookingfox.android.prefer_rx.api.prefer.RxPrefer;
 import com.cookingfox.android.prefer_rx.impl.pref.AndroidRxPrefGroup;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidBooleanRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidIntegerRxPref;
+import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidLongRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidStringRxPref;
 
 import java.util.LinkedHashSet;
@@ -108,6 +109,11 @@ public class SharedPreferencesRxPrefer extends SharedPreferencesPrefer implement
     @Override
     public <K extends Enum<K>> AndroidIntegerRxPref<K> newInteger(K key, int defaultValue) {
         return new AndroidIntegerRxPref<>(this, key, defaultValue);
+    }
+
+    @Override
+    public <K extends Enum<K>> AndroidLongRxPref<K> newLong(K key, long defaultValue) {
+        return new AndroidLongRxPref<>(this, key, defaultValue);
     }
 
     @Override

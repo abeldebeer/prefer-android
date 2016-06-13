@@ -16,6 +16,7 @@ import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer.api.pref.PrefMeta;
 import com.cookingfox.android.prefer.api.pref.typed.BooleanPref;
 import com.cookingfox.android.prefer.api.pref.typed.IntegerPref;
+import com.cookingfox.android.prefer.api.pref.typed.LongPref;
 import com.cookingfox.android.prefer.api.pref.typed.StringPref;
 import com.cookingfox.android.prefer.api.prefer.Prefer;
 import com.cookingfox.android.prefer.impl.pref.AbstractAndroidPref;
@@ -191,7 +192,7 @@ public class PreferFragment extends PreferenceFragment {
             populatePreferenceWithMeta(input, pref);
 
             // TODO: 10/05/16 Add other numeric prefs
-            if (pref instanceof IntegerPref) {
+            if (pref instanceof IntegerPref || pref instanceof LongPref) {
                 input.setDefaultValue(String.valueOf(pref.getDefaultValue()));
             } else {
                 input.setDefaultValue(pref.getDefaultValue());
@@ -302,6 +303,8 @@ public class PreferFragment extends PreferenceFragment {
             return pref.validate(Boolean.parseBoolean(stringValue));
         } else if (pref instanceof IntegerPref) {
             return pref.validate(Integer.parseInt(stringValue));
+        } else if (pref instanceof LongPref) {
+            return pref.validate(Long.parseLong(stringValue));
         } else if (pref instanceof StringPref) {
             return pref.validate(stringValue);
         }

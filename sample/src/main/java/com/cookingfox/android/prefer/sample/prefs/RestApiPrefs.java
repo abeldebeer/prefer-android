@@ -2,7 +2,7 @@ package com.cookingfox.android.prefer.sample.prefs;
 
 import com.cookingfox.android.prefer.api.pref.Prefs;
 import com.cookingfox.android.prefer_rx.api.pref.typed.BooleanRxPref;
-import com.cookingfox.android.prefer_rx.api.pref.typed.IntegerRxPref;
+import com.cookingfox.android.prefer_rx.api.pref.typed.LongRxPref;
 import com.cookingfox.android.prefer_rx.api.pref.typed.StringRxPref;
 
 /**
@@ -20,6 +20,6 @@ public interface RestApiPrefs extends Prefs<RestApiPrefs.Key> {
 
     BooleanRxPref<Key> cacheEnabled();
 
-    IntegerRxPref<Key> updateIntervalSeconds();
+    LongRxPref<Key> updateIntervalSeconds();
 
 }

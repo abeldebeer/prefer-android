@@ -5,6 +5,7 @@ import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer.api.pref.PrefListener;
 import com.cookingfox.android.prefer.api.prefer.typed.BooleanPrefer;
 import com.cookingfox.android.prefer.api.prefer.typed.IntegerPrefer;
+import com.cookingfox.android.prefer.api.prefer.typed.LongPrefer;
 import com.cookingfox.android.prefer.api.prefer.typed.StringPrefer;
 
 import java.util.Set;
@@ -12,7 +13,11 @@ import java.util.Set;
 /**
  * Manages groups of Prefs, by providing hooks to retrieve, set and observe the Pref values.
  */
-public interface Prefer extends BooleanPrefer, IntegerPrefer, StringPrefer {
+public interface Prefer extends
+        BooleanPrefer,
+        IntegerPrefer,
+        LongPrefer,
+        StringPrefer {
 
     /**
      * Initialize the Prefer library.

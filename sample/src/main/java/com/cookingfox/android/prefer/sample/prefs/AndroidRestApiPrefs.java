@@ -2,11 +2,11 @@ package com.cookingfox.android.prefer.sample.prefs;
 
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer_rx.api.pref.typed.BooleanRxPref;
-import com.cookingfox.android.prefer_rx.api.pref.typed.IntegerRxPref;
+import com.cookingfox.android.prefer_rx.api.pref.typed.LongRxPref;
 import com.cookingfox.android.prefer_rx.api.pref.typed.StringRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.AndroidRxPrefGroup;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidBooleanRxPref;
-import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidIntegerRxPref;
+import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidLongRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidStringRxPref;
 import com.cookingfox.android.prefer_rx.impl.prefer.SharedPreferencesRxPrefer;
 
@@ -18,7 +18,7 @@ public class AndroidRestApiPrefs implements RestApiPrefs {
     private final AndroidRxPrefGroup<Key> group;
     private final AndroidStringRxPref<Key> authToken;
     private final AndroidBooleanRxPref<Key> cacheEnabled;
-    private final AndroidIntegerRxPref<Key> updateIntervalSeconds;
+    private final AndroidLongRxPref<Key> updateIntervalSeconds;
 
     public AndroidRestApiPrefs(SharedPreferencesRxPrefer prefer) {
         group = prefer.addNewGroup(Key.class);
@@ -33,7 +33,7 @@ public class AndroidRestApiPrefs implements RestApiPrefs {
         cacheEnabled.setTitle("Cache enabled");
         cacheEnabled.setSummary("Whether API results should be cached.");
 
-        updateIntervalSeconds = group.addNewInteger(Key.UpdateIntervalSeconds, 60);
+        updateIntervalSeconds = group.addNewLong(Key.UpdateIntervalSeconds, 60);
         updateIntervalSeconds.setTitle("Update interval (seconds)");
         updateIntervalSeconds.setSummary("How often to fetch new data from the API.");
     }
@@ -49,7 +49,7 @@ public class AndroidRestApiPrefs implements RestApiPrefs {
     }
 
     @Override
-    public IntegerRxPref<Key> updateIntervalSeconds() {
+    public LongRxPref<Key> updateIntervalSeconds() {
         return updateIntervalSeconds;
     }
 
