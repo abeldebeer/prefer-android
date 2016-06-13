@@ -5,6 +5,10 @@ import com.cookingfox.android.prefer.api.exception.PrefAlreadyAddedException;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer.api.pref.PrefMeta;
+import com.cookingfox.android.prefer.impl.pref.typed.AndroidBooleanPref;
+import com.cookingfox.android.prefer.impl.pref.typed.AndroidIntegerPref;
+import com.cookingfox.android.prefer.impl.pref.typed.AndroidStringPref;
+import com.cookingfox.android.prefer.impl.prefer.AndroidPrefer;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -22,18 +26,26 @@ public class AndroidPrefGroup<K extends Enum<K>>
         implements PrefGroup<K> {
 
     protected final Class<K> keyClass;
+    protected final AndroidPrefer prefer;
     protected final Map<K, Pref<K, ?>> prefs = new LinkedHashMap<>();
 
     //----------------------------------------------------------------------------------------------
     // CONSTRUCTOR
     //----------------------------------------------------------------------------------------------
 
-    public AndroidPrefGroup(Class<K> keyClass) {
+    /**
+     * Create a new Pref group.
+     *
+     * @param prefer   Reference to Prefer, so the current value can be retrieved and updated.
+     * @param keyClass The enum key class for the Prefs in this group.
+     */
+    public AndroidPrefGroup(AndroidPrefer prefer, Class<K> keyClass) {
         this.keyClass = checkNotNull(keyClass, "Group key class can not be null");
+        this.prefer = checkNotNull(prefer, "Prefer can not be null");
     }
 
     //----------------------------------------------------------------------------------------------
-    // PUBLIC METHODS
+    // IMPLEMENTATION: PrefGroup
     //----------------------------------------------------------------------------------------------
 
     @Override
@@ -54,13 +66,15 @@ public class AndroidPrefGroup<K extends Enum<K>>
     }
 
     @Override
-    public Pref<K, ?> find(K key) {
-        return prefs.get(key);
+    public Pref<K, ?> findPref(K key) {
+        return prefs.get(checkNotNull(key, "Key can not be null"));
     }
 
     @Override
-    public <V> Pref<K, V> find(K key, Class<V> valueClass) {
-        Pref found = find(key);
+    public <V> Pref<K, V> findPref(K key, Class<V> valueClass) {
+        checkNotNull(valueClass, "Value class can not be null");
+
+        Pref found = findPref(key);
 
         // match found pref value class
         if (found != null && valueClass.isInstance(found.getDefaultValue())) {
@@ -78,6 +92,55 @@ public class AndroidPrefGroup<K extends Enum<K>>
     @Override
     public Iterator<Pref<K, ?>> iterator() {
         return prefs.values().iterator();
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // PUBLIC METHODS
+    //----------------------------------------------------------------------------------------------
+
+    /**
+     * Creates a new Pref with the provided key and default value.
+     *
+     * @param key          The Pref's unique key.
+     * @param defaultValue The Pref's default value.
+     * @return The newly created Pref.
+     */
+    public AndroidBooleanPref<K> addNewBoolean(K key, boolean defaultValue) {
+        AndroidBooleanPref<K> pref = new AndroidBooleanPref<>(prefer, key, defaultValue);
+
+        addPref(pref);
+
+        return pref;
+    }
+
+    /**
+     * Creates a new Pref with the provided key and default value.
+     *
+     * @param key          The Pref's unique key.
+     * @param defaultValue The Pref's default value.
+     * @return The newly created Pref.
+     */
+    public AndroidIntegerPref<K> addNewInteger(K key, int defaultValue) {
+        AndroidIntegerPref<K> pref = new AndroidIntegerPref<>(prefer, key, defaultValue);
+
+        addPref(pref);
+
+        return pref;
+    }
+
+    /**
+     * Creates a new Pref with the provided key and default value.
+     *
+     * @param key          The Pref's unique key.
+     * @param defaultValue The Pref's default value.
+     * @return The new ly created Pref.
+     */
+    public AndroidStringPref<K> addNewString(K key, String defaultValue) {
+        AndroidStringPref<K> pref = new AndroidStringPref<>(prefer, key, defaultValue);
+
+        addPref(pref);
+
+        return pref;
     }
 
 }

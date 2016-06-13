@@ -1,7 +1,7 @@
 package fixtures.example;
 
 /**
- * Created by abeldebeer on 11/06/16.
+ * Example Pref key.
  */
 public enum Key {
     IntervalMs,

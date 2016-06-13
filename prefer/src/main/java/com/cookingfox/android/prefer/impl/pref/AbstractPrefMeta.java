@@ -2,6 +2,8 @@ package com.cookingfox.android.prefer.impl.pref;
 
 import com.cookingfox.android.prefer.api.pref.PrefMeta;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Abstract implementation of {@link PrefMeta}.
  *
@@ -71,7 +73,7 @@ public abstract class AbstractPrefMeta<T extends PrefMeta> implements PrefMeta {
      * @return The current instance, for method chaining.
      */
     public T setSummary(String summary) {
-        this.summary = summary;
+        this.summary = checkNotNull(summary, "Summary can not be null");
         return (T) this;
     }
 
@@ -82,7 +84,7 @@ public abstract class AbstractPrefMeta<T extends PrefMeta> implements PrefMeta {
      * @return The current instance, for method chaining.
      */
     public T setTitle(String title) {
-        this.title = title;
+        this.title = checkNotNull(title, "Title can not be null");
         return (T) this;
     }
 

@@ -207,7 +207,7 @@ public class SharedPreferencesPreferTest {
     public void addGroup_should_create_and_add_new_pref_group() throws Exception {
         assertTrue(prefer.groups.size() == 0);
 
-        AndroidPrefGroup<Key> group = new AndroidPrefGroup<>(Key.class);
+        AndroidPrefGroup<Key> group = new AndroidPrefGroup<>(prefer, Key.class);
         prefer.addGroup(group);
 
         assertTrue(prefer.groups.size() == 1);
@@ -216,7 +216,7 @@ public class SharedPreferencesPreferTest {
 
     @Test(expected = GroupAlreadyAddedException.class)
     public void addGroup_should_throw_if_already_contains_key_class() throws Exception {
-        AndroidPrefGroup<Key> group = new AndroidPrefGroup<>(Key.class);
+        AndroidPrefGroup<Key> group = new AndroidPrefGroup<>(prefer, Key.class);
         prefer.addGroup(group);
         prefer.addGroup(group);
     }

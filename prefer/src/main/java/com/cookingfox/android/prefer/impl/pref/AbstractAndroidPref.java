@@ -62,7 +62,7 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
 
     @Override
     public Pref<K, V> addListener(PrefListener<V> listener) {
-        prefer.addListener(this, listener);
+        prefer.addListener(this, checkNotNull(listener, "Listener can not be null"));
 
         return this;
     }
@@ -131,7 +131,9 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
 
     @Override
     public Preference modifyPreference(Preference generated) {
-        return preferenceModifier == null ? generated : preferenceModifier.modifyPreference(generated);
+        return preferenceModifier == null ?
+                generated :
+                preferenceModifier.modifyPreference(generated);
     }
 
     //----------------------------------------------------------------------------------------------

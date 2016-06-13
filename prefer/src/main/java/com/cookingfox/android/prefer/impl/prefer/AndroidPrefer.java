@@ -130,7 +130,7 @@ public abstract class AndroidPrefer implements Prefer {
      * @see #addGroup(PrefGroup)
      */
     public <K extends Enum<K>> AndroidPrefGroup<K> addNewGroup(Class<K> keyClass) {
-        AndroidPrefGroup<K> group = new AndroidPrefGroup<>(keyClass);
+        AndroidPrefGroup<K> group = new AndroidPrefGroup<>(this, keyClass);
 
         addGroup(group);
 

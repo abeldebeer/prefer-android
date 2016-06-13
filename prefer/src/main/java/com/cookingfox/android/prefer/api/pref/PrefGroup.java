@@ -27,18 +27,18 @@ public interface PrefGroup<K extends Enum<K>> extends Iterable<Pref<K, ?>> {
      * @param key The enum key for the Pref.
      * @return The Pref if found, or `null` if not found.
      */
-    Pref<K, ?> find(K key);
+    Pref<K, ?> findPref(K key);
 
     /**
      * Find a Pref by its unique key and value type. This makes the result easier to work with than
-     * {@link #find(Enum)}.
+     * {@link #findPref(Enum)}.
      *
      * @param key        The enum key for the Pref.
      * @param valueClass The value type of the Pref.
      * @param <V>        Indicates the concrete Pref value type.
      * @return The Pref if found, or `null` if not found.
      */
-    <V> Pref<K, V> find(K key, Class<V> valueClass);
+    <V> Pref<K, V> findPref(K key, Class<V> valueClass);
 
     /**
      * The enum key class for the Prefs in this group.
