@@ -49,6 +49,9 @@ public abstract class AndroidPrefer implements Prefer {
 
     @Override
     public void disposePrefer() {
+        groups.clear();
+        prefListeners.clear();
+
         initialized = false;
     }
 

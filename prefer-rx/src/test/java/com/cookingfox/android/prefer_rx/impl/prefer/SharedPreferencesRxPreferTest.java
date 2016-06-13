@@ -36,6 +36,23 @@ public class SharedPreferencesRxPreferTest {
     }
 
     //----------------------------------------------------------------------------------------------
+    // TESTS: disposePrefer
+    //----------------------------------------------------------------------------------------------
+
+    @Test
+    public void disposePrefer_should_unsubscribe_subscribers() throws Exception {
+        TestSubscriber<Boolean> subscriber = TestSubscriber.create();
+
+        AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
+        prefer.observePref(pref).subscribe(subscriber);
+
+        prefer.disposePrefer();
+
+        subscriber.assertCompleted();
+        subscriber.assertUnsubscribed();
+    }
+
+    //----------------------------------------------------------------------------------------------
     // TESTS: observePref
     //----------------------------------------------------------------------------------------------
 

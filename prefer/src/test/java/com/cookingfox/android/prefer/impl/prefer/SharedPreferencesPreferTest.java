@@ -166,6 +166,41 @@ public class SharedPreferencesPreferTest {
     }
 
     //----------------------------------------------------------------------------------------------
+    // TESTS: disposePrefer
+    //----------------------------------------------------------------------------------------------
+
+    @Test
+    public void disposePrefer_should_clear_all_pref_groups() throws Exception {
+        AndroidPrefGroup<Key> group = prefer.addNewGroup(Key.class);
+
+        assertTrue(prefer.groups.containsValue(group));
+
+        prefer.disposePrefer();
+
+        assertFalse(prefer.groups.containsValue(group));
+    }
+
+    @Test
+    public void disposePrefer_should_clear_all_pref_listeners() throws Exception {
+        AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
+
+        PrefListener<Boolean> listener = new PrefListener<Boolean>() {
+            @Override
+            public void onValueChanged(Boolean value) {
+                // ignore
+            }
+        };
+
+        prefer.addListener(pref, listener);
+
+        assertTrue(prefer.prefListeners.containsKey(pref));
+
+        prefer.disposePrefer();
+
+        assertFalse(prefer.prefListeners.containsKey(pref));
+    }
+
+    //----------------------------------------------------------------------------------------------
     // TESTS: getFromString
     //----------------------------------------------------------------------------------------------
 

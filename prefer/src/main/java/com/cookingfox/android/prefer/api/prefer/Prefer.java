@@ -20,7 +20,7 @@ public interface Prefer extends BooleanPrefer, IntegerPrefer, StringPrefer {
     void initializePrefer();
 
     /**
-     * Dispose the Prefer library.
+     * Dispose the Prefer library. Clears all added groups and listeners.
      */
     void disposePrefer();
 
