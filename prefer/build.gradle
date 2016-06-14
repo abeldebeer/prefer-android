@@ -30,8 +30,26 @@ dependencies {
 
 /* NOTE: the operations below are necessary for sharing test classes between modules */
 
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.compile
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
 task testClassesJar(type: Jar, dependsOn: 'compileDebugUnitTestSources') {
     from 'build/intermediates/classes/test/debug'
+    archiveName "${baseName}-tests.jar"
 }
 
 configurations {
@@ -39,5 +57,7 @@ configurations {
 }
 
 artifacts {
+    archives sourcesJar
+    archives javadocJar
     tests testClassesJar
 }
