@@ -66,6 +66,11 @@ public class AndroidPreferProvider {
 
         AndroidPreferProvider.defaultInstance =
                 checkNotNull(prefer, "Default instance can not be null");
+
+        // initialize if not initialized
+        if (!prefer.initialized) {
+            prefer.initializePrefer();
+        }
     }
 
 }

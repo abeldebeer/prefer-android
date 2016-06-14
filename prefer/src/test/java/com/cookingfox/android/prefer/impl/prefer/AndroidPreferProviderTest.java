@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import fixtures.FixtureSharedPreferences;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 /**
  * Unit tests for {@link AndroidPreferProvider}.
  */
@@ -58,6 +61,15 @@ public class AndroidPreferProviderTest {
     public void setDefault_should_throw_if_already_set() throws Exception {
         AndroidPreferProvider.setDefault(prefer);
         AndroidPreferProvider.setDefault(prefer);
+    }
+
+    @Test
+    public void setDefault_should_initialize_if_not_initialized() throws Exception {
+        assertFalse(prefer.initialized);
+
+        AndroidPreferProvider.setDefault(prefer);
+
+        assertTrue(prefer.initialized);
     }
 
 }
