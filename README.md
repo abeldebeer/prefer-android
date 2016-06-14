@@ -2,9 +2,10 @@
 
 Helper library to make usage of Android SharedPreferences more powerful.
 
-## Installation
-
+[![Build Status](https://travis-ci.org/cookingfox/prefer-android.svg?branch=master)](https://travis-ci.org/cookingfox/prefer-android)
 [![](https://jitpack.io/v/cookingfox/prefer-android.svg)](https://jitpack.io/#cookingfox/prefer-android)
+
+## Installation
 
 This library uses [JitPack](https://jitpack.io/#cookingfox/prefer-android) for distribution.
 
