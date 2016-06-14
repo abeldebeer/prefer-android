@@ -1,8 +1,8 @@
 package com.cookingfox.android.prefer.api.prefer;
 
+import com.cookingfox.android.prefer.api.pref.OnValueChanged;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
-import com.cookingfox.android.prefer.api.pref.PrefListener;
 import com.cookingfox.android.prefer.api.prefer.typed.BooleanPrefer;
 import com.cookingfox.android.prefer.api.prefer.typed.FloatPrefer;
 import com.cookingfox.android.prefer.api.prefer.typed.IntegerPrefer;
@@ -27,7 +27,7 @@ public interface Prefer extends
     void initializePrefer();
 
     /**
-     * Dispose the Prefer library. Clears all added groups and listeners.
+     * Dispose the Prefer library. Clears all added groups and subscribers.
      */
     void disposePrefer();
 
@@ -56,25 +56,25 @@ public interface Prefer extends
     Set<PrefGroup<? extends Enum>> getGroups();
 
     /**
-     * Registers a listener for when the value of the provided Pref changes.
+     * Registers a subscriber for when the value of the provided Pref changes.
      *
-     * @param pref     The Pref to add a listener for.
-     * @param listener The listener to add.
-     * @param <K>      References the enum class for the Pref's key.
-     * @param <V>      Indicates the Pref's value type.
-     * @see Pref#addListener(PrefListener)
+     * @param pref       The Pref to add a subscriber for.
+     * @param subscriber The subscriber to add.
+     * @param <K>        References the enum class for the Pref's key.
+     * @param <V>        Indicates the Pref's value type.
+     * @see Pref#subscribe(OnValueChanged)
      */
-    <K extends Enum<K>, V> void addListener(Pref<K, V> pref, PrefListener<V> listener);
+    <K extends Enum<K>, V> void subscribe(Pref<K, V> pref, OnValueChanged<V> subscriber);
 
     /**
-     * Removes a Pref listener.
+     * Removes a Pref subscriber.
      *
-     * @param pref     The Pref to remove the listener for.
-     * @param listener The listener to remove.
-     * @param <K>      References the enum class for the Pref's key.
-     * @param <V>      Indicates the Pref's value type.
-     * @see Pref#removeListener(PrefListener)
+     * @param pref       The Pref to remove the subscriber for.
+     * @param subscriber The subscriber to remove.
+     * @param <K>        References the enum class for the Pref's key.
+     * @param <V>        Indicates the Pref's value type.
+     * @see Pref#unsubscribe(OnValueChanged)
      */
-    <K extends Enum<K>, V> void removeListener(Pref<K, V> pref, PrefListener<V> listener);
+    <K extends Enum<K>, V> void unsubscribe(Pref<K, V> pref, OnValueChanged<V> subscriber);
 
 }

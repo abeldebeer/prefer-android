@@ -3,8 +3,8 @@ package com.cookingfox.android.prefer_rx.impl.prefer;
 import android.content.SharedPreferences;
 
 import com.cookingfox.android.prefer.api.exception.PreferNotInitializedException;
+import com.cookingfox.android.prefer.api.pref.OnValueChanged;
 import com.cookingfox.android.prefer.api.pref.Pref;
-import com.cookingfox.android.prefer.api.pref.PrefListener;
 import com.cookingfox.android.prefer.impl.prefer.SharedPreferencesPrefer;
 import com.cookingfox.android.prefer_rx.api.prefer.RxPrefer;
 import com.cookingfox.android.prefer_rx.impl.pref.AndroidRxPrefGroup;
@@ -56,25 +56,25 @@ public class SharedPreferencesRxPrefer extends SharedPreferencesPrefer implement
 
         return Observable.create(new Observable.OnSubscribe<V>() {
             @Override
-            public void call(final Subscriber<? super V> subscriber) {
-                final PrefListener<V> listener = new PrefListener<V>() {
+            public void call(final Subscriber<? super V> rxSubscriber) {
+                final OnValueChanged<V> prefSubscriber = new OnValueChanged<V>() {
                     @Override
                     public void onValueChanged(V value) {
-                        subscriber.onNext(value);
+                        rxSubscriber.onNext(value);
                     }
                 };
 
-                addListener(pref, listener);
+                subscribe(pref, prefSubscriber);
 
-                subscriber.add(Subscriptions.create(new Action0() {
+                rxSubscriber.add(Subscriptions.create(new Action0() {
                     @Override
                     public void call() {
-                        removeListener(pref, listener);
-                        subscriber.onCompleted();
+                        unsubscribe(pref, prefSubscriber);
+                        rxSubscriber.onCompleted();
                     }
                 }));
 
-                subscribers.add(subscriber);
+                subscribers.add(rxSubscriber);
             }
         });
     }

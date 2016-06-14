@@ -37,8 +37,6 @@ public class AndroidStringPrefTest {
     @Before
     public void setUp() throws Exception {
         prefer = new SharedPreferencesPrefer(new FixtureSharedPreferences());
-
-        // add `OnSharedPreferenceChangeListener`
         prefer.initializePrefer();
 
         pref = new AndroidStringPref<>(prefer, Key.Username, "");
@@ -46,7 +44,6 @@ public class AndroidStringPrefTest {
 
     @After
     public void tearDown() throws Exception {
-        // remove `OnSharedPreferenceChangeListener`
         prefer.disposePrefer();
     }
 
@@ -86,21 +83,21 @@ public class AndroidStringPrefTest {
     }
 
     //----------------------------------------------------------------------------------------------
-    // TESTS: addListener
+    // TESTS: subscribe
     //----------------------------------------------------------------------------------------------
 
     @Test(expected = NullPointerException.class)
-    public void addListener_should_throw_if_listener_null() throws Exception {
-        pref.addListener(null);
+    public void subscribe_should_throw_if_subscriber_null() throws Exception {
+        pref.subscribe(null);
     }
 
     //----------------------------------------------------------------------------------------------
-    // TESTS: removeListener
+    // TESTS: unsubscribe
     //----------------------------------------------------------------------------------------------
 
     @Test(expected = NullPointerException.class)
-    public void removeListener_should_throw_if_listener_null() throws Exception {
-        pref.removeListener(null);
+    public void unsubscribe_should_throw_if_subscriber_null() throws Exception {
+        pref.unsubscribe(null);
     }
 
     //----------------------------------------------------------------------------------------------

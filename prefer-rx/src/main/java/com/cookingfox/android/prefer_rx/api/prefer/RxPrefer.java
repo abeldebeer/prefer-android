@@ -14,7 +14,7 @@ public interface RxPrefer extends Prefer {
     /**
      * Creates a new observable for the provided Pref's value.
      *
-     * @param pref The Pref to add a listener for.
+     * @param pref The Pref to observe for value changes.
      * @param <K>  References the enum class for the Pref's key.
      * @param <V>  Indicates the Pref's value type.
      * @return The Pref value observable.

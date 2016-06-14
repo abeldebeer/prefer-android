@@ -1,7 +1,5 @@
 package com.cookingfox.android.prefer.api.prefer.typed;
 
-import com.cookingfox.android.prefer.api.prefer.Prefer;
-
 /**
  * Prefer functionality for boolean typed preferences.
  */

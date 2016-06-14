@@ -7,16 +7,23 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.cookingfox.android.prefer.api.pref.OnValueChanged;
 import com.cookingfox.android.prefer.impl.prefer.AndroidPreferProvider;
 import com.cookingfox.android.prefer.sample.prefs.AndroidRestApiPrefs;
 import com.cookingfox.android.prefer.sample.prefs.RestApiPrefs;
+import com.cookingfox.android.prefer_rx.api.pref.typed.BooleanRxPref;
 import com.cookingfox.android.prefer_rx.impl.prefer.SharedPreferencesRxPrefer;
 
+import rx.functions.Action1;
+
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +40,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // set default prefer
+        // initialize prefer
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferencesRxPrefer prefer = new SharedPreferencesRxPrefer(preferences);
+
+        // set default prefer instance on provider
         AndroidPreferProvider.setDefault(prefer);
 
+        // create prefs
         RestApiPrefs restApiPrefs = new AndroidRestApiPrefs(prefer);
+        BooleanRxPref<RestApiPrefs.Key> cacheEnabled = restApiPrefs.cacheEnabled();
+
+        // subscribe with subscriber interface
+        cacheEnabled.subscribe(new OnValueChanged<Boolean>() {
+            @Override
+            public void onValueChanged(Boolean value) {
+                Log.i(TAG, "[Subscriber] `cacheEnabled` value changed: " + value);
+            }
+        });
+
+        // observe with rx
+        cacheEnabled.observe().subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean value) {
+                Log.i(TAG, "[Rx Observable] `cacheEnabled` value changed: " + value);
+            }
+        });
+
+        // toggle cache enabled preference
+        cacheEnabled.setValue(!cacheEnabled.getValue());
     }
 
     private void showSettings() {

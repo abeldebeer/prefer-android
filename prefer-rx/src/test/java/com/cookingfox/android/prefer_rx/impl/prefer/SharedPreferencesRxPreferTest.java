@@ -84,7 +84,7 @@ public class SharedPreferencesRxPreferTest {
     }
 
     @Test
-    public void observePref_should_remove_listener_on_unsubscribe() throws Exception {
+    public void observePref_should_remove_subscriber_on_unsubscribe() throws Exception {
         TestSubscriber<Boolean> subscriber = TestSubscriber.create();
 
         AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);

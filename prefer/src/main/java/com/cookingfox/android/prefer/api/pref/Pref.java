@@ -12,13 +12,6 @@ import com.cookingfox.android.prefer.api.exception.InvalidPrefValueException;
 public interface Pref<K extends Enum<K>, V> extends PrefValidator<V> {
 
     /**
-     * Registers a listener for when the value of this preference changes.
-     *
-     * @param listener The listener to add.
-     */
-    void addListener(PrefListener<V> listener);
-
-    /**
      * Returns this Pref's default value.
      *
      * @return The default value.
@@ -40,13 +33,6 @@ public interface Pref<K extends Enum<K>, V> extends PrefValidator<V> {
     V getValue();
 
     /**
-     * Removes the Pref listener.
-     *
-     * @param listener The listener to remove.
-     */
-    void removeListener(PrefListener<V> listener);
-
-    /**
      * Sets a custom validator implementation for this Pref.
      *
      * @param validator The validator to set.
@@ -61,5 +47,19 @@ public interface Pref<K extends Enum<K>, V> extends PrefValidator<V> {
      * @see #setValidator(PrefValidator)
      */
     void setValue(V value) throws InvalidPrefValueException;
+
+    /**
+     * Registers a subscriber for when the value of this preference changes.
+     *
+     * @param subscriber The subscriber to add.
+     */
+    void subscribe(OnValueChanged<V> subscriber);
+
+    /**
+     * Removes the Pref subscriber.
+     *
+     * @param subscriber The subscriber to remove.
+     */
+    void unsubscribe(OnValueChanged<V> subscriber);
 
 }

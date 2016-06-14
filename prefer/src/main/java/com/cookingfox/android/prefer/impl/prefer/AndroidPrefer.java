@@ -2,9 +2,9 @@ package com.cookingfox.android.prefer.impl.prefer;
 
 import com.cookingfox.android.prefer.api.exception.GroupAlreadyAddedException;
 import com.cookingfox.android.prefer.api.exception.PreferNotInitializedException;
+import com.cookingfox.android.prefer.api.pref.OnValueChanged;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
-import com.cookingfox.android.prefer.api.pref.PrefListener;
 import com.cookingfox.android.prefer.api.prefer.Prefer;
 import com.cookingfox.android.prefer.impl.pref.AndroidPrefGroup;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidBooleanPref;
@@ -36,9 +36,9 @@ public abstract class AndroidPrefer implements Prefer {
     protected boolean initialized = false;
 
     /**
-     * Pref listeners per pref.
+     * Pref subscribers per pref.
      */
-    protected final Map<Pref, Set<PrefListener>> prefListeners = new LinkedHashMap<>();
+    protected final Map<Pref, Set<OnValueChanged>> prefSubscribers = new LinkedHashMap<>();
 
     //----------------------------------------------------------------------------------------------
     // IMPLEMENTATION: Prefer
@@ -52,43 +52,43 @@ public abstract class AndroidPrefer implements Prefer {
     @Override
     public void disposePrefer() {
         groups.clear();
-        prefListeners.clear();
+        prefSubscribers.clear();
 
         initialized = false;
     }
 
     @Override
-    public <K extends Enum<K>, V> void addListener(Pref<K, V> pref, PrefListener<V> listener) {
+    public <K extends Enum<K>, V> void subscribe(Pref<K, V> pref, OnValueChanged<V> subscriber) {
         checkNotNull(pref, "Pref can not be null");
-        checkNotNull(listener, "Listener can not be null");
+        checkNotNull(subscriber, "Subscriber can not be null");
 
         if (!initialized) {
-            throw new PreferNotInitializedException("Can not add listener");
+            throw new PreferNotInitializedException("Can not add subscriber");
         }
 
-        Set<PrefListener> listeners = this.prefListeners.get(pref);
+        Set<OnValueChanged> subscribers = this.prefSubscribers.get(pref);
 
-        if (listeners == null) {
-            listeners = new LinkedHashSet<>();
-            prefListeners.put(pref, listeners);
+        if (subscribers == null) {
+            subscribers = new LinkedHashSet<>();
+            prefSubscribers.put(pref, subscribers);
         }
 
-        listeners.add(listener);
+        subscribers.add(subscriber);
     }
 
     @Override
-    public <K extends Enum<K>, V> void removeListener(Pref<K, V> pref, PrefListener<V> listener) {
+    public <K extends Enum<K>, V> void unsubscribe(Pref<K, V> pref, OnValueChanged<V> subscriber) {
         checkNotNull(pref, "Pref can not be null");
-        checkNotNull(listener, "Listener can not be null");
+        checkNotNull(subscriber, "Subscriber can not be null");
 
         if (!initialized) {
-            throw new PreferNotInitializedException("Can not add listener");
+            throw new PreferNotInitializedException("Can not add subscriber");
         }
 
-        final Set<PrefListener> listeners = this.prefListeners.get(pref);
+        final Set<OnValueChanged> subscribers = this.prefSubscribers.get(pref);
 
-        if (listeners != null) {
-            listeners.remove(listener);
+        if (subscribers != null) {
+            subscribers.remove(subscriber);
         }
     }
 

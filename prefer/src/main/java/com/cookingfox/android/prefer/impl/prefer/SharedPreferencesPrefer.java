@@ -2,10 +2,11 @@ package com.cookingfox.android.prefer.impl.prefer;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.preference.EditTextPreference;
 
 import com.cookingfox.android.prefer.api.exception.PreferException;
+import com.cookingfox.android.prefer.api.pref.OnValueChanged;
 import com.cookingfox.android.prefer.api.pref.Pref;
-import com.cookingfox.android.prefer.api.pref.PrefListener;
 
 import java.util.Map;
 import java.util.Set;
@@ -54,12 +55,16 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
 
     @Override
     public boolean getBoolean(Enum key, boolean defaultValue) {
-        return Boolean.parseBoolean(getFromString(key, defaultValue));
+        // boolean is stored without conversion to string
+        return preferences.getBoolean(serializeKey(key), defaultValue);
     }
 
     @Override
     public void putBoolean(Enum key, boolean value) {
-        putFromString(key, value);
+        // boolean is stored without conversion to string
+        preferences.edit()
+                .putBoolean(serializeKey(key), value)
+                .apply();
     }
 
     //----------------------------------------------------------------------------------------------
@@ -123,9 +128,9 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
     //----------------------------------------------------------------------------------------------
 
     /**
-     * Attempts to fetch the value for this key from the shared preferences by converting to a
-     * String value first. This makes the process more straight-forward, since preference values
-     * are stored as Strings by default.
+     * Fetch the persisted value from the shared preferences. The {@link EditTextPreference} stores
+     * user input (also numeric values) as strings, so it is more straightforward to assume here
+     * that the stored value is a string.
      *
      * @param key          The unique key for this preference.
      * @param defaultValue The default value to use if no stored value is available.
@@ -133,27 +138,23 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
      * @return The stored value as a String, or the default value as a String.
      */
     protected <T> String getFromString(Enum key, T defaultValue) {
-        checkNotNull(key, "Preference key can not be null");
-
-        final String stringKey = PreferKeySerializer.serializeKey(key);
+        final String stringKey = serializeKey(key);
         final String stringDefaultValue = String.valueOf(defaultValue);
 
         return preferences.getString(stringKey, stringDefaultValue);
     }
 
     /**
-     * Attempts to store the provided value for the preference key. Converts the value to a String
-     * first to make the process more straight-forward, since preference values are stored as
-     * Strings by default.
+     * Persist the value to the shared preferences. The {@link EditTextPreference} stores user input
+     * (also numeric values) as strings, so it is more straightforward to assume here that the
+     * stored value is a string.
      *
      * @param key   The unique key for this preference.
      * @param value The value to store for this preference.
      * @param <T>   Indicates the concrete value type, e.g. `Boolean`.
      */
     protected <T> void putFromString(Enum key, T value) {
-        checkNotNull(key, "Preference key can not be null");
-
-        final String stringKey = PreferKeySerializer.serializeKey(key);
+        final String stringKey = serializeKey(key);
         final String stringValue = String.valueOf(value);
 
         preferences.edit()
@@ -161,10 +162,24 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
                 .apply();
     }
 
+    /**
+     * Returns a serialized string representation of the enum key.
+     *
+     * @param key The enum value.
+     * @return Serialized string.
+     */
+    protected String serializeKey(Enum key) {
+        return PreferKeySerializer.serializeKey(checkNotNull(key, "Pref key can not be null"));
+    }
+
     //----------------------------------------------------------------------------------------------
     // IMPLEMENTATION: OnSharedPreferenceChangeListener
     //----------------------------------------------------------------------------------------------
 
+    /**
+     * This listener is called when a SharedPreference value changes. It makes sure all subscribed
+     * parties are notified of the change.
+     */
     protected final OnSharedPreferenceChangeListener onChangeListener = new OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences ignored, String serializedKey) {
@@ -179,17 +194,17 @@ public class SharedPreferencesPrefer extends AndroidPrefer {
                 return;
             }
 
-            for (Map.Entry<Pref, Set<PrefListener>> entry : prefListeners.entrySet()) {
+            for (Map.Entry<Pref, Set<OnValueChanged>> entry : prefSubscribers.entrySet()) {
                 Pref pref = entry.getKey();
 
                 // match pref by key
                 if (pref.getKey().equals(key)) {
                     Object value = pref.getValue();
 
-                    // pass new value to listeners
-                    for (PrefListener listener : entry.getValue()) {
+                    // pass new value to subscribers
+                    for (OnValueChanged subscriber : entry.getValue()) {
                         // noinspection unchecked
-                        listener.onValueChanged(value);
+                        subscriber.onValueChanged(value);
                     }
 
                     break;

@@ -3,8 +3,8 @@ package com.cookingfox.android.prefer.impl.pref;
 import android.preference.Preference;
 
 import com.cookingfox.android.prefer.api.exception.InvalidPrefValueException;
+import com.cookingfox.android.prefer.api.pref.OnValueChanged;
 import com.cookingfox.android.prefer.api.pref.Pref;
-import com.cookingfox.android.prefer.api.pref.PrefListener;
 import com.cookingfox.android.prefer.api.pref.PrefMeta;
 import com.cookingfox.android.prefer.api.pref.PrefValidator;
 import com.cookingfox.android.prefer.api.prefer.Prefer;
@@ -80,8 +80,8 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
     //----------------------------------------------------------------------------------------------
 
     @Override
-    public void addListener(PrefListener<V> listener) {
-        prefer.addListener(this, checkNotNull(listener, "Listener can not be null"));
+    public void subscribe(OnValueChanged<V> subscriber) {
+        prefer.subscribe(this, checkNotNull(subscriber, "Subscriber can not be null"));
     }
 
     @Override
@@ -95,8 +95,8 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
     }
 
     @Override
-    public void removeListener(PrefListener<V> listener) {
-        prefer.removeListener(this, listener);
+    public void unsubscribe(OnValueChanged<V> subscriber) {
+        prefer.unsubscribe(this, subscriber);
     }
 
     @Override

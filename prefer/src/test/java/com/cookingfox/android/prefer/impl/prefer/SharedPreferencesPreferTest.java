@@ -2,8 +2,8 @@ package com.cookingfox.android.prefer.impl.prefer;
 
 import com.cookingfox.android.prefer.api.exception.GroupAlreadyAddedException;
 import com.cookingfox.android.prefer.api.exception.PreferNotInitializedException;
+import com.cookingfox.android.prefer.api.pref.OnValueChanged;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
-import com.cookingfox.android.prefer.api.pref.PrefListener;
 import com.cookingfox.android.prefer.api.pref.typed.BooleanPref;
 import com.cookingfox.android.prefer.impl.pref.AndroidPrefGroup;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidBooleanPref;
@@ -40,14 +40,11 @@ public class SharedPreferencesPreferTest {
     @Before
     public void setUp() throws Exception {
         prefer = new SharedPreferencesPrefer(new FixtureSharedPreferences());
-
-        // add `OnSharedPreferenceChangeListener`
         prefer.initializePrefer();
     }
 
     @After
     public void tearDown() throws Exception {
-        // remove `OnSharedPreferenceChangeListener`
         prefer.disposePrefer();
     }
 
@@ -61,13 +58,13 @@ public class SharedPreferencesPreferTest {
     }
 
     //----------------------------------------------------------------------------------------------
-    // TESTS: addListener
+    // TESTS: subscribe
     //----------------------------------------------------------------------------------------------
 
     @Test(expected = NullPointerException.class)
-    public void addListener_should_throw_if_null_pref() throws Exception {
+    public void subscribe_should_throw_if_null_pref() throws Exception {
         // noinspection unchecked
-        prefer.addListener(null, new PrefListener<Boolean>() {
+        prefer.subscribe(null, new OnValueChanged<Boolean>() {
             @Override
             public void onValueChanged(Boolean value) {
                 // ignored
@@ -76,16 +73,16 @@ public class SharedPreferencesPreferTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void addListener_should_throw_if_null_listener() throws Exception {
-        prefer.addListener(createBooleanPref(true), null);
+    public void subscribe_should_throw_if_null_subscriber() throws Exception {
+        prefer.subscribe(createBooleanPref(true), null);
     }
 
     @Test
-    public void addListener_should_call_listener_on_value_changed() throws Exception {
+    public void subscribe_should_call_subscriber_on_value_changed() throws Exception {
         BooleanPref<Key> booleanPref = createBooleanPref(false);
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        prefer.addListener(booleanPref, new PrefListener<Boolean>() {
+        prefer.subscribe(booleanPref, new OnValueChanged<Boolean>() {
             @Override
             public void onValueChanged(Boolean value) {
                 called.set(true);
@@ -99,11 +96,11 @@ public class SharedPreferencesPreferTest {
     }
 
     @Test(expected = PreferNotInitializedException.class)
-    public void addListener_should_throw_if_not_initialized() throws Exception {
+    public void subscribe_should_throw_if_not_initialized() throws Exception {
         SharedPreferencesPrefer prefer = new SharedPreferencesPrefer(new FixtureSharedPreferences());
         AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
 
-        prefer.addListener(pref, new PrefListener<Boolean>() {
+        prefer.subscribe(pref, new OnValueChanged<Boolean>() {
             @Override
             public void onValueChanged(Boolean value) {
                 // ignore
@@ -112,13 +109,13 @@ public class SharedPreferencesPreferTest {
     }
 
     //----------------------------------------------------------------------------------------------
-    // TESTS: removeListener
+    // TESTS: unsubscribe
     //----------------------------------------------------------------------------------------------
 
     @Test(expected = NullPointerException.class)
-    public void removeListener_should_throw_if_null_prefer() throws Exception {
+    public void unsubscribe_should_throw_if_null_prefer() throws Exception {
         // noinspection unchecked
-        prefer.removeListener(null, new PrefListener<Boolean>() {
+        prefer.unsubscribe(null, new OnValueChanged<Boolean>() {
             @Override
             public void onValueChanged(Boolean value) {
                 // ignored
@@ -127,24 +124,24 @@ public class SharedPreferencesPreferTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void removeListener_should_throw_if_null_listener() throws Exception {
-        prefer.removeListener(createBooleanPref(true), null);
+    public void unsubscribe_should_throw_if_null_subscriber() throws Exception {
+        prefer.unsubscribe(createBooleanPref(true), null);
     }
 
     @Test
-    public void removeListener_should_not_call_listener_on_value_changed() throws Exception {
+    public void unsubscribe_should_not_call_subscriber_on_value_changed() throws Exception {
         final AtomicBoolean called = new AtomicBoolean(false);
 
         BooleanPref<Key> booleanPref = createBooleanPref(false);
-        PrefListener<Boolean> listener = new PrefListener<Boolean>() {
+        OnValueChanged<Boolean> subscriber = new OnValueChanged<Boolean>() {
             @Override
             public void onValueChanged(Boolean value) {
                 called.set(true);
             }
         };
 
-        prefer.addListener(booleanPref, listener);
-        prefer.removeListener(booleanPref, listener);
+        prefer.subscribe(booleanPref, subscriber);
+        prefer.unsubscribe(booleanPref, subscriber);
 
         booleanPref.setValue(true);
 
@@ -153,11 +150,11 @@ public class SharedPreferencesPreferTest {
     }
 
     @Test(expected = PreferNotInitializedException.class)
-    public void removeListener_should_throw_if_not_initialized() throws Exception {
+    public void unsubscribe_should_throw_if_not_initialized() throws Exception {
         SharedPreferencesPrefer prefer = new SharedPreferencesPrefer(new FixtureSharedPreferences());
         AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
 
-        prefer.removeListener(pref, new PrefListener<Boolean>() {
+        prefer.unsubscribe(pref, new OnValueChanged<Boolean>() {
             @Override
             public void onValueChanged(Boolean value) {
                 // ignore
@@ -181,23 +178,23 @@ public class SharedPreferencesPreferTest {
     }
 
     @Test
-    public void disposePrefer_should_clear_all_pref_listeners() throws Exception {
+    public void disposePrefer_should_clear_all_pref_subscribers() throws Exception {
         AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
 
-        PrefListener<Boolean> listener = new PrefListener<Boolean>() {
+        OnValueChanged<Boolean> subscriber = new OnValueChanged<Boolean>() {
             @Override
             public void onValueChanged(Boolean value) {
                 // ignore
             }
         };
 
-        prefer.addListener(pref, listener);
+        prefer.subscribe(pref, subscriber);
 
-        assertTrue(prefer.prefListeners.containsKey(pref));
+        assertTrue(prefer.prefSubscribers.containsKey(pref));
 
         prefer.disposePrefer();
 
-        assertFalse(prefer.prefListeners.containsKey(pref));
+        assertFalse(prefer.prefSubscribers.containsKey(pref));
     }
 
     //----------------------------------------------------------------------------------------------
