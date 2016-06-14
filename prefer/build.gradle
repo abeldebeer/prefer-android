@@ -27,3 +27,17 @@ dependencies {
 
     testCompile deps.junit
 }
+
+/* NOTE: the operations below are necessary for sharing test classes between modules */
+
+task testClassesJar(type: Jar, dependsOn: 'compileReleaseUnitTestSources') {
+    from 'build/intermediates/classes/test/release'
+}
+
+configurations {
+    tests
+}
+
+artifacts {
+    tests testClassesJar
+}

@@ -27,5 +27,8 @@ dependencies {
 
     compile deps.android_appcompat
 
+    // include test classes from prefer
+    testCompile project(path: ':prefer', configuration: 'tests')
+
     testCompile deps.junit
 }
