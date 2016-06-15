@@ -5,7 +5,7 @@ android {
     buildToolsVersion config.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion config.minSdkVersionFragment
+        minSdkVersion config.minSdkVersion
         targetSdkVersion config.targetSdkVersion
         versionCode config.versionCode
         versionName config.versionName
@@ -23,11 +23,5 @@ android {
 }
 
 dependencies {
-    compile project(':prefer')
-
-    compile deps.android_appcompat
-
-    testCompile project(':prefer-testing');
-
     testCompile deps.junit
 }

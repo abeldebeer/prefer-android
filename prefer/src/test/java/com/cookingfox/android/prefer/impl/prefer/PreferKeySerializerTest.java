@@ -2,7 +2,7 @@ package com.cookingfox.android.prefer.impl.prefer;
 
 import org.junit.Test;
 
-import fixtures.example.Key;
+import com.cookingfox.android.prefer_testing.fixtures.Key;
 
 import static org.junit.Assert.assertEquals;
 

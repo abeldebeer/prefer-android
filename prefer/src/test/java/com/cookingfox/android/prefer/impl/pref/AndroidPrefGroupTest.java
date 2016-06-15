@@ -15,8 +15,8 @@ import org.junit.Test;
 
 import java.util.Iterator;
 
-import fixtures.FixtureSharedPreferences;
-import fixtures.example.Key;
+import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
+import com.cookingfox.android.prefer_testing.fixtures.Key;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -39,7 +39,7 @@ public class AndroidPrefGroupTest {
 
     @Before
     public void setUp() throws Exception {
-        prefer = new SharedPreferencesPrefer(new FixtureSharedPreferences());
+        prefer = new SharedPreferencesPrefer(new InMemorySharedPreferences());
         prefer.initializePrefer();
 
         group = new AndroidPrefGroup<>(prefer, Key.class);

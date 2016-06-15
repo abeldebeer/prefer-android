@@ -6,8 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import fixtures.FixtureSharedPreferences;
-import fixtures.example.Key;
+import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
+import com.cookingfox.android.prefer_testing.fixtures.Key;
 import rx.observers.TestSubscriber;
 
 /**
@@ -23,7 +23,7 @@ public class AndroidStringRxPrefTest {
 
     @Before
     public void setUp() throws Exception {
-        prefer = new SharedPreferencesRxPrefer(new FixtureSharedPreferences());
+        prefer = new SharedPreferencesRxPrefer(new InMemorySharedPreferences());
         prefer.initializePrefer();
     }
 

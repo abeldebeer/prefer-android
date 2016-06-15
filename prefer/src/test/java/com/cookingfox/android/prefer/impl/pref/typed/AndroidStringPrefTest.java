@@ -15,8 +15,8 @@ import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import fixtures.FixtureSharedPreferences;
-import fixtures.example.Key;
+import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
+import com.cookingfox.android.prefer_testing.fixtures.Key;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -36,7 +36,7 @@ public class AndroidStringPrefTest {
 
     @Before
     public void setUp() throws Exception {
-        prefer = new SharedPreferencesPrefer(new FixtureSharedPreferences());
+        prefer = new SharedPreferencesPrefer(new InMemorySharedPreferences());
         prefer.initializePrefer();
 
         pref = new AndroidStringPref<>(prefer, Key.Username, "");

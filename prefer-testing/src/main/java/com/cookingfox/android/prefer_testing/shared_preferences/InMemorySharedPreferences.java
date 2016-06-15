@@ -1,4 +1,4 @@
-package fixtures;
+package com.cookingfox.android.prefer_testing.shared_preferences;
 
 import android.content.SharedPreferences;
 
@@ -9,14 +9,26 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Fixture implementation of {@link SharedPreferences} and {@link Editor} that uses a simple map for
- * the values.
+ * Implementation of {@link SharedPreferences} and {@link Editor} that uses a simple map for the
+ * values.
  */
-public class FixtureSharedPreferences implements SharedPreferences, SharedPreferences.Editor {
+public class InMemorySharedPreferences implements SharedPreferences, SharedPreferences.Editor {
 
-    final Map<String, String> values = new LinkedHashMap<>();
-    final List<OnSharedPreferenceChangeListener> onChangeListeners = new LinkedList<>();
-    private String currentKeyForPut;
+    /**
+     * The current preference key for the {@link #put(String, Object)} and {@link #apply()}
+     * operations.
+     */
+    protected String currentKeyForPut;
+
+    /**
+     * A map of the stored preference values, as strings.
+     */
+    public final Map<String, String> values = new LinkedHashMap<>();
+
+    /**
+     * Registered preference change listeners.
+     */
+    public final List<OnSharedPreferenceChangeListener> onChangeListeners = new LinkedList<>();
 
     //----------------------------------------------------------------------------------------------
     // PUBLIC METHODS
@@ -130,6 +142,7 @@ public class FixtureSharedPreferences implements SharedPreferences, SharedPrefer
     @Override
     public void apply() {
         if (currentKeyForPut == null) {
+            new RuntimeException("Current key for put is empty").printStackTrace();
             return;
         }
 
@@ -141,17 +154,31 @@ public class FixtureSharedPreferences implements SharedPreferences, SharedPrefer
     }
 
     //----------------------------------------------------------------------------------------------
-    // PRIVATE METHODS
+    // PROTECTED METHODS
     //----------------------------------------------------------------------------------------------
 
-    private String get(String key, Object defValue) {
+    /**
+     * Retrieves the value from the map and uses `defValue` if no value is available.
+     *
+     * @param key      The preference key.
+     * @param defValue The default value to use when no value is available.
+     * @return The stored value as a String.
+     */
+    protected String get(String key, Object defValue) {
         String defValueString = String.valueOf(defValue);
         String value = values.get(key);
 
         return value == null ? defValueString : value;
     }
 
-    private void put(String key, Object value) {
+    /**
+     * Converts the value to a string (more straight-forward storage) and saves it in the values
+     * map.
+     *
+     * @param key   The preference key.
+     * @param value The preference value.
+     */
+    protected void put(String key, Object value) {
         String previous = values.get(key);
         String valueString = String.valueOf(value);
 

@@ -17,8 +17,8 @@ import org.junit.Test;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import fixtures.FixtureSharedPreferences;
-import fixtures.example.Key;
+import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
+import com.cookingfox.android.prefer_testing.fixtures.Key;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -39,7 +39,7 @@ public class SharedPreferencesPreferTest {
 
     @Before
     public void setUp() throws Exception {
-        prefer = new SharedPreferencesPrefer(new FixtureSharedPreferences());
+        prefer = new SharedPreferencesPrefer(new InMemorySharedPreferences());
         prefer.initializePrefer();
     }
 
@@ -97,7 +97,7 @@ public class SharedPreferencesPreferTest {
 
     @Test(expected = PreferNotInitializedException.class)
     public void subscribe_should_throw_if_not_initialized() throws Exception {
-        SharedPreferencesPrefer prefer = new SharedPreferencesPrefer(new FixtureSharedPreferences());
+        SharedPreferencesPrefer prefer = new SharedPreferencesPrefer(new InMemorySharedPreferences());
         AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
 
         prefer.subscribe(pref, new OnValueChanged<Boolean>() {
@@ -151,7 +151,7 @@ public class SharedPreferencesPreferTest {
 
     @Test(expected = PreferNotInitializedException.class)
     public void unsubscribe_should_throw_if_not_initialized() throws Exception {
-        SharedPreferencesPrefer prefer = new SharedPreferencesPrefer(new FixtureSharedPreferences());
+        SharedPreferencesPrefer prefer = new SharedPreferencesPrefer(new InMemorySharedPreferences());
         AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
 
         prefer.unsubscribe(pref, new OnValueChanged<Boolean>() {

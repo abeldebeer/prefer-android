@@ -1,18 +1,18 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
     }
     compileOptions {
-        sourceCompatibility rootProject.ext.sourceCompatibility
-        targetCompatibility rootProject.ext.targetCompatibility
+        sourceCompatibility config.sourceCompatibility
+        targetCompatibility config.targetCompatibility
     }
     buildTypes {
         release {
@@ -25,26 +25,7 @@ android {
 dependencies {
     compile deps.guava_preconditions
 
+    testCompile project(':prefer-testing');
+
     testCompile deps.junit
-}
-
-// this task builds the default sources jar
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-// this task builds a jar containing the test classes, so other modules can use them
-task testClassesJar(type: Jar, dependsOn: 'compileDebugUnitTestSources') {
-    from 'build/intermediates/classes/test/debug'
-    archiveName "${baseName}-tests.jar"
-}
-
-configurations {
-    tests
-}
-
-artifacts {
-    archives sourcesJar
-    tests testClassesJar
 }

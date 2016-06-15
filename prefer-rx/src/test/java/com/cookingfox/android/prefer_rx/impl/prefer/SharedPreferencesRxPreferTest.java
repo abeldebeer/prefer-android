@@ -7,8 +7,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import fixtures.FixtureSharedPreferences;
-import fixtures.example.Key;
+import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
+import com.cookingfox.android.prefer_testing.fixtures.Key;
 import rx.Subscription;
 import rx.observers.TestSubscriber;
 
@@ -25,7 +25,7 @@ public class SharedPreferencesRxPreferTest {
 
     @Before
     public void setUp() throws Exception {
-        prefer = new SharedPreferencesRxPrefer(new FixtureSharedPreferences());
+        prefer = new SharedPreferencesRxPrefer(new InMemorySharedPreferences());
 
         prefer.initializePrefer();
     }
@@ -64,7 +64,7 @@ public class SharedPreferencesRxPreferTest {
 
     @Test(expected = PreferNotInitializedException.class)
     public void observePref_should_throw_if_not_initialized() throws Exception {
-        SharedPreferencesRxPrefer prefer = new SharedPreferencesRxPrefer(new FixtureSharedPreferences());
+        SharedPreferencesRxPrefer prefer = new SharedPreferencesRxPrefer(new InMemorySharedPreferences());
         AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
 
         prefer.observePref(pref);

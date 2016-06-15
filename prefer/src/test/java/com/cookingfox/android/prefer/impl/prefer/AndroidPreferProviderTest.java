@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import fixtures.FixtureSharedPreferences;
+import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -22,7 +22,7 @@ public class AndroidPreferProviderTest {
 
     @Before
     public void setUp() throws Exception {
-        prefer = new SharedPreferencesPrefer(new FixtureSharedPreferences());
+        prefer = new SharedPreferencesPrefer(new InMemorySharedPreferences());
     }
 
     @After
