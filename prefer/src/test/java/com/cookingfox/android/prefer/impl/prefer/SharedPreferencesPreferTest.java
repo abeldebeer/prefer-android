@@ -9,6 +9,8 @@ import com.cookingfox.android.prefer.impl.pref.AndroidPrefGroup;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidBooleanPref;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidIntegerPref;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidStringPref;
+import com.cookingfox.android.prefer_testing.fixtures.Key;
+import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,9 +18,6 @@ import org.junit.Test;
 
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
-import com.cookingfox.android.prefer_testing.fixtures.Key;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -195,24 +194,6 @@ public class SharedPreferencesPreferTest {
         prefer.disposePrefer();
 
         assertFalse(prefer.prefSubscribers.containsKey(pref));
-    }
-
-    //----------------------------------------------------------------------------------------------
-    // TESTS: getFromString
-    //----------------------------------------------------------------------------------------------
-
-    @Test(expected = NullPointerException.class)
-    public void getFromString_should_throw_if_key_null() throws Exception {
-        prefer.getFromString(null, null);
-    }
-
-    //----------------------------------------------------------------------------------------------
-    // TESTS: putFromString
-    //----------------------------------------------------------------------------------------------
-
-    @Test(expected = NullPointerException.class)
-    public void putFromString_should_throw_if_key_null() throws Exception {
-        prefer.putFromString(null, null);
     }
 
     //----------------------------------------------------------------------------------------------

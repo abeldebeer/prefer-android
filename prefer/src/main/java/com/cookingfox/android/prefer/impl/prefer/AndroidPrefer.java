@@ -1,6 +1,7 @@
 package com.cookingfox.android.prefer.impl.prefer;
 
 import com.cookingfox.android.prefer.api.exception.GroupAlreadyAddedException;
+import com.cookingfox.android.prefer.api.exception.PreferException;
 import com.cookingfox.android.prefer.api.exception.PreferNotInitializedException;
 import com.cookingfox.android.prefer.api.pref.OnValueChanged;
 import com.cookingfox.android.prefer.api.pref.Pref;
@@ -31,6 +32,11 @@ public abstract class AndroidPrefer implements Prefer {
     protected final Map<Class, PrefGroup<? extends Enum>> groups = new LinkedHashMap<>();
 
     /**
+     * Helper class.
+     */
+    protected PreferHelper helper;
+
+    /**
      * Whether this Prefer is initialized: call {@link #initializePrefer()} first.
      */
     protected boolean initialized = false;
@@ -41,20 +47,94 @@ public abstract class AndroidPrefer implements Prefer {
     protected final Map<Pref, Set<OnValueChanged>> prefSubscribers = new LinkedHashMap<>();
 
     //----------------------------------------------------------------------------------------------
-    // IMPLEMENTATION: Prefer
+    // IMPLEMENTATION: PreferLifecycle
     //----------------------------------------------------------------------------------------------
 
     @Override
     public void initializePrefer() {
+        getHelper().initializePrefer();
+
         initialized = true;
     }
 
     @Override
     public void disposePrefer() {
+        getHelper().disposePrefer();
+
         groups.clear();
         prefSubscribers.clear();
 
         initialized = false;
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // BOOLEAN
+    //----------------------------------------------------------------------------------------------
+
+    @Override
+    public boolean getBoolean(Enum key, boolean defaultValue) {
+        return getHelper().getBoolean(key, defaultValue);
+    }
+
+    @Override
+    public void putBoolean(Enum key, boolean value) {
+        getHelper().putBoolean(key, value);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // FLOAT
+    //----------------------------------------------------------------------------------------------
+
+    @Override
+    public float getFloat(Enum key, float defaultValue) {
+        return getHelper().getFloat(key, defaultValue);
+    }
+
+    @Override
+    public void putFloat(Enum key, float value) {
+        getHelper().putFloat(key, value);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // INTEGER
+    //----------------------------------------------------------------------------------------------
+
+    @Override
+    public int getInteger(Enum key, int defaultValue) {
+        return getHelper().getInteger(key, defaultValue);
+    }
+
+    @Override
+    public void putInteger(Enum key, int value) {
+        getHelper().putInteger(key, value);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // LONG
+    //----------------------------------------------------------------------------------------------
+
+    @Override
+    public long getLong(Enum key, long defaultValue) {
+        return getHelper().getLong(key, defaultValue);
+    }
+
+    @Override
+    public void putLong(Enum key, long value) {
+        getHelper().putLong(key, value);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // STRING
+    //----------------------------------------------------------------------------------------------
+
+    @Override
+    public String getString(Enum key, String defaultValue) {
+        return getHelper().getString(key, defaultValue);
+    }
+
+    @Override
+    public void putString(Enum key, String value) {
+        getHelper().putString(key, value);
     }
 
     @Override
@@ -129,11 +209,23 @@ public abstract class AndroidPrefer implements Prefer {
      * @see #addGroup(PrefGroup)
      */
     public <K extends Enum<K>> AndroidPrefGroup<K> addNewGroup(Class<K> keyClass) {
-        AndroidPrefGroup<K> group = new AndroidPrefGroup<>(this, keyClass);
+        AndroidPrefGroup<K> group = newGroup(keyClass);
 
         addGroup(group);
 
         return group;
+    }
+
+    /**
+     * Creates a new Pref group for this key class.
+     *
+     * @param keyClass The enum key class for which to create a Pref group.
+     * @param <K>      References the concrete enum key class.
+     * @return The newly created group.
+     * @see #addGroup(PrefGroup)
+     */
+    public <K extends Enum<K>> AndroidPrefGroup<K> newGroup(Class<K> keyClass) {
+        return new AndroidPrefGroup<>(this, keyClass);
     }
 
     /**
@@ -194,6 +286,66 @@ public abstract class AndroidPrefer implements Prefer {
      */
     public <K extends Enum<K>> AndroidStringPref<K> newString(K key, String defaultValue) {
         return new AndroidStringPref<>(this, key, defaultValue);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // PROTECTED METHODS
+    //----------------------------------------------------------------------------------------------
+
+    /**
+     * Create a new Prefer helper instance.
+     *
+     * @return The create Prefer helper instance.
+     */
+    protected abstract PreferHelper createHelper();
+
+    /**
+     * Returns the helper instance. Creates a new helper using {@link #createHelper()} if it doesn't
+     * exist yet.
+     *
+     * @return The Prefer helper instance.
+     */
+    protected PreferHelper getHelper() {
+        if (helper == null) {
+            helper = checkNotNull(createHelper(), "`createHelper` returned null");
+        }
+
+        return helper;
+    }
+
+    /**
+     * Notify subscribers of a changed Pref.
+     *
+     * @param serializedKey The serialized Pref key.
+     */
+    protected void handlePrefChanged(String serializedKey) {
+        Enum key;
+
+        try {
+            key = PreferKeySerializer.deserializeKey(serializedKey);
+        } catch (ClassNotFoundException error) {
+            // wrap the exception and print the stack trace
+            String message = String.format("Could not deserialize Pref key: '%s'", serializedKey);
+            new PreferException(message, error).printStackTrace();
+            return;
+        }
+
+        for (Map.Entry<Pref, Set<OnValueChanged>> entry : prefSubscribers.entrySet()) {
+            Pref pref = entry.getKey();
+
+            // match pref by key
+            if (pref.getKey().equals(key)) {
+                Object value = pref.getValue();
+
+                // pass new value to subscribers
+                for (OnValueChanged subscriber : entry.getValue()) {
+                    // noinspection unchecked
+                    subscriber.onValueChanged(value);
+                }
+
+                break;
+            }
+        }
     }
 
 }

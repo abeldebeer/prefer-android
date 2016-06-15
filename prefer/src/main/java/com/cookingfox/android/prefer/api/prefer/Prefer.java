@@ -3,33 +3,14 @@ package com.cookingfox.android.prefer.api.prefer;
 import com.cookingfox.android.prefer.api.pref.OnValueChanged;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
-import com.cookingfox.android.prefer.api.prefer.typed.BooleanPrefer;
-import com.cookingfox.android.prefer.api.prefer.typed.FloatPrefer;
-import com.cookingfox.android.prefer.api.prefer.typed.IntegerPrefer;
-import com.cookingfox.android.prefer.api.prefer.typed.LongPrefer;
-import com.cookingfox.android.prefer.api.prefer.typed.StringPrefer;
+import com.cookingfox.android.prefer.impl.prefer.PreferHelper;
 
 import java.util.Set;
 
 /**
  * Manages groups of Prefs, by providing hooks to retrieve, set and observe the Pref values.
  */
-public interface Prefer extends
-        BooleanPrefer,
-        FloatPrefer,
-        IntegerPrefer,
-        LongPrefer,
-        StringPrefer {
-
-    /**
-     * Initialize the Prefer library.
-     */
-    void initializePrefer();
-
-    /**
-     * Dispose the Prefer library. Clears all added groups and subscribers.
-     */
-    void disposePrefer();
+public interface Prefer extends PreferHelper {
 
     /**
      * Add a Pref group to manage.
