@@ -1,5 +1,11 @@
 # Prefer for Android: Change Log
 
+## [0.1.2](../../releases/tag/0.1.2) (2016-06-15)
+
+- Introduces `prefer-testing` module.
+- Adds `AndroidPrefer#newGroup()`.
+- Optimizes code re-use by introducing `PreferHelper` interface.
+
 ## [0.1.1](../../releases/tag/0.1.1) (2016-06-14)
 
 - Fixes JitPack distribution issue related to test artifacts.
