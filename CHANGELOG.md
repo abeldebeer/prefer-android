@@ -1,5 +1,9 @@
 # Prefer for Android: Change Log
 
+## [0.1.3](../../releases/tag/0.1.3) (2016-06-17)
+
+- Updates Guava Preconditions library.
+
 ## [0.1.2](../../releases/tag/0.1.2) (2016-06-15)
 
 - Introduces `prefer-testing` module.

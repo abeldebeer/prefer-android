@@ -6,8 +6,8 @@ import android.preference.PreferenceManager;
 
 import com.cookingfox.android.prefer.api.prefer.Prefer;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
+import static com.cookingfox.guava_preconditions.Preconditions.checkNotNull;
+import static com.cookingfox.guava_preconditions.Preconditions.checkState;
 
 /**
  * Provides static access to the default Prefer instance.

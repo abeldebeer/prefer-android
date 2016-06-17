@@ -20,7 +20,7 @@ import rx.Subscriber;
 import rx.functions.Action0;
 import rx.subscriptions.Subscriptions;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.cookingfox.guava_preconditions.Preconditions.checkNotNull;
 
 /**
  * Base implementation of {@link RxPrefer}.

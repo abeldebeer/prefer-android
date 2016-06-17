@@ -3,7 +3,7 @@ package com.cookingfox.android.prefer.impl.prefer;
 import android.content.SharedPreferences;
 import android.preference.EditTextPreference;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.cookingfox.guava_preconditions.Preconditions.checkNotNull;
 
 /**
  * Helper class for working with Android {@link SharedPreferences}.

@@ -7,7 +7,7 @@ import com.cookingfox.android.prefer.impl.prefer.PreferHelper;
 import com.cookingfox.android.prefer.impl.prefer.SharedPreferencesHelper;
 import com.cookingfox.android.prefer_rx.api.prefer.RxPrefer;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.cookingfox.guava_preconditions.Preconditions.checkNotNull;
 
 /**
  * {@link SharedPreferences} implementation of {@link RxPrefer}.

@@ -5,7 +5,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 
 import com.cookingfox.android.prefer.api.prefer.Prefer;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.cookingfox.guava_preconditions.Preconditions.checkNotNull;
 
 /**
  * {@link SharedPreferences} implementation of {@link Prefer}.

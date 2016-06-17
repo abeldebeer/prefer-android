@@ -9,7 +9,7 @@ import com.cookingfox.android.prefer.api.pref.PrefMeta;
 import com.cookingfox.android.prefer.api.pref.PrefValidator;
 import com.cookingfox.android.prefer.api.prefer.Prefer;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.cookingfox.guava_preconditions.Preconditions.checkNotNull;
 
 /**
  * Abstract implementation of {@link Pref}, with {@link PrefMeta}.

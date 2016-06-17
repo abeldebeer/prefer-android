@@ -24,7 +24,7 @@ import com.cookingfox.android.prefer.impl.pref.AbstractAndroidPref;
 import com.cookingfox.android.prefer.impl.pref.AndroidPrefGroup;
 import com.cookingfox.android.prefer.impl.prefer.PreferKeySerializer;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.cookingfox.guava_preconditions.Preconditions.checkNotNull;
 
 /**
  * {@link PreferenceFragment} implementation which uses all available Pref groups to generate a
