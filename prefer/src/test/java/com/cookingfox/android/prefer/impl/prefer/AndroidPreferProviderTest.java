@@ -1,12 +1,14 @@
 package com.cookingfox.android.prefer.impl.prefer;
 
+import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
-
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -37,6 +39,17 @@ public class AndroidPreferProviderTest {
     @Test(expected = NullPointerException.class)
     public void disposeDefault_should_throw_if_instance_null() throws Exception {
         AndroidPreferProvider.disposeDefault();
+    }
+
+    @Test
+    public void disposeDefault_should_unset_default_instance() throws Exception {
+        AndroidPreferProvider.setDefault(prefer);
+
+        assertNotNull(AndroidPreferProvider.defaultInstance);
+
+        AndroidPreferProvider.disposeDefault();
+
+        assertNull(AndroidPreferProvider.defaultInstance);
     }
 
     //----------------------------------------------------------------------------------------------

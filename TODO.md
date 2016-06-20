@@ -1,3 +1,4 @@
 - TODO: assert that only one `Pref` instance is created / added per unique enum key.
 - TODO: add Robolectric tests for real SharedPreferences.
 - TODO: expand `prefer-fragment` tests
+- FIXME: `PreferFragment` input should not default to multi-line

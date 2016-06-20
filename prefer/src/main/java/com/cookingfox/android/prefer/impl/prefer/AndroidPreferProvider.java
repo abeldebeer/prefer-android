@@ -32,6 +32,9 @@ public class AndroidPreferProvider {
      */
     public static void disposeDefault() {
         checkNotNull(defaultInstance, "The default instance is not set").disposePrefer();
+
+        // unset default instance
+        defaultInstance = null;
     }
 
     /**
@@ -45,6 +48,7 @@ public class AndroidPreferProvider {
     public static AndroidPrefer getDefault(Context context) {
         checkNotNull(context, "Context can not be null");
 
+        // default instance not set yet: create using context
         if (defaultInstance == null) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
