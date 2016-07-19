@@ -1,5 +1,9 @@
 # Prefer for Android: Change Log
 
+## [0.1.4](../../releases/tag/0.1.4) (2016-07-19)
+
+- Unsets default instance in `AndroidPreferProvider#disposeDefault()`.
+
 ## [0.1.3](../../releases/tag/0.1.3) (2016-06-17)
 
 - Updates Guava Preconditions library.

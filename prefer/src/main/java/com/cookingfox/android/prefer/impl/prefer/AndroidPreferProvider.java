@@ -12,7 +12,7 @@ import static com.cookingfox.guava_preconditions.Preconditions.checkState;
 /**
  * Provides static access to the default Prefer instance.
  */
-public class AndroidPreferProvider {
+public final class AndroidPreferProvider {
 
     /**
      * Default Prefer instance.
