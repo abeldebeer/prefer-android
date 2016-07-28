@@ -1,6 +1,7 @@
 package com.cookingfox.android.prefer.impl.prefer;
 
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.EditTextPreference;
 
 import static com.cookingfox.guava_preconditions.Preconditions.checkNotNull;
@@ -13,7 +14,7 @@ public class SharedPreferencesHelper implements PreferHelper {
     /**
      * Listener that is executed when a SharedPreference value changes.
      */
-    protected final SharedPreferences.OnSharedPreferenceChangeListener onChangeListener;
+    protected final OnSharedPreferenceChangeListener onChangeListener;
 
     /**
      * References the actual shared preferences instance.
@@ -25,7 +26,7 @@ public class SharedPreferencesHelper implements PreferHelper {
     //----------------------------------------------------------------------------------------------
 
     public SharedPreferencesHelper(SharedPreferences preferences,
-                                   SharedPreferences.OnSharedPreferenceChangeListener listener) {
+                                   OnSharedPreferenceChangeListener listener) {
         this.onChangeListener = checkNotNull(listener, "Listener can not be null");
         this.preferences = checkNotNull(preferences, "Preferences can not be null");
     }

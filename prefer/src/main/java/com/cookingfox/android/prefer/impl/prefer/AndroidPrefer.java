@@ -52,6 +52,10 @@ public abstract class AndroidPrefer implements Prefer {
 
     @Override
     public void initializePrefer() {
+        if (initialized) {
+            return;
+        }
+
         getHelper().initializePrefer();
 
         initialized = true;
@@ -59,6 +63,10 @@ public abstract class AndroidPrefer implements Prefer {
 
     @Override
     public void disposePrefer() {
+        if (!initialized) {
+            return;
+        }
+
         getHelper().disposePrefer();
 
         groups.clear();

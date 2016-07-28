@@ -75,6 +75,10 @@ public abstract class AndroidRxPrefer extends AndroidPrefer implements RxPrefer 
 
     @Override
     public void disposePrefer() {
+        if (!initialized) {
+            return;
+        }
+
         // unsubscribe all
         subscribers.unsubscribe();
 
