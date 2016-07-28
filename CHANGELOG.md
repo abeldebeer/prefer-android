@@ -1,5 +1,10 @@
 # Prefer for Android: Change Log
 
+## [0.2.0](../../releases/tag/0.2.0) (2016-07-28)
+
+- Renames "subscribe" (and related concepts) to "addListener" to prevent confusion with Rx 
+extension.
+
 ## [0.1.4](../../releases/tag/0.1.4) (2016-07-19)
 
 - Unsets default instance in `AndroidPreferProvider#disposeDefault()`.
