@@ -1,6 +1,6 @@
 # Prefer for Android: Change Log
 
-## [0.2.1](../../releases/tag/0.2.1) (2016-07-28)
+## [0.2.2](../../releases/tag/0.2.2) (2016-07-28)
 
 - Reverts RxJava version to fix compatibility issues.
 
