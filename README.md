@@ -24,15 +24,15 @@ Add the desired dependencies to your app's `build.gradle` file:
 ```groovy
 dependencies {
     // core library
-    compile 'com.github.cookingfox.prefer-android:prefer:0.2.0'
+    compile 'com.github.cookingfox.prefer-android:prefer:0.2.1'
     
     // rx extension
-    compile 'com.github.cookingfox.prefer-android:prefer-rx:0.2.0'
+    compile 'com.github.cookingfox.prefer-android:prefer-rx:0.2.1'
     
     // generate a preference fragment
-    compile 'com.github.cookingfox.prefer-android:prefer-fragment:0.2.0'
+    compile 'com.github.cookingfox.prefer-android:prefer-fragment:0.2.1'
     
     // useful testing classes
-    testCompile 'com.github.cookingfox.prefer-android:prefer-testing:0.2.0'
+    testCompile 'com.github.cookingfox.prefer-android:prefer-testing:0.2.1'
 }
 ```

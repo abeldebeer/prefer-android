@@ -1,5 +1,9 @@
 # Prefer for Android: Change Log
 
+## [0.2.1](../../releases/tag/0.2.1) (2016-07-28)
+
+- Reverts RxJava version to fix compatibility issues.
+
 ## [0.2.0](../../releases/tag/0.2.0) (2016-07-28)
 
 - Renames "subscribe" (and related concepts) to "addListener" to prevent confusion with Rx 
