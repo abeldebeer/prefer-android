@@ -8,15 +8,14 @@ import com.cookingfox.android.prefer.api.prefer.Prefer;
 import com.cookingfox.android.prefer.impl.pref.AbstractAndroidPref;
 import com.cookingfox.android.prefer.impl.pref.PreferenceModifier;
 import com.cookingfox.android.prefer.impl.prefer.SharedPreferencesPrefer;
+import com.cookingfox.android.prefer_testing.fixtures.Key;
+import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
-import com.cookingfox.android.prefer_testing.fixtures.Key;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -83,21 +82,21 @@ public class AndroidStringPrefTest {
     }
 
     //----------------------------------------------------------------------------------------------
-    // TESTS: subscribe
+    // TESTS: addValueChangedListener
     //----------------------------------------------------------------------------------------------
 
     @Test(expected = NullPointerException.class)
-    public void subscribe_should_throw_if_subscriber_null() throws Exception {
-        pref.subscribe(null);
+    public void addValueChangedListener_should_throw_if_listener_null() throws Exception {
+        pref.addValueChangedListener(null);
     }
 
     //----------------------------------------------------------------------------------------------
-    // TESTS: unsubscribe
+    // TESTS: removeValueChangedListener
     //----------------------------------------------------------------------------------------------
 
     @Test(expected = NullPointerException.class)
-    public void unsubscribe_should_throw_if_subscriber_null() throws Exception {
-        pref.unsubscribe(null);
+    public void removeValueChangedListener_should_throw_if_listener_null() throws Exception {
+        pref.removeValueChangedListener(null);
     }
 
     //----------------------------------------------------------------------------------------------

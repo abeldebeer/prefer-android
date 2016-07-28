@@ -2,13 +2,13 @@ package com.cookingfox.android.prefer_rx.impl.prefer;
 
 import com.cookingfox.android.prefer.api.exception.PreferNotInitializedException;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidBooleanPref;
+import com.cookingfox.android.prefer_testing.fixtures.Key;
+import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
-import com.cookingfox.android.prefer_testing.fixtures.Key;
 import rx.Subscription;
 import rx.observers.TestSubscriber;
 
@@ -44,7 +44,7 @@ public class SharedPreferencesRxPreferTest {
         TestSubscriber<Boolean> subscriber = TestSubscriber.create();
 
         AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
-        prefer.observePref(pref).subscribe(subscriber);
+        prefer.observeValueChanges(pref).subscribe(subscriber);
 
         prefer.disposePrefer();
 
@@ -53,29 +53,29 @@ public class SharedPreferencesRxPreferTest {
     }
 
     //----------------------------------------------------------------------------------------------
-    // TESTS: observePref
+    // TESTS: observeValueChanges
     //----------------------------------------------------------------------------------------------
 
     @Test(expected = NullPointerException.class)
-    public void observePref_should_throw_if_pref_null() throws Exception {
+    public void observeValueChanges_should_throw_if_pref_null() throws Exception {
         // noinspection unchecked
-        prefer.observePref(null);
+        prefer.observeValueChanges(null);
     }
 
     @Test(expected = PreferNotInitializedException.class)
-    public void observePref_should_throw_if_not_initialized() throws Exception {
+    public void observeValueChanges_should_throw_if_not_initialized() throws Exception {
         SharedPreferencesRxPrefer prefer = new SharedPreferencesRxPrefer(new InMemorySharedPreferences());
         AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
 
-        prefer.observePref(pref);
+        prefer.observeValueChanges(pref);
     }
 
     @Test
-    public void observePref_should_receive_value_changes() throws Exception {
+    public void observeValueChanges_should_receive_value_changes() throws Exception {
         TestSubscriber<Boolean> subscriber = TestSubscriber.create();
 
         AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
-        prefer.observePref(pref).subscribe(subscriber);
+        prefer.observeValueChanges(pref).subscribe(subscriber);
 
         pref.setValue(!pref.getValue());
 
@@ -84,11 +84,11 @@ public class SharedPreferencesRxPreferTest {
     }
 
     @Test
-    public void observePref_should_remove_subscriber_on_unsubscribe() throws Exception {
+    public void observeValueChanges_should_remove_subscriber_on_unsubscribe() throws Exception {
         TestSubscriber<Boolean> subscriber = TestSubscriber.create();
 
         AndroidBooleanPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
-        Subscription subscription = prefer.observePref(pref).subscribe(subscriber);
+        Subscription subscription = prefer.observeValueChanges(pref).subscribe(subscriber);
 
         pref.setValue(!pref.getValue());
 

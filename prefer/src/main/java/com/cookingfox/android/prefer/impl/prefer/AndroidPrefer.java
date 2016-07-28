@@ -42,9 +42,9 @@ public abstract class AndroidPrefer implements Prefer {
     protected boolean initialized = false;
 
     /**
-     * Pref subscribers per pref.
+     * Value changed listeners per Pref.
      */
-    protected final Map<Pref, Set<OnValueChanged>> prefSubscribers = new LinkedHashMap<>();
+    protected final Map<Pref, Set<OnValueChanged>> prefValueChangedListeners = new LinkedHashMap<>();
 
     //----------------------------------------------------------------------------------------------
     // IMPLEMENTATION: PreferLifecycle
@@ -62,7 +62,7 @@ public abstract class AndroidPrefer implements Prefer {
         getHelper().disposePrefer();
 
         groups.clear();
-        prefSubscribers.clear();
+        prefValueChangedListeners.clear();
 
         initialized = false;
     }
@@ -138,37 +138,37 @@ public abstract class AndroidPrefer implements Prefer {
     }
 
     @Override
-    public <K extends Enum<K>, V> void subscribe(Pref<K, V> pref, OnValueChanged<V> subscriber) {
+    public <K extends Enum<K>, V> void addValueChangedListener(Pref<K, V> pref, OnValueChanged<V> listener) {
         checkNotNull(pref, "Pref can not be null");
-        checkNotNull(subscriber, "Subscriber can not be null");
+        checkNotNull(listener, "Listener can not be null");
 
         if (!initialized) {
-            throw new PreferNotInitializedException("Can not add subscriber");
+            throw new PreferNotInitializedException("Can not add listener");
         }
 
-        Set<OnValueChanged> subscribers = this.prefSubscribers.get(pref);
+        Set<OnValueChanged> listeners = this.prefValueChangedListeners.get(pref);
 
-        if (subscribers == null) {
-            subscribers = new LinkedHashSet<>();
-            prefSubscribers.put(pref, subscribers);
+        if (listeners == null) {
+            listeners = new LinkedHashSet<>();
+            prefValueChangedListeners.put(pref, listeners);
         }
 
-        subscribers.add(subscriber);
+        listeners.add(listener);
     }
 
     @Override
-    public <K extends Enum<K>, V> void unsubscribe(Pref<K, V> pref, OnValueChanged<V> subscriber) {
+    public <K extends Enum<K>, V> void removeValueChangedListener(Pref<K, V> pref, OnValueChanged<V> listener) {
         checkNotNull(pref, "Pref can not be null");
-        checkNotNull(subscriber, "Subscriber can not be null");
+        checkNotNull(listener, "Listener can not be null");
 
         if (!initialized) {
-            throw new PreferNotInitializedException("Can not add subscriber");
+            throw new PreferNotInitializedException("Can not add listener");
         }
 
-        final Set<OnValueChanged> subscribers = this.prefSubscribers.get(pref);
+        final Set<OnValueChanged> listeners = this.prefValueChangedListeners.get(pref);
 
-        if (subscribers != null) {
-            subscribers.remove(subscriber);
+        if (listeners != null) {
+            listeners.remove(listener);
         }
     }
 
@@ -314,7 +314,7 @@ public abstract class AndroidPrefer implements Prefer {
     }
 
     /**
-     * Notify subscribers of a changed Pref.
+     * Notify listeners of a changed Pref value.
      *
      * @param serializedKey The serialized Pref key.
      */
@@ -330,17 +330,17 @@ public abstract class AndroidPrefer implements Prefer {
             return;
         }
 
-        for (Map.Entry<Pref, Set<OnValueChanged>> entry : prefSubscribers.entrySet()) {
+        for (Map.Entry<Pref, Set<OnValueChanged>> entry : prefValueChangedListeners.entrySet()) {
             Pref pref = entry.getKey();
 
             // match pref by key
             if (pref.getKey().equals(key)) {
                 Object value = pref.getValue();
 
-                // pass new value to subscribers
-                for (OnValueChanged subscriber : entry.getValue()) {
+                // pass new value to listeners
+                for (OnValueChanged listener : entry.getValue()) {
                     // noinspection unchecked
-                    subscriber.onValueChanged(value);
+                    listener.onValueChanged(value);
                 }
 
                 break;

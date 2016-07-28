@@ -1,7 +1,7 @@
 package com.cookingfox.android.prefer.api.pref;
 
 /**
- * Subscriber interface for when a {@link Pref}'s value changes.
+ * Listener interface for when a {@link Pref}'s value changes.
  *
  * @param <V> Indicates the Pref's value type.
  */

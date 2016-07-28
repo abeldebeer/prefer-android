@@ -17,6 +17,6 @@ public interface RxPref<K extends Enum<K>, V> extends Pref<K, V> {
      *
      * @return Rx observable for value changes of this Pref.
      */
-    Observable<V> observe();
+    Observable<V> observeValueChanges();
 
 }

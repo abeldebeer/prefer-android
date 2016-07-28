@@ -21,6 +21,6 @@ public interface RxPrefer extends Prefer {
      * @throws PreferNotInitializedException when Prefer has not been initialized yet.
      * @see #initializePrefer()
      */
-    <K extends Enum<K>, V> Observable<V> observePref(Pref<K, V> pref);
+    <K extends Enum<K>, V> Observable<V> observeValueChanges(Pref<K, V> pref);
 
 }

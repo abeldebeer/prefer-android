@@ -80,8 +80,8 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
     //----------------------------------------------------------------------------------------------
 
     @Override
-    public void subscribe(OnValueChanged<V> subscriber) {
-        prefer.subscribe(this, checkNotNull(subscriber, "Subscriber can not be null"));
+    public void addValueChangedListener(OnValueChanged<V> listener) {
+        prefer.addValueChangedListener(this, checkNotNull(listener, "Listener can not be null"));
     }
 
     @Override
@@ -95,8 +95,8 @@ public abstract class AbstractAndroidPref<K extends Enum<K>, V>
     }
 
     @Override
-    public void unsubscribe(OnValueChanged<V> subscriber) {
-        prefer.unsubscribe(this, subscriber);
+    public void removeValueChangedListener(OnValueChanged<V> listener) {
+        prefer.removeValueChangedListener(this, listener);
     }
 
     @Override

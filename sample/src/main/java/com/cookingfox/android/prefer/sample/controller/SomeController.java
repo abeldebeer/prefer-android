@@ -16,7 +16,7 @@ public class SomeController {
     }
 
     public void example() {
-        prefs.cacheEnabled().observe().subscribe(new Action1<Boolean>() {
+        prefs.cacheEnabled().observeValueChanges().subscribe(new Action1<Boolean>() {
             @Override
             public void call(Boolean aBoolean) {
                 // do something with change

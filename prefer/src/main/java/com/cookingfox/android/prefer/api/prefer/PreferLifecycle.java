@@ -11,7 +11,7 @@ public interface PreferLifecycle {
     void initializePrefer();
 
     /**
-     * Dispose the Prefer library. Clears all added groups and subscribers.
+     * Dispose the Prefer library. Clears all added groups and listeners.
      */
     void disposePrefer();
 

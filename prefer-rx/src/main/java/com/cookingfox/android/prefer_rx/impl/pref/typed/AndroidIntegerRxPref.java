@@ -25,8 +25,8 @@ public class AndroidIntegerRxPref<K extends Enum<K>>
     }
 
     @Override
-    public Observable<Integer> observe() {
-        return rxPrefer.observePref(this);
+    public Observable<Integer> observeValueChanges() {
+        return rxPrefer.observeValueChanges(this);
     }
 
 }

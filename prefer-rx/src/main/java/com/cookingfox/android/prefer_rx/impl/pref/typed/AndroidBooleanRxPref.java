@@ -25,8 +25,8 @@ public class AndroidBooleanRxPref<K extends Enum<K>>
     }
 
     @Override
-    public Observable<Boolean> observe() {
-        return rxPrefer.observePref(this);
+    public Observable<Boolean> observeValueChanges() {
+        return rxPrefer.observeValueChanges(this);
     }
 
 }

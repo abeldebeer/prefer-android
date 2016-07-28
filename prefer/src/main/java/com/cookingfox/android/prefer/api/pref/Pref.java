@@ -49,17 +49,17 @@ public interface Pref<K extends Enum<K>, V> extends PrefValidator<V> {
     void setValue(V value) throws InvalidPrefValueException;
 
     /**
-     * Registers a subscriber for when the value of this preference changes.
+     * Adds a listener which is notified when the value of this preference changes.
      *
-     * @param subscriber The subscriber to add.
+     * @param listener The listener to add.
      */
-    void subscribe(OnValueChanged<V> subscriber);
+    void addValueChangedListener(OnValueChanged<V> listener);
 
     /**
-     * Removes the Pref subscriber.
+     * Stops notifying this listener when this preference's value changes.
      *
-     * @param subscriber The subscriber to remove.
+     * @param listener The listener to remove.
      */
-    void unsubscribe(OnValueChanged<V> subscriber);
+    void removeValueChangedListener(OnValueChanged<V> listener);
 
 }

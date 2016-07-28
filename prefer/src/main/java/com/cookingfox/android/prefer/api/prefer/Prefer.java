@@ -37,25 +37,25 @@ public interface Prefer extends PreferHelper {
     Set<PrefGroup<? extends Enum>> getGroups();
 
     /**
-     * Registers a subscriber for when the value of the provided Pref changes.
+     * Adds a listener which is notified when the value of this preference changes.
      *
-     * @param pref       The Pref to add a subscriber for.
-     * @param subscriber The subscriber to add.
-     * @param <K>        References the enum class for the Pref's key.
-     * @param <V>        Indicates the Pref's value type.
-     * @see Pref#subscribe(OnValueChanged)
+     * @param pref     The Pref to add a listener for.
+     * @param listener The listener to add.
+     * @param <K>      References the enum class for the Pref's key.
+     * @param <V>      Indicates the Pref's value type.
+     * @see Pref#addValueChangedListener(OnValueChanged)
      */
-    <K extends Enum<K>, V> void subscribe(Pref<K, V> pref, OnValueChanged<V> subscriber);
+    <K extends Enum<K>, V> void addValueChangedListener(Pref<K, V> pref, OnValueChanged<V> listener);
 
     /**
-     * Removes a Pref subscriber.
+     * Stops notifying this listener when this preference's value changes.
      *
-     * @param pref       The Pref to remove the subscriber for.
-     * @param subscriber The subscriber to remove.
-     * @param <K>        References the enum class for the Pref's key.
-     * @param <V>        Indicates the Pref's value type.
-     * @see Pref#unsubscribe(OnValueChanged)
+     * @param pref     The Pref to remove the listener for.
+     * @param listener The listener to remove.
+     * @param <K>      References the enum class for the Pref's key.
+     * @param <V>      Indicates the Pref's value type.
+     * @see Pref#removeValueChangedListener(OnValueChanged)
      */
-    <K extends Enum<K>, V> void unsubscribe(Pref<K, V> pref, OnValueChanged<V> subscriber);
+    <K extends Enum<K>, V> void removeValueChangedListener(Pref<K, V> pref, OnValueChanged<V> listener);
 
 }

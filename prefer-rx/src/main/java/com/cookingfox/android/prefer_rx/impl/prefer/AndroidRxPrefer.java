@@ -12,12 +12,10 @@ import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidIntegerRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidLongRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidStringRxPref;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action0;
+import rx.subscriptions.CompositeSubscription;
 import rx.subscriptions.Subscriptions;
 
 import static com.cookingfox.guava_preconditions.Preconditions.checkNotNull;
@@ -30,14 +28,14 @@ public abstract class AndroidRxPrefer extends AndroidPrefer implements RxPrefer 
     /**
      * Track observable subscribers, so they can be cleared on dispose.
      */
-    protected final Set<Subscriber> rxSubscribers = new LinkedHashSet<>();
+    protected final CompositeSubscription subscribers = new CompositeSubscription();
 
     //----------------------------------------------------------------------------------------------
     // IMPLEMENTATION: RxPrefer
     //----------------------------------------------------------------------------------------------
 
     @Override
-    public <K extends Enum<K>, V> Observable<V> observePref(final Pref<K, V> pref) {
+    public <K extends Enum<K>, V> Observable<V> observeValueChanges(final Pref<K, V> pref) {
         checkNotNull(pref, "Pref can not be null");
 
         if (!initialized) {
@@ -46,25 +44,27 @@ public abstract class AndroidRxPrefer extends AndroidPrefer implements RxPrefer 
 
         return Observable.create(new Observable.OnSubscribe<V>() {
             @Override
-            public void call(final Subscriber<? super V> rxSubscriber) {
-                final OnValueChanged<V> prefSubscriber = new OnValueChanged<V>() {
+            public void call(final Subscriber<? super V> subscriber) {
+                // create listener implementation that notifies Rx subscriber
+                final OnValueChanged<V> listener = new OnValueChanged<V>() {
                     @Override
                     public void onValueChanged(V value) {
-                        rxSubscriber.onNext(value);
+                        subscriber.onNext(value);
                     }
                 };
 
-                subscribe(pref, prefSubscriber);
+                addValueChangedListener(pref, listener);
 
-                rxSubscriber.add(Subscriptions.create(new Action0() {
+                // remove the listener when the Rx subscriber unsubscribes
+                subscriber.add(Subscriptions.create(new Action0() {
                     @Override
                     public void call() {
-                        unsubscribe(pref, prefSubscriber);
-                        rxSubscriber.onCompleted();
+                        removeValueChangedListener(pref, listener);
+                        subscriber.onCompleted();
                     }
                 }));
 
-                rxSubscribers.add(rxSubscriber);
+                subscribers.add(subscriber);
             }
         });
     }
@@ -76,9 +76,7 @@ public abstract class AndroidRxPrefer extends AndroidPrefer implements RxPrefer 
     @Override
     public void disposePrefer() {
         // unsubscribe all
-        for (Subscriber subscriber : rxSubscribers) {
-            subscriber.unsubscribe();
-        }
+        subscribers.unsubscribe();
 
         super.disposePrefer();
     }

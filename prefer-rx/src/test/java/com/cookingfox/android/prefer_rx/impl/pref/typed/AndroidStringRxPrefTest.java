@@ -1,13 +1,13 @@
 package com.cookingfox.android.prefer_rx.impl.pref.typed;
 
 import com.cookingfox.android.prefer_rx.impl.prefer.SharedPreferencesRxPrefer;
+import com.cookingfox.android.prefer_testing.fixtures.Key;
+import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
-import com.cookingfox.android.prefer_testing.fixtures.Key;
 import rx.observers.TestSubscriber;
 
 /**
@@ -33,16 +33,16 @@ public class AndroidStringRxPrefTest {
     }
 
     //----------------------------------------------------------------------------------------------
-    // TESTS: observe
+    // TESTS: observeValueChanges
     //----------------------------------------------------------------------------------------------
 
     @Test
-    public void observe_should_create_value_observable() throws Exception {
+    public void observeValueChanges_should_create_value_observable() throws Exception {
         AndroidBooleanRxPref<Key> pref = prefer.newBoolean(Key.IsEnabled, true);
 
         TestSubscriber<Boolean> subscriber = TestSubscriber.create();
 
-        pref.observe().subscribe(subscriber);
+        pref.observeValueChanges().subscribe(subscriber);
 
         pref.setValue(!pref.getValue());
 

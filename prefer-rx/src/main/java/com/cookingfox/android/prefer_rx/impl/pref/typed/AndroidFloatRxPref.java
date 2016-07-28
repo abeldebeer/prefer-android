@@ -25,8 +25,8 @@ public class AndroidFloatRxPref<K extends Enum<K>>
     }
 
     @Override
-    public Observable<Float> observe() {
-        return rxPrefer.observePref(this);
+    public Observable<Float> observeValueChanges() {
+        return rxPrefer.observeValueChanges(this);
     }
 
 }

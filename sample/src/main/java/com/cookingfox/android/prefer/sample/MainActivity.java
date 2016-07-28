@@ -51,16 +51,16 @@ public class MainActivity extends AppCompatActivity {
         RestApiPrefs restApiPrefs = new AndroidRestApiPrefs(prefer);
         BooleanRxPref<RestApiPrefs.Key> cacheEnabled = restApiPrefs.cacheEnabled();
 
-        // subscribe with subscriber interface
-        cacheEnabled.subscribe(new OnValueChanged<Boolean>() {
+        // add value changed listener
+        cacheEnabled.addValueChangedListener(new OnValueChanged<Boolean>() {
             @Override
             public void onValueChanged(Boolean value) {
-                Log.i(TAG, "[Subscriber] `cacheEnabled` value changed: " + value);
+                Log.i(TAG, "[Listener] `cacheEnabled` value changed: " + value);
             }
         });
 
         // observe with rx
-        cacheEnabled.observe().subscribe(new Action1<Boolean>() {
+        cacheEnabled.observeValueChanges().subscribe(new Action1<Boolean>() {
             @Override
             public void call(Boolean value) {
                 Log.i(TAG, "[Rx Observable] `cacheEnabled` value changed: " + value);
