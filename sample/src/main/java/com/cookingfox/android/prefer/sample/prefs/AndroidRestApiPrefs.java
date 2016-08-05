@@ -1,6 +1,7 @@
 package com.cookingfox.android.prefer.sample.prefs;
 
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
+import com.cookingfox.android.prefer.api.pref.PrefValidator;
 import com.cookingfox.android.prefer_rx.api.pref.typed.BooleanRxPref;
 import com.cookingfox.android.prefer_rx.api.pref.typed.LongRxPref;
 import com.cookingfox.android.prefer_rx.api.pref.typed.StringRxPref;
@@ -36,6 +37,16 @@ public class AndroidRestApiPrefs implements RestApiPrefs {
         updateIntervalSeconds = group.addNewLong(Key.UpdateIntervalSeconds, 60);
         updateIntervalSeconds.setTitle("Update interval (seconds)");
         updateIntervalSeconds.setSummary("How often to fetch new data from the API.");
+        updateIntervalSeconds.setValidator(new PrefValidator<Long>() {
+            @Override
+            public boolean validate(Long value) throws Exception {
+                if (value < 1) {
+                    throw new Exception("Minimum value must be 1");
+                }
+
+                return true;
+            }
+        });
     }
 
     @Override
