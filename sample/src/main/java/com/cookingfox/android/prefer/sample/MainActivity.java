@@ -2,6 +2,7 @@ package com.cookingfox.android.prefer.sample;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        setActivityTitle();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -66,13 +69,33 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "[Rx Observable] `cacheEnabled` value changed: " + value);
             }
         });
+    }
 
-        // toggle cache enabled preference
-        cacheEnabled.setValue(!cacheEnabled.getValue());
+    private void setActivityTitle() {
+        try {
+            String versionName = getPackageManager()
+                    .getPackageInfo(getPackageName(), 0)
+                    .versionName;
+
+            if (!versionName.isEmpty()) {
+                setTitle(getTitle() + " v" + versionName);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            // could not find the package by name
+        }
     }
 
     private void showSettings() {
         startActivity(new Intent(this, PreferActivity.class));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (isFinishing()) {
+            AndroidPreferProvider.disposeDefault();
+        }
     }
 
     @Override
