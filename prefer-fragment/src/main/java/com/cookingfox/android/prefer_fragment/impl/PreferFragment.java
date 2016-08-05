@@ -9,6 +9,7 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.v7.app.AlertDialog;
+import android.widget.EditText;
 
 import com.cookingfox.android.prefer.api.exception.PreferException;
 import com.cookingfox.android.prefer.api.pref.Pref;
@@ -235,7 +236,13 @@ public class PreferFragment extends PreferenceFragment {
             return new CheckBoxPreference(getActivity());
         }
 
-        return new EditTextPreference(getActivity());
+        EditTextPreference editTextPreference = new EditTextPreference(getActivity());
+        EditText editText = editTextPreference.getEditText();
+
+        // default to single line input
+        editText.setSingleLine();
+
+        return editTextPreference;
     }
 
     /**
