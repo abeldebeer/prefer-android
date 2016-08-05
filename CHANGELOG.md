@@ -1,5 +1,10 @@
 # Prefer for Android: Change Log
 
+## [0.2.3](../../releases/tag/0.2.3) (2016-08-05)
+
+- Makes sure fragment text input preference defaults to single-line.
+- Adds `android-maven` gradle plugin.
+
 ## [0.2.2](../../releases/tag/0.2.2) (2016-07-28)
 
 - Reverts RxJava version to fix compatibility issues.
