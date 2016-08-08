@@ -1,5 +1,10 @@
 # Prefer for Android: Change Log
 
+## [0.2.4](../../releases/tag/0.2.4) (2016-08-08)
+
+- Adds support for distribution of sources and javadoc.
+- Optimizes gradle configuration.
+
 ## [0.2.3](../../releases/tag/0.2.3) (2016-08-05)
 
 - Makes sure fragment text input preference defaults to single-line.

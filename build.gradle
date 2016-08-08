@@ -21,8 +21,8 @@ ext.config = [
         buildToolsVersion    : '23.0.3',
         sourceCompatibility  : JavaVersion.VERSION_1_7,
         targetCompatibility  : JavaVersion.VERSION_1_7,
-        versionCode          : 10,
-        versionName          : '0.2.3'
+        versionCode          : 11,
+        versionName          : '0.2.4'
 ]
 
 // dependencies
@@ -31,10 +31,10 @@ ext.deps = [
         android_design     : 'com.android.support:design:23.4.0',
         guava_preconditions: 'com.cookingfox:guava-preconditions:0.1.5',
         junit              : 'junit:junit:4.12',
-        rxjava             : 'io.reactivex:rxjava:1.1.6'
+        rxjava             : 'io.reactivex:rxjava:1.1.8'
 ]
 
-// default configuration for all android modules
+// default configuration for all android modules (overridden per module)
 subprojects {
     repositories {
         jcenter()
@@ -75,6 +75,7 @@ subprojects {
     }
 }
 
+// root clean task
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
