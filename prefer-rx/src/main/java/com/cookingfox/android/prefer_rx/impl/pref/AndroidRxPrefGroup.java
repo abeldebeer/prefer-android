@@ -32,6 +32,7 @@ public class AndroidRxPrefGroup<K extends Enum<K>> extends AndroidPrefGroup<K> {
      *
      * @param prefer   Reference to Prefer, so the current value can be retrieved and updated.
      * @param keyClass The enum key class for the Prefs in this group.
+     * @param <T>      The concrete prefer type.
      */
     public <T extends AndroidPrefer & RxPrefer> AndroidRxPrefGroup(T prefer, Class<K> keyClass) {
         super(prefer, keyClass);
