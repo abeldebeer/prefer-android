@@ -1,3 +1,4 @@
+// build configuration
 buildscript {
     repositories {
         jcenter()
@@ -10,16 +11,7 @@ buildscript {
     }
 }
 
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
+// gradle configuration
 ext.config = [
         groupName            : 'com.github.cookingfox',
         minSdkVersion        : 9,
@@ -33,6 +25,7 @@ ext.config = [
         versionName          : '0.2.3'
 ]
 
+// dependencies
 ext.deps = [
         android_appcompat  : 'com.android.support:appcompat-v7:23.4.0',
         android_design     : 'com.android.support:design:23.4.0',
@@ -40,3 +33,48 @@ ext.deps = [
         junit              : 'junit:junit:4.12',
         rxjava             : 'io.reactivex:rxjava:1.1.6'
 ]
+
+// default configuration for all android modules
+subprojects {
+    repositories {
+        jcenter()
+    }
+
+    plugins.matching {
+        // match android library and application plugins
+        it.class.name.matches('com.android.build.gradle.LibraryPlugin') ||
+                it.class.name.matches('com.android.build.gradle.AppPlugin')
+    }.whenPluginAdded {
+        group = config.groupName
+
+        android {
+            compileSdkVersion config.compileSdkVersion
+            buildToolsVersion config.buildToolsVersion
+
+            defaultConfig {
+                minSdkVersion config.minSdkVersion
+                targetSdkVersion config.targetSdkVersion
+                versionCode config.versionCode
+                versionName config.versionName
+            }
+            compileOptions {
+                sourceCompatibility config.sourceCompatibility
+                targetCompatibility config.targetCompatibility
+            }
+            buildTypes {
+                release {
+                    minifyEnabled false
+                    proguardFiles getDefaultProguardFile('proguard-android.txt')
+                }
+            }
+        }
+
+        dependencies {
+            testCompile deps.junit
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
