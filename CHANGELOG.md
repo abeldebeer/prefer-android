@@ -1,5 +1,10 @@
 # Prefer for Android: Change Log
 
+## [0.2.5](../../releases/tag/0.2.5) (2016-08-17)
+
+- Does not print error stacktrace when no Pref is found for changed `SharedPreferences` key.
+- Upgrades Gradle plugins and wrapper.
+
 ## [0.2.4](../../releases/tag/0.2.4) (2016-08-08)
 
 - Adds support for distribution of sources and javadoc.
