@@ -1,7 +1,6 @@
 package com.cookingfox.android.prefer.impl.prefer;
 
 import com.cookingfox.android.prefer.api.exception.GroupAlreadyAddedException;
-import com.cookingfox.android.prefer.api.exception.PreferException;
 import com.cookingfox.android.prefer.api.exception.PreferNotInitializedException;
 import com.cookingfox.android.prefer.api.pref.OnValueChanged;
 import com.cookingfox.android.prefer.api.pref.Pref;
@@ -332,9 +331,7 @@ public abstract class AndroidPrefer implements Prefer {
         try {
             key = PreferKeySerializer.deserializeKey(serializedKey);
         } catch (ClassNotFoundException error) {
-            // wrap the exception and print the stack trace
-            String message = String.format("Could not deserialize Pref key: '%s'", serializedKey);
-            new PreferException(message, error).printStackTrace();
+            // ignore unknown key
             return;
         }
 
