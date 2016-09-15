@@ -14,4 +14,5 @@ dependencies {
     compile deps.android_appcompat
 
     testCompile project(':prefer-testing');
+    testCompile deps.mockito
 }

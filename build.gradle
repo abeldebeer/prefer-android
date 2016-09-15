@@ -31,6 +31,7 @@ ext.deps = [
         android_design     : 'com.android.support:design:23.4.0',
         guava_preconditions: 'com.cookingfox:guava-preconditions:0.1.5',
         junit              : 'junit:junit:4.12',
+        mockito            : 'org.mockito:mockito-core:2.1.0-RC.1',
         rxjava             : 'io.reactivex:rxjava:1.1.8'
 ]
 

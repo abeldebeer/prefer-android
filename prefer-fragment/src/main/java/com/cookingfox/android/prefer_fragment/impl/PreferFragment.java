@@ -330,7 +330,21 @@ public class PreferFragment extends PreferenceFragment {
     protected void populatePreferenceWithMeta(Preference preference, PrefMeta meta) {
         preference.setEnabled(meta.enable());
         preference.setSummary(meta.getSummary());
-        preference.setTitle(meta.getTitle());
+
+        if (meta.getTitle() == null || meta.getTitle().isEmpty()) {
+            if (meta instanceof Pref) {
+                Pref pref = (Pref) meta;
+                preference.setTitle(pref.getKey().toString());
+            } else if (meta instanceof PrefGroup) {
+                PrefGroup prefGroup = (PrefGroup) meta;
+                String keyClassName = prefGroup.getKeyClass().getName();
+                String simpleName = keyClassName.substring(keyClassName.lastIndexOf('.') + 1);
+
+                preference.setTitle(simpleName);
+            }
+        } else {
+            preference.setTitle(meta.getTitle());
+        }
     }
 
 }

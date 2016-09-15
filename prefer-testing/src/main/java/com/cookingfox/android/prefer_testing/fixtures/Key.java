@@ -6,5 +6,5 @@ package com.cookingfox.android.prefer_testing.fixtures;
 public enum Key {
     IntervalMs, // Integer
     IsEnabled, // Boolean
-    Username, // String
+    Username // String
 }
