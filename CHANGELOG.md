@@ -1,5 +1,9 @@
 # Prefer for Android: Change Log
 
+## [0.2.6](../../releases/tag/0.2.6) (2016-09-15)
+
+- Adds feature for setting default preference titles in case a preference has no custom title.
+
 ## [0.2.5](../../releases/tag/0.2.5) (2016-08-17)
 
 - Does not print error stacktrace when no Pref is found for changed `SharedPreferences` key.

@@ -21,8 +21,8 @@ ext.config = [
         buildToolsVersion    : '23.0.3',
         sourceCompatibility  : JavaVersion.VERSION_1_7,
         targetCompatibility  : JavaVersion.VERSION_1_7,
-        versionCode          : 12,
-        versionName          : '0.2.5'
+        versionCode          : 13,
+        versionName          : '0.2.6'
 ]
 
 // dependencies
