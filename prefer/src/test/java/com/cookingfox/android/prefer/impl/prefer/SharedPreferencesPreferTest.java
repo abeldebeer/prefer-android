@@ -2,7 +2,9 @@ package com.cookingfox.android.prefer.impl.prefer;
 
 import com.cookingfox.android.prefer.api.exception.GroupAlreadyAddedException;
 import com.cookingfox.android.prefer.api.exception.PreferNotInitializedException;
+import com.cookingfox.android.prefer.api.pref.OnGroupValueChanged;
 import com.cookingfox.android.prefer.api.pref.OnValueChanged;
+import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer.api.pref.typed.BooleanPref;
 import com.cookingfox.android.prefer.impl.pref.AndroidPrefGroup;
@@ -16,6 +18,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -162,6 +166,140 @@ public class SharedPreferencesPreferTest {
     }
 
     //----------------------------------------------------------------------------------------------
+    // TESTS: addGroupValueChangedListener
+    //----------------------------------------------------------------------------------------------
+
+    @Test(expected = NullPointerException.class)
+    public void addGroupValueChangedListener_should_throw_if_group_null() throws Exception {
+        prefer.addGroupValueChangedListener(null, new OnGroupValueChanged<Key>() {
+            @Override
+            public void onGroupValueChanged(Pref<Key, ?> pref) {
+                // ignore
+            }
+        });
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void addGroupValueChangedListener_should_throw_if_listener_null() throws Exception {
+        prefer.addGroupValueChangedListener(prefer.addNewGroup(Key.class), null);
+    }
+
+    @Test(expected = PreferNotInitializedException.class)
+    public void addGroupValueChangedListener_should_throw_if_not_initialized() throws Exception {
+        SharedPreferencesPrefer prefer = new SharedPreferencesPrefer(new InMemorySharedPreferences());
+
+        prefer.addGroupValueChangedListener(prefer.addNewGroup(Key.class), new OnGroupValueChanged<Key>() {
+            @Override
+            public void onGroupValueChanged(Pref<Key, ?> pref) {
+                // ignore
+            }
+        });
+    }
+
+    @Test
+    public void addGroupValueChangedListener_should_call_listener_for_all_value_changed() throws Exception {
+        final int intervalMsDefault = 1;
+        final boolean isEnabledDefault = false;
+        final String usernameDefault = "foo";
+
+        final int intervalMsNew = 2;
+        final boolean isEnabledNew = true;
+
+        AndroidPrefGroup<Key> group = prefer.addNewGroup(Key.class);
+        AndroidIntegerPref<Key> intervalMsPref = group.addNewInteger(Key.IntervalMs, intervalMsDefault);
+        AndroidBooleanPref<Key> isEnabledPref = group.addNewBoolean(Key.IsEnabled, isEnabledDefault);
+        AndroidStringPref<Key> usernamePref = group.addNewString(Key.Username, usernameDefault);
+
+        final LinkedList<Key> groupValueChangedCalls = new LinkedList<>();
+        final LinkedList<Key> expectedCalls = new LinkedList<>(Arrays.asList(Key.IntervalMs, Key.IsEnabled));
+
+        group.addGroupValueChangedListener(new OnGroupValueChanged<Key>() {
+            @Override
+            public void onGroupValueChanged(Pref<Key, ?> pref) {
+                groupValueChangedCalls.add(pref.getKey());
+            }
+        });
+
+        intervalMsPref.setValue(intervalMsNew);
+        isEnabledPref.setValue(isEnabledNew);
+
+        assertEquals(intervalMsNew, (int) intervalMsPref.getValue());
+        assertEquals(isEnabledNew, isEnabledPref.getValue());
+        assertEquals(usernameDefault, usernamePref.getValue()); // should not have changed
+
+        assertFalse(groupValueChangedCalls.isEmpty());
+        assertEquals(expectedCalls, groupValueChangedCalls);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: removeGroupValueChangedListener
+    //----------------------------------------------------------------------------------------------
+
+    @Test(expected = NullPointerException.class)
+    public void removeGroupValueChangedListener_should_throw_if_group_null() throws Exception {
+        prefer.removeGroupValueChangedListener(null, new OnGroupValueChanged<Key>() {
+            @Override
+            public void onGroupValueChanged(Pref<Key, ?> pref) {
+                // ignore
+            }
+        });
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void removeGroupValueChangedListener_should_throw_if_listener_null() throws Exception {
+        prefer.removeGroupValueChangedListener(prefer.addNewGroup(Key.class), null);
+    }
+
+    @Test(expected = PreferNotInitializedException.class)
+    public void removeGroupValueChangedListener_should_throw_if_not_initialized() throws Exception {
+        SharedPreferencesPrefer prefer = new SharedPreferencesPrefer(new InMemorySharedPreferences());
+
+        prefer.removeGroupValueChangedListener(prefer.addNewGroup(Key.class), new OnGroupValueChanged<Key>() {
+            @Override
+            public void onGroupValueChanged(Pref<Key, ?> pref) {
+                // ignore
+            }
+        });
+    }
+
+    @Test
+    public void removeGroupValueChangedListener_should_call_listener_for_all_value_changed() throws Exception {
+        final int intervalMsDefault = 1;
+        final boolean isEnabledDefault = false;
+        final String usernameDefault = "foo";
+
+        final int intervalMsNew = 2;
+        final boolean isEnabledNew = true;
+
+        AndroidPrefGroup<Key> group = prefer.addNewGroup(Key.class);
+        AndroidIntegerPref<Key> intervalMsPref = group.addNewInteger(Key.IntervalMs, intervalMsDefault);
+        AndroidBooleanPref<Key> isEnabledPref = group.addNewBoolean(Key.IsEnabled, isEnabledDefault);
+        AndroidStringPref<Key> usernamePref = group.addNewString(Key.Username, usernameDefault);
+
+        final LinkedList<Key> groupValueChangedCalls = new LinkedList<>();
+
+        final OnGroupValueChanged<Key> listener = new OnGroupValueChanged<Key>() {
+            @Override
+            public void onGroupValueChanged(Pref<Key, ?> pref) {
+                groupValueChangedCalls.add(pref.getKey());
+            }
+        };
+
+        // first add, then remove
+        group.addGroupValueChangedListener(listener);
+        group.removeGroupValueChangedListener(listener);
+
+        intervalMsPref.setValue(intervalMsNew);
+        isEnabledPref.setValue(isEnabledNew);
+
+        assertEquals(intervalMsNew, (int) intervalMsPref.getValue());
+        assertEquals(isEnabledNew, isEnabledPref.getValue());
+        assertEquals(usernameDefault, usernamePref.getValue()); // should not have changed
+
+        assertTrue(groupValueChangedCalls.isEmpty());
+    }
+
+    //----------------------------------------------------------------------------------------------
     // TESTS: disposePrefer
     //----------------------------------------------------------------------------------------------
 
@@ -194,6 +332,26 @@ public class SharedPreferencesPreferTest {
         prefer.disposePrefer();
 
         assertFalse(prefer.prefValueChangedListeners.containsKey(pref));
+    }
+
+    @Test
+    public void disposePrefer_should_clear_all_group_listeners() throws Exception {
+        AndroidPrefGroup<Key> group = prefer.addNewGroup(Key.class);
+
+        OnGroupValueChanged<Key> listener = new OnGroupValueChanged<Key>() {
+            @Override
+            public void onGroupValueChanged(Pref<Key, ?> pref) {
+                // ignore
+            }
+        };
+
+        prefer.addGroupValueChangedListener(group, listener);
+
+        assertTrue(prefer.prefGroupValueChangedListeners.containsKey(group));
+
+        prefer.disposePrefer();
+
+        assertFalse(prefer.prefGroupValueChangedListeners.containsKey(group));
     }
 
     //----------------------------------------------------------------------------------------------

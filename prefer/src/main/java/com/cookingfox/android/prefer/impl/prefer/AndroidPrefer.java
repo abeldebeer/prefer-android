@@ -2,6 +2,7 @@ package com.cookingfox.android.prefer.impl.prefer;
 
 import com.cookingfox.android.prefer.api.exception.GroupAlreadyAddedException;
 import com.cookingfox.android.prefer.api.exception.PreferNotInitializedException;
+import com.cookingfox.android.prefer.api.pref.OnGroupValueChanged;
 import com.cookingfox.android.prefer.api.pref.OnValueChanged;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
@@ -45,6 +46,11 @@ public abstract class AndroidPrefer implements Prefer {
      */
     protected final Map<Pref, Set<OnValueChanged>> prefValueChangedListeners = new LinkedHashMap<>();
 
+    /**
+     * Group value changed listeners per group.
+     */
+    protected final Map<PrefGroup, Set<OnGroupValueChanged>> prefGroupValueChangedListeners = new LinkedHashMap<>();
+
     //----------------------------------------------------------------------------------------------
     // IMPLEMENTATION: PreferLifecycle
     //----------------------------------------------------------------------------------------------
@@ -70,6 +76,7 @@ public abstract class AndroidPrefer implements Prefer {
 
         groups.clear();
         prefValueChangedListeners.clear();
+        prefGroupValueChangedListeners.clear();
 
         initialized = false;
     }
@@ -144,6 +151,10 @@ public abstract class AndroidPrefer implements Prefer {
         getHelper().putString(key, value);
     }
 
+    //----------------------------------------------------------------------------------------------
+    // PREF LISTENERS
+    //----------------------------------------------------------------------------------------------
+
     @Override
     public <K extends Enum<K>, V> void addValueChangedListener(Pref<K, V> pref, OnValueChanged<V> listener) {
         checkNotNull(pref, "Pref can not be null");
@@ -179,6 +190,10 @@ public abstract class AndroidPrefer implements Prefer {
         }
     }
 
+    //----------------------------------------------------------------------------------------------
+    // GROUPS
+    //----------------------------------------------------------------------------------------------
+
     @Override
     public <K extends Enum<K>> void addGroup(PrefGroup<K> group) {
         checkNotNull(group, "Group can not be null");
@@ -193,6 +208,25 @@ public abstract class AndroidPrefer implements Prefer {
     }
 
     @Override
+    public <K extends Enum<K>> void addGroupValueChangedListener(PrefGroup<K> group, OnGroupValueChanged<K> listener) {
+        checkNotNull(group, "Pref can not be null");
+        checkNotNull(listener, "Listener can not be null");
+
+        if (!initialized) {
+            throw new PreferNotInitializedException("Can not add group listener");
+        }
+
+        Set<OnGroupValueChanged> listeners = this.prefGroupValueChangedListeners.get(group);
+
+        if (listeners == null) {
+            listeners = new LinkedHashSet<>();
+            prefGroupValueChangedListeners.put(group, listeners);
+        }
+
+        listeners.add(listener);
+    }
+
+    @Override
     public <K extends Enum<K>> PrefGroup<K> findGroup(Class<K> keyClass) {
         // noinspection unchecked
         return (PrefGroup<K>) groups.get(checkNotNull(keyClass, "Key class can not be null"));
@@ -203,8 +237,24 @@ public abstract class AndroidPrefer implements Prefer {
         return new LinkedHashSet<>(groups.values());
     }
 
+    @Override
+    public <K extends Enum<K>> void removeGroupValueChangedListener(PrefGroup<K> group, OnGroupValueChanged<K> listener) {
+        checkNotNull(group, "Pref can not be null");
+        checkNotNull(listener, "Listener can not be null");
+
+        if (!initialized) {
+            throw new PreferNotInitializedException("Can not add listener");
+        }
+
+        final Set<OnGroupValueChanged> listeners = this.prefGroupValueChangedListeners.get(group);
+
+        if (listeners != null) {
+            listeners.remove(listener);
+        }
+    }
+
     //----------------------------------------------------------------------------------------------
-    // PUBLIC METHODS
+    // ADDITIONAL PUBLIC METHODS
     //----------------------------------------------------------------------------------------------
 
     /**
@@ -325,6 +375,7 @@ public abstract class AndroidPrefer implements Prefer {
      *
      * @param serializedKey The serialized Pref key.
      */
+    @SuppressWarnings("unchecked")
     protected void handlePrefChanged(String serializedKey) {
         Enum key;
 
@@ -335,6 +386,7 @@ public abstract class AndroidPrefer implements Prefer {
             return;
         }
 
+        // notify pref value changed listeners
         for (Map.Entry<Pref, Set<OnValueChanged>> entry : prefValueChangedListeners.entrySet()) {
             Pref pref = entry.getKey();
 
@@ -344,8 +396,27 @@ public abstract class AndroidPrefer implements Prefer {
 
                 // pass new value to listeners
                 for (OnValueChanged listener : entry.getValue()) {
-                    // noinspection unchecked
                     listener.onValueChanged(value);
+                }
+
+                break;
+            }
+        }
+
+        // key class for groups
+        final Class<? extends Enum> keyClass = key.getClass();
+
+        // notify pref group value changed listeners
+        for (Map.Entry<PrefGroup, Set<OnGroupValueChanged>> entry : prefGroupValueChangedListeners.entrySet()) {
+            PrefGroup group = entry.getKey();
+
+            // match group by key class
+            if (group.getKeyClass().equals(keyClass)) {
+                Pref pref = group.findPref(key);
+
+                // pass pref with new value to listeners
+                for (OnGroupValueChanged listener : entry.getValue()) {
+                    listener.onGroupValueChanged(pref);
                 }
 
                 break;

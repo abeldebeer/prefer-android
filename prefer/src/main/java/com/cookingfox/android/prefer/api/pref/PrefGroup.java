@@ -11,6 +11,13 @@ import com.cookingfox.android.prefer.api.exception.PrefAlreadyAddedException;
 public interface PrefGroup<K extends Enum<K>> extends Iterable<Pref<K, ?>> {
 
     /**
+     * Adds a listener for when the value changes of one of this group's added Prefs.
+     *
+     * @param listener The listener to add.
+     */
+    void addGroupValueChangedListener(OnGroupValueChanged<K> listener);
+
+    /**
      * Add a Pref to this group.
      *
      * @param pref The Pref to add.
@@ -45,5 +52,13 @@ public interface PrefGroup<K extends Enum<K>> extends Iterable<Pref<K, ?>> {
      * @return The enum key class.
      */
     Class<K> getKeyClass();
+
+    /**
+     * Removes an added listener.
+     *
+     * @param listener The listener to remove.
+     * @see #addGroupValueChangedListener(OnGroupValueChanged)
+     */
+    void removeGroupValueChangedListener(OnGroupValueChanged<K> listener);
 
 }

@@ -8,15 +8,14 @@ import com.cookingfox.android.prefer.impl.pref.typed.AndroidIntegerPref;
 import com.cookingfox.android.prefer.impl.pref.typed.AndroidStringPref;
 import com.cookingfox.android.prefer.impl.prefer.AndroidPrefer;
 import com.cookingfox.android.prefer.impl.prefer.SharedPreferencesPrefer;
+import com.cookingfox.android.prefer_testing.fixtures.Key;
+import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Iterator;
-
-import com.cookingfox.android.prefer_testing.shared_preferences.InMemorySharedPreferences;
-import com.cookingfox.android.prefer_testing.fixtures.Key;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -62,6 +61,15 @@ public class AndroidPrefGroupTest {
     @Test(expected = NullPointerException.class)
     public void constructor_should_throw_if_key_class_null() throws Exception {
         new AndroidPrefGroup<Key>(prefer, null);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: addGroupValueChangedListener
+    //----------------------------------------------------------------------------------------------
+
+    @Test(expected = NullPointerException.class)
+    public void addGroupValueChangedListener_should_throw_if_listener_null() throws Exception {
+        group.addGroupValueChangedListener(null);
     }
 
     //----------------------------------------------------------------------------------------------
@@ -200,6 +208,15 @@ public class AndroidPrefGroupTest {
         Iterator<Pref<Key, ?>> iterator = group.iterator();
 
         assertNotNull(iterator);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // TESTS: removeGroupValueChangedListener
+    //----------------------------------------------------------------------------------------------
+
+    @Test(expected = NullPointerException.class)
+    public void removeGroupValueChangedListener_should_throw_if_listener_null() throws Exception {
+        group.removeGroupValueChangedListener(null);
     }
 
     //----------------------------------------------------------------------------------------------

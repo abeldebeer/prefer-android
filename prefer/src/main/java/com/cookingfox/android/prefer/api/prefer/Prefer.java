@@ -1,5 +1,6 @@
 package com.cookingfox.android.prefer.api.prefer;
 
+import com.cookingfox.android.prefer.api.pref.OnGroupValueChanged;
 import com.cookingfox.android.prefer.api.pref.OnValueChanged;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
@@ -21,6 +22,26 @@ public interface Prefer extends PreferHelper {
     <K extends Enum<K>> void addGroup(PrefGroup<K> group);
 
     /**
+     * Adds a listener for when the value changes of any of the provided group's Prefs.
+     *
+     * @param group    The group for which the changes should be notified.
+     * @param listener The listener that should be called.
+     * @param <K>      Indicates the group's key class.
+     */
+    <K extends Enum<K>> void addGroupValueChangedListener(PrefGroup<K> group, OnGroupValueChanged<K> listener);
+
+    /**
+     * Adds a listener which is notified when the value of this preference changes.
+     *
+     * @param pref     The Pref to add a listener for.
+     * @param listener The listener to add.
+     * @param <K>      References the enum class for the Pref's key.
+     * @param <V>      Indicates the Pref's value type.
+     * @see Pref#addValueChangedListener(OnValueChanged)
+     */
+    <K extends Enum<K>, V> void addValueChangedListener(Pref<K, V> pref, OnValueChanged<V> listener);
+
+    /**
      * Find a Pref group by its enum key class.
      *
      * @param keyClass The group's enum key class.
@@ -37,15 +58,13 @@ public interface Prefer extends PreferHelper {
     Set<PrefGroup<? extends Enum>> getGroups();
 
     /**
-     * Adds a listener which is notified when the value of this preference changes.
+     * Removes the listener for changes to the provided group's Prefs.
      *
-     * @param pref     The Pref to add a listener for.
-     * @param listener The listener to add.
-     * @param <K>      References the enum class for the Pref's key.
-     * @param <V>      Indicates the Pref's value type.
-     * @see Pref#addValueChangedListener(OnValueChanged)
+     * @param group    The group for which the listener should be removed.
+     * @param listener The listener that should be removed.
+     * @param <K>      Indicates the group's key class.
      */
-    <K extends Enum<K>, V> void addValueChangedListener(Pref<K, V> pref, OnValueChanged<V> listener);
+    <K extends Enum<K>> void removeGroupValueChangedListener(PrefGroup<K> group, OnGroupValueChanged<K> listener);
 
     /**
      * Stops notifying this listener when this preference's value changes.

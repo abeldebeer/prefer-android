@@ -2,6 +2,7 @@ package com.cookingfox.android.prefer.impl.pref;
 
 import com.cookingfox.android.prefer.api.exception.IncorrectPrefKeyClassException;
 import com.cookingfox.android.prefer.api.exception.PrefAlreadyAddedException;
+import com.cookingfox.android.prefer.api.pref.OnGroupValueChanged;
 import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer.api.pref.PrefMeta;
@@ -62,6 +63,11 @@ public class AndroidPrefGroup<K extends Enum<K>>
     //----------------------------------------------------------------------------------------------
 
     @Override
+    public void addGroupValueChangedListener(OnGroupValueChanged<K> listener) {
+        prefer.addGroupValueChangedListener(this, checkNotNull(listener, "Listener can not be null"));
+    }
+
+    @Override
     public void addPref(Pref<K, ?> pref) {
         K prefKey = pref.getKey();
 
@@ -104,6 +110,11 @@ public class AndroidPrefGroup<K extends Enum<K>>
     @Override
     public Iterator<Pref<K, ?>> iterator() {
         return prefs.values().iterator();
+    }
+
+    @Override
+    public void removeGroupValueChangedListener(OnGroupValueChanged<K> listener) {
+        prefer.removeGroupValueChangedListener(this, checkNotNull(listener, "Listener can not be null"));
     }
 
     //----------------------------------------------------------------------------------------------
