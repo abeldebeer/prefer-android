@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.cookingfox.android.prefer.api.pref.OnValueChanged;
+import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.impl.prefer.AndroidPreferProvider;
 import com.cookingfox.android.prefer.sample.prefs.AndroidRestApiPrefs;
 import com.cookingfox.android.prefer.sample.prefs.RestApiPrefs;
@@ -67,6 +68,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void call(Boolean value) {
                 Log.i(TAG, "[Rx Observable] `cacheEnabled` value changed: " + value);
+            }
+        });
+
+        // observe group with rx
+        restApiPrefs.getPrefGroup().observeGroupValueChanges().subscribe(new Action1<Pref<RestApiPrefs.Key, ?>>() {
+            @Override
+            public void call(Pref<RestApiPrefs.Key, ?> pref) {
+                Log.i(TAG, "[Rx group Observable] pref value changed: " + pref.getKey());
             }
         });
     }

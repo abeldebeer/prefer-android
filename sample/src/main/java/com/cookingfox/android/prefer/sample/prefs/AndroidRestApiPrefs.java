@@ -1,7 +1,7 @@
 package com.cookingfox.android.prefer.sample.prefs;
 
-import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer.api.pref.PrefValidator;
+import com.cookingfox.android.prefer_rx.api.pref.RxPrefGroup;
 import com.cookingfox.android.prefer_rx.api.pref.typed.BooleanRxPref;
 import com.cookingfox.android.prefer_rx.api.pref.typed.LongRxPref;
 import com.cookingfox.android.prefer_rx.api.pref.typed.StringRxPref;
@@ -65,7 +65,7 @@ public class AndroidRestApiPrefs implements RestApiPrefs {
     }
 
     @Override
-    public PrefGroup<Key> getPrefGroup() {
+    public RxPrefGroup<Key> getPrefGroup() {
         return group;
     }
 
