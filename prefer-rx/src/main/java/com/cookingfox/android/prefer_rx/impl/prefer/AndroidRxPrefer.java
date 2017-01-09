@@ -1,8 +1,10 @@
 package com.cookingfox.android.prefer_rx.impl.prefer;
 
 import com.cookingfox.android.prefer.api.exception.PreferNotInitializedException;
+import com.cookingfox.android.prefer.api.pref.OnGroupValueChanged;
 import com.cookingfox.android.prefer.api.pref.OnValueChanged;
 import com.cookingfox.android.prefer.api.pref.Pref;
+import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer.impl.prefer.AndroidPrefer;
 import com.cookingfox.android.prefer_rx.api.prefer.RxPrefer;
 import com.cookingfox.android.prefer_rx.impl.pref.AndroidRxPrefGroup;
@@ -69,6 +71,41 @@ public abstract class AndroidRxPrefer extends AndroidPrefer implements RxPrefer 
         });
     }
 
+    @Override
+    public <K extends Enum<K>> Observable<Pref<K, ?>> observeGroupValueChanges(final PrefGroup<K> group) {
+        checkNotNull(group, "Group can not be null");
+
+        if (!initialized) {
+            throw new PreferNotInitializedException("Can not observe group");
+        }
+
+        return Observable.create(new Observable.OnSubscribe<Pref<K, ?>>() {
+            @Override
+            public void call(final Subscriber<? super Pref<K, ?>> subscriber) {
+                // create listener implementation that notifies Rx subscriber
+                final OnGroupValueChanged<K> listener = new OnGroupValueChanged<K>() {
+                    @Override
+                    public void onGroupValueChanged(Pref<K, ?> pref) {
+                        subscriber.onNext(pref);
+                    }
+                };
+
+                addGroupValueChangedListener(group, listener);
+
+                // remove the listener when the Rx subscriber unsubscribes
+                subscriber.add(Subscriptions.create(new Action0() {
+                    @Override
+                    public void call() {
+                        removeGroupValueChangedListener(group, listener);
+                        subscriber.onCompleted();
+                    }
+                }));
+
+                subscribers.add(subscriber);
+            }
+        });
+    }
+
     //----------------------------------------------------------------------------------------------
     // PUBLIC METHODS
     //----------------------------------------------------------------------------------------------
@@ -79,8 +116,8 @@ public abstract class AndroidRxPrefer extends AndroidPrefer implements RxPrefer 
             return;
         }
 
-        // unsubscribe all
-        subscribers.unsubscribe();
+        // clear subscribers
+        subscribers.clear();
 
         super.disposePrefer();
     }

@@ -3,7 +3,7 @@ package com.cookingfox.android.prefer.api.pref;
 /**
  * Listener interface for when the value changes of one of a {@link PrefGroup}'s {@link Pref}s.
  *
- * @param <K> Indicates the group's key class.
+ * @param <K> References the enum class for this Pref's key.
  */
 public interface OnGroupValueChanged<K extends Enum<K>> {
 

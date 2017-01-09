@@ -1,9 +1,11 @@
 package com.cookingfox.android.prefer_rx.impl.pref;
 
+import com.cookingfox.android.prefer.api.pref.Pref;
 import com.cookingfox.android.prefer.api.pref.PrefGroup;
 import com.cookingfox.android.prefer.api.pref.PrefMeta;
 import com.cookingfox.android.prefer.impl.pref.AndroidPrefGroup;
 import com.cookingfox.android.prefer.impl.prefer.AndroidPrefer;
+import com.cookingfox.android.prefer_rx.api.pref.RxPrefGroup;
 import com.cookingfox.android.prefer_rx.api.prefer.RxPrefer;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidBooleanRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidFloatRxPref;
@@ -11,12 +13,16 @@ import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidIntegerRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidLongRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidStringRxPref;
 
+import rx.Observable;
+
 /**
  * Implementation of {@link PrefGroup} with {@link PrefMeta}.
  *
  * @param <K> References the concrete enum key class.
  */
-public class AndroidRxPrefGroup<K extends Enum<K>> extends AndroidPrefGroup<K> {
+public class AndroidRxPrefGroup<K extends Enum<K>>
+        extends AndroidPrefGroup<K>
+        implements RxPrefGroup<K> {
 
     /**
      * Reference to Prefer, so the current value can be retrieved and updated.
@@ -38,6 +44,15 @@ public class AndroidRxPrefGroup<K extends Enum<K>> extends AndroidPrefGroup<K> {
         super(prefer, keyClass);
 
         rxPrefer = prefer;
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // IMPLEMENTATION: RxPrefGroup
+    //----------------------------------------------------------------------------------------------
+
+    @Override
+    public Observable<Pref<K, ?>> observeGroupValueChanges() {
+        return ((RxPrefer) prefer).observeGroupValueChanges(this);
     }
 
     //----------------------------------------------------------------------------------------------
