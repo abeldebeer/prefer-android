@@ -1,5 +1,9 @@
 # Prefer for Android: Change Log
 
+## [0.2.8](../../releases/tag/0.2.8) (2017-01-09)
+
+- Makes `RxPrefs` extend `Prefs` for compatibility.
+
 ## [0.2.7](../../releases/tag/0.2.7) (2017-01-09)
 
 - Introduces `OnGroupValueChanged` listener, to monitor changes to an entire pref group.

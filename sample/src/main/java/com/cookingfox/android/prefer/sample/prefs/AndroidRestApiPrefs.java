@@ -9,7 +9,7 @@ import com.cookingfox.android.prefer_rx.impl.pref.AndroidRxPrefGroup;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidBooleanRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidLongRxPref;
 import com.cookingfox.android.prefer_rx.impl.pref.typed.AndroidStringRxPref;
-import com.cookingfox.android.prefer_rx.impl.prefer.SharedPreferencesRxPrefer;
+import com.cookingfox.android.prefer_rx.impl.prefer.AndroidRxPrefer;
 
 /**
  * Implementation of {@link RestApiPrefs}.
@@ -21,7 +21,7 @@ public class AndroidRestApiPrefs implements RestApiPrefs {
     private final AndroidBooleanRxPref<Key> cacheEnabled;
     private final AndroidLongRxPref<Key> updateIntervalSeconds;
 
-    public AndroidRestApiPrefs(SharedPreferencesRxPrefer prefer) {
+    public AndroidRestApiPrefs(AndroidRxPrefer prefer) {
         group = prefer.addNewGroup(Key.class);
         group.setTitle("REST API");
         group.setSummary("REST API preferences.");
