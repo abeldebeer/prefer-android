@@ -1,5 +1,9 @@
 # Prefer for Android: Change Log
 
+## [0.2.7](../../releases/tag/0.2.7) (2017-01-09)
+
+- Introduces `OnGroupValueChanged` listener, to monitor changes to an entire pref group.
+
 ## [0.2.6](../../releases/tag/0.2.6) (2016-09-15)
 
 - Adds feature for setting default preference titles in case a preference has no custom title.
